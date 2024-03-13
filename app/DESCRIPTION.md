@@ -1,1 +1,1 @@
-## BCD
+## Test Description for Nyaya Dictionary API

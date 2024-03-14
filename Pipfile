@@ -14,6 +14,7 @@ python-dotenv = "*"
 python-jose = "*"
 pydantic = {extras = ["email"], version = "*"}
 bcrypt = "*"
+alembic = "*"
 
 [dev-packages]
 

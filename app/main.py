@@ -1,12 +1,12 @@
 from fastapi import FastAPI
-import models
-from database import engine
-from routers import search, upload, words, auth, admins
+import app.models
+from app.database import engine
+from app.routers import search, upload, words, auth, admins
 
-models.Base.metadata.create_all(bind=engine)
+app.models.Base.metadata.create_all(bind=engine)
 
 
-with open("DESCRIPTION.md", "r") as f:
+with open("app/DESCRIPTION.md", "r") as f:
     description = f.read()
 
 app = FastAPI(

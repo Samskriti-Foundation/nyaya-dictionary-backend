@@ -1,8 +1,8 @@
 from fastapi import APIRouter, File, UploadFile, HTTPException, status, Depends
 import pandas as pd
-import models
+import app.models
 from sqlalchemy.orm import Session
-from database import get_db
+from app.database import get_db
 
 router = APIRouter(
     prefix="/upload",

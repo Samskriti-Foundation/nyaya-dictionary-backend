@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, status, HTTPException
 from sqlalchemy.orm import Session
-from database import get_db
-import models, schemas
+from app import models, schemas
+from app.database import get_db
 
 router = APIRouter(
     prefix="/search",

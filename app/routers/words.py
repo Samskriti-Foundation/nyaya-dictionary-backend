@@ -2,7 +2,6 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from app.database import get_db
 from sqlalchemy.orm import Session
 from app import models, schemas, oauth2
-from typing import List
 
 router = APIRouter(
     prefix="/words",
@@ -66,14 +65,20 @@ def get_word(word: str, db: Session = Depends(get_db)):
     
     return word
 
-# @router.post("/")
-# def create_word(word: schemas.WordBase, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
-#     db_word = db.query(models.SanskritWord).filter(models.SanskritWord.technicalTermRoman == word.word).first()
+@router.post("/")
+def create_word(word: schemas.WordBase, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
+    if current_user.is_superuser == False:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
-#     if not db_word:
-#         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Word not found")
+
+    db_word = db.query(models.SanskritWord).filter(models.SanskritWord.technicalTermDevanagiri == word.word).first()
+
+    if db_word:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Word already exists")
     
-#     return db_word
+    db_word = models.SanskritWord(**word.model_dump())
+    
+    return db_word
 
 
 # @router.put("/{word}")

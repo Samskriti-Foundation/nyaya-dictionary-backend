@@ -12,9 +12,9 @@ router = APIRouter(
 
 
 @router.get("/", response_model=List[schemas.AdminOut])
-def get_admins(db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
-    if current_user.is_superuser == False:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
+def get_admins(db: Session = Depends(get_db)):#, current_user: int = Depends(oauth2.get_current_user)):
+    # if current_user.is_superuser == False:
+    #     raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
     admins = db.query(models.Admin).all()
     return admins

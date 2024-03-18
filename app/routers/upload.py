@@ -1,6 +1,6 @@
 from fastapi import APIRouter, File, UploadFile, HTTPException, status, Depends
 import pandas as pd
-import app.models
+from app import models
 from sqlalchemy.orm import Session
 from app.database import get_db
 
@@ -77,7 +77,7 @@ def upload_data(file: UploadFile = File(...), db: Session = Depends(get_db)):
                 existing_word = word  # Set existing_word to the newly inserted word
 
             # Update or insert synonyms
-            synonyms = row["synonyms"].split(",")
+            synonyms = row["synonyms"].split(" ")
             synonyms = [synonym.strip() for synonym in synonyms]
 
             existing_synonyms = db.query(models.Synonym).filter(

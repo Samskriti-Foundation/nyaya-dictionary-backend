@@ -43,7 +43,7 @@ def update_admin(email: str, admin: schemas.AdminBase, db: Session = Depends(get
     if not admin_query.first():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Admin with email {email} not found")
 
-    admin_query.update(admin.dict())
+    admin_query.update(admin.model_dump())
     db.commit()
 
     return admin_query.first()

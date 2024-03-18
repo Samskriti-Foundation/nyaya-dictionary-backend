@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Nyaya Dictionary is a Sanskrit-English dictionary developed by the Samskriti Foundation, Mysore.
+The Nyaya Dictionary is a Sanskrit-English dictionary developed by Samskriti Foundation, Mysore.
 
 ## Installation
 
@@ -51,14 +51,9 @@ The Nyaya Dictionary is a Sanskrit-English dictionary developed by the Samskriti
 
 ## Run the backend server
 
-1. Navigate to the app directory within the project:
+1. Start the server using Uvicorn:
 ```bash
-cd app
-```
-
-2. Start the server using Uvicorn:
-```bash
-uvicorn main:app --reload
+uvicorn app.main:app --reload
 ```
 
 ## API Documentation

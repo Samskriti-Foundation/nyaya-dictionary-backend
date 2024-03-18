@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-import app.models
+from app import models
 from app.database import engine
 from app.routers import search, upload, words, auth, admins
 from fastapi.middleware.cors import CORSMiddleware

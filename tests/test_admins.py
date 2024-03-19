@@ -1,5 +1,3 @@
-from app import models
-
 def test_create_admin(authorized_client):
     response = authorized_client.post("/auth/register", json={
         "email": "admin@gmail.com",

@@ -29,6 +29,17 @@ class AdminOut(BaseModel):
     is_superuser: bool
 
 
+class AdminUpdate(BaseModel):
+    email: EmailStr | None
+    first_name: str | None
+    last_name: str | None
+
+
+class AdminUpdatePassword(BaseModel):
+    current_password: str
+    new_password: str
+
+
 class Token(BaseModel):
     access_token: str
     token_type: str

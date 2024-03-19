@@ -1,6 +1,6 @@
 from sqlalchemy import Column,Integer, String, DateTime, ForeignKey, Boolean
 from .database import Base
-from datetime import datetime
+from datetime import datetime, UTC
 
 class SanskritWord(Base):
     __tablename__ = "sanskrit_words"
@@ -65,4 +65,4 @@ class Admin(Base):
     first_name = Column(String, nullable=False)
     last_name = Column(String, nullable=False)
     is_superuser = Column(Boolean, default=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(UTC))

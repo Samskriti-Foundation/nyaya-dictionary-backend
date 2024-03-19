@@ -21,8 +21,6 @@ class AdminBase(BaseModel):
     first_name: str
     last_name: str
 
-    class Config:
-        from_attributes = True
 
 class AdminOut(BaseModel):
     email: EmailStr

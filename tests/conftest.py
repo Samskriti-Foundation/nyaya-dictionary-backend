@@ -14,7 +14,6 @@ from app.oauth2 import create_access_token
 from dotenv import load_dotenv
 
 load_dotenv()
-print(os.environ.get("TEST_DATABASE_URL"))
 
 SQLALCHEMY_DATABASE_URL = os.environ.get("TEST_DATABASE_URL")
 
@@ -48,23 +47,21 @@ def client(session):
 
 @pytest.fixture
 def test_superuser(client):
-    response = client.post("/admins/", json={
+    super_user = {
         "email": "superuser@gmail.com",
         "first_name": "Super",
         "last_name": "User",
         "password": "123"
-    })
+    }
+    response = client.post("/auth/register/superuser", json=super_user)
 
-    new_admin = models.Admin(**response.json())
-
-    assert new_admin.email == "superuser@gmail.com"
-    assert new_admin.first_name == "Super"
-    assert new_admin.last_name == "user"
     assert response.status_code == 201
 
+    return super_user
+
 @pytest.fixture
-def token(test_user):
-    return create_access_token({"user_id": test_user['id']})
+def token(test_superuser):
+    return create_access_token({"email": test_superuser['email']})
 
 
 @pytest.fixture
@@ -73,5 +70,4 @@ def authorized_client(client, token):
         **client.headers,
         "Authorization": f"Bearer {token}"
     }
-
     return client

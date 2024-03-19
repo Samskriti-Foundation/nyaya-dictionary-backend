@@ -3,5 +3,5 @@ from app.main import app
 
 client = TestClient(app)
 
-def test_get_words():
-    pass
+# def test_get_words():
+#     pass

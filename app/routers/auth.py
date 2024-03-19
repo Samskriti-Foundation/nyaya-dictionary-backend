@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
 
@@ -25,7 +26,7 @@ def login(user_credentials: OAuth2PasswordRequestForm = Depends(),db: Session = 
     return {'access_token':access_token,'token_type':'bearer'}
 
 
-@router.post("/register")
+@router.post("/register", status_code=status.HTTP_201_CREATED)
 def register_admin(admin: schemas.AdminBase, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
     if current_user.is_superuser == False:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
@@ -44,7 +45,7 @@ def register_admin(admin: schemas.AdminBase, db: Session = Depends(get_db), curr
     db.add(db_admin)
     db.commit()
     db.refresh(db_admin)
-    return {"message": "Admin created"}
+    return JSONResponse(status_code=status.HTTP_201_CREATED, content={"message": "Admin created"})
 
 
 @router.post("/register/superuser", status_code=status.HTTP_201_CREATED)
@@ -69,4 +70,4 @@ def register_superuser(admin: schemas.AdminBase, db: Session = Depends(get_db)):
     db.add(db_admin)
     db.commit()
     db.refresh(db_admin)
-    return {"message": "Superuser created"}
+    return JSONResponse(status_code=status.HTTP_201_CREATED, content={"message": "Superuser created"})

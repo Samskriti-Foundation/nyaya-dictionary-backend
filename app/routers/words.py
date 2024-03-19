@@ -28,7 +28,7 @@ def get_words(db: Session = Depends(get_db)):
         "translation": word_query.EnglishTranslation.translation,
         "detailedDescription": word_query.EnglishTranslation.detailedDescription,
         }
-    words.append(word)
+        words.append(word)
     return words
 
 def isSanskritWord(word) -> bool:
@@ -71,7 +71,7 @@ def create_word(word: schemas.WordBase, db: Session = Depends(get_db), current_u
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
 
-    db_word = db.query(models.SanskritWord).filter(models.SanskritWord.technicalTermDevanagiri == word.word).first()
+    db_word = db.query(models.SanskritWord).filter(models.SanskritWord.technicalTermDevanagiri == word.technicalTermDevanagiri).first()
 
     if db_word:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Word already exists")

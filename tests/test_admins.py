@@ -1,17 +1,42 @@
-from fastapi.testclient import TestClient
+from app import models
 
-
-
-def test_create_admin(client):
-    response = client.post("/admins/", json={
-        "email": "admin@gmailcom",
+def test_create_admin(authorized_client):
+    response = authorized_client.post("/auth/register", json={
+        "email": "admin@gmail.com",
         "first_name": "Admin",
         "last_name": "User",
         "password": "123"
     })
 
-    new_admin = response.json()
+    assert response.status_code == 201
 
-    assert new_admin["email"] == "admin@gmailcom"
-    assert new_admin["first_name"] == "Admin"
-    assert new_admin["last_name"] == "User"
+
+def test_create_admin_duplicate_email(authorized_client):
+    response = authorized_client.post("/auth/register", json={
+        "email": "admin@gmail.com",
+        "first_name": "Admin",
+        "last_name": "User",
+        "password": "123"
+    })
+
+    assert response.status_code == 201
+
+    response = authorized_client.post("/auth/register", json={
+        "email": "admin@gmail.com",
+        "first_name": "Admin",
+        "last_name": "User",
+        "password": "123"
+    })
+
+    assert response.status_code == 409
+
+
+def test_create_admin_invalid_email(authorized_client):
+    response = authorized_client.post("/auth/register", json={
+        "email": "admin",
+        "first_name": "Admin",
+        "last_name": "User",
+        "password": "123"
+    })
+
+    assert response.status_code == 422

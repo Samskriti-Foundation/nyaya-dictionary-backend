@@ -1,34 +1,56 @@
 from pydantic import BaseModel, EmailStr
+from typing import List, Optional
 
 
-class WordBase(BaseModel):
-    technicalTermDevanagiri: str
-    technicalTermRoman: str
-    etymology: str | None = None
-    derivation: str | None = None
-    source: str | None = None
-    description: str | None = None
-    translation: str | None = None
-    detailedDescription: str 
+class WordTranslation(BaseModel):
+    english_translation: Optional[str] = None
+    kannada_translation: Optional[str] = None
+    hindi_translation: Optional[str] = None
+    detailedDescription: Optional[str] = None
 
-class WordOut(WordBase):
+
+class NyayaTextReference(BaseModel):
+    source: Optional[str] = None
+    description: Optional[str] = None
+
+class Word(BaseModel):
+    sanskrit_word: str
+    etymology: Optional[List[str]] = None
+    derivation: Optional[List[str]] = None
+    translation: Optional[List[WordTranslation]] = None
+    reference_nyaya_text: Optional[List[NyayaTextReference]] = None
+    synonyms: Optional[List[str]] = None
+    antonyms: Optional[List[str]] = None
+
+
+class WordOut(Word):
     id: int
+    english_word: str
 
 
 class AdminBase(BaseModel):
-    email: EmailStr
+    email: EmailStr 
     password: str
     first_name: str
     last_name: str
 
-    class Config:
-        from_attributes = True
 
 class AdminOut(BaseModel):
     email: EmailStr
     first_name: str
     last_name: str
     is_superuser: bool
+
+
+class AdminUpdate(BaseModel):
+    email: EmailStr | None
+    first_name: str | None
+    last_name: str | None
+
+
+class AdminUpdatePassword(BaseModel):
+    current_password: str
+    new_password: str
 
 
 class Token(BaseModel):

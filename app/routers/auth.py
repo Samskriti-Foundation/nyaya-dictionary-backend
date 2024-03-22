@@ -1,8 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
 
-from app import schemas, models, utils,oauth2
+from app import schemas, models ,oauth2
+from app.utils import encrypt
 from app.database import get_db
 
 router = APIRouter(
@@ -17,7 +19,7 @@ def login(user_credentials: OAuth2PasswordRequestForm = Depends(),db: Session = 
     if not user:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,detail='Invalid Credentials')
 
-    if not utils.verify(user_credentials.password,user.password):
+    if not encrypt.verify(user_credentials.password,user.password):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,detail='Invalid Credentials')
     
     access_token = oauth2.create_access_token(data={'email':user.email})
@@ -25,7 +27,7 @@ def login(user_credentials: OAuth2PasswordRequestForm = Depends(),db: Session = 
     return {'access_token':access_token,'token_type':'bearer'}
 
 
-@router.post("/register")
+@router.post("/register", status_code=status.HTTP_201_CREATED)
 def register_admin(admin: schemas.AdminBase, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
     if current_user.is_superuser == False:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
@@ -36,7 +38,7 @@ def register_admin(admin: schemas.AdminBase, db: Session = Depends(get_db), curr
     if db_admin:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=f"Admin with email: {admin.email} already exists")
     
-    hashed_password = utils.hash(admin.password)
+    hashed_password = encrypt.hash(admin.password)
     admin.password = hashed_password
 
     db_admin = models.Admin(**admin.model_dump(), is_superuser=False)
@@ -44,7 +46,7 @@ def register_admin(admin: schemas.AdminBase, db: Session = Depends(get_db), curr
     db.add(db_admin)
     db.commit()
     db.refresh(db_admin)
-    return {"message": "Admin created"}
+    return JSONResponse(status_code=status.HTTP_201_CREATED, content={"message": "Admin created"})
 
 
 @router.post("/register/superuser", status_code=status.HTTP_201_CREATED)
@@ -59,7 +61,7 @@ def register_superuser(admin: schemas.AdminBase, db: Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=f"Superuser with email: {admin.email} already exists")
 
 
-    hashed_password = utils.hash(admin.password)
+    hashed_password = encrypt.hash(admin.password)
     db_admin = models.Admin(
         email=admin.email,
         password=hashed_password,
@@ -69,4 +71,4 @@ def register_superuser(admin: schemas.AdminBase, db: Session = Depends(get_db)):
     db.add(db_admin)
     db.commit()
     db.refresh(db_admin)
-    return {"message": "Superuser created"}
+    return JSONResponse(status_code=status.HTTP_201_CREATED, content={"message": "Superuser created"})

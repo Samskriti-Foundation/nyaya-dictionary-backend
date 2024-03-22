@@ -1,24 +1,39 @@
 from sqlalchemy import Column,Integer, String, DateTime, ForeignKey, Boolean
 from .database import Base
-from datetime import datetime
+from datetime import datetime, UTC
 
 class SanskritWord(Base):
     __tablename__ = "sanskrit_words"
 
     id = Column(Integer, primary_key=True, index=True)
-    technicalTermDevanagiri = Column(String, index=True)
-    technicalTermRoman = Column(String, index=True)
-    etymology = Column(String)
-    derivation = Column(String)
+    sanskrit_word = Column(String, index=True, unique=True)
+    english_word = Column(String, index=True)
 
 
-
-class EnglishTranslation(Base):
-    __tablename__ = "english_translations"
+class Etymology(Base):
+    __tablename__ = "etymologies"
 
     id = Column(Integer, primary_key=True, index=True)
     sanskrit_word_id = Column(Integer, ForeignKey("sanskrit_words.id"))
-    translation = Column(String)
+    etymology = Column(String)
+
+
+class Derivation(Base):
+    __tablename__ = "derivations"
+
+    id = Column(Integer, primary_key=True, index=True)
+    sanskrit_word_id = Column(Integer, ForeignKey("sanskrit_words.id"))
+    derivation = Column(String)
+
+
+class Translation(Base):
+    __tablename__ = "translations"
+
+    id = Column(Integer, primary_key=True, index=True)
+    sanskrit_word_id = Column(Integer, ForeignKey("sanskrit_words.id"))
+    english_translation = Column(String)
+    kannada_translation = Column(String)
+    hindi_translation = Column(String)
     detailedDescription = Column(String)
 
 
@@ -65,4 +80,4 @@ class Admin(Base):
     first_name = Column(String, nullable=False)
     last_name = Column(String, nullable=False)
     is_superuser = Column(Boolean, default=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(UTC))

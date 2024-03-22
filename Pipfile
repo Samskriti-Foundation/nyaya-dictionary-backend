@@ -10,13 +10,15 @@ sqlalchemy = "*"
 pandas = "*"
 python-multipart = "*"
 openpyxl = "*"
-python-dotenv = "*"
 python-jose = "*"
 pydantic = {extras = ["email"], version = "*"}
 bcrypt = "*"
 alembic = "*"
 httpx = "*"
 pytest = "*"
+pydantic-settings = "*"
+indic-transliteration = "*"
+python-dotenv = "*"
 
 [dev-packages]
 

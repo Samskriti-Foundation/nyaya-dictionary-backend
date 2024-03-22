@@ -1,17 +1,20 @@
 from fastapi import FastAPI
-from app import models
+import app.models
 from app.database import engine
 from app.routers import search, upload, words, auth, admins
 from fastapi.middleware.cors import CORSMiddleware
 
-models.Base.metadata.create_all(bind=engine)
+from app.config import settings
+
+app.models.Base.metadata.create_all(bind=engine)
 
 
 with open("app/DESCRIPTION.md", "r") as f:
     description = f.read()
 
+
 app = FastAPI(
-    title="Nyaya Dictionary",
+    title=settings.app_name,
     description=description,
 )
 

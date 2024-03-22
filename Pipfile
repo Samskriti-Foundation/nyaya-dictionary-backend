@@ -18,6 +18,7 @@ alembic = "*"
 httpx = "*"
 pytest = "*"
 pydantic-settings = "*"
+indic-transliteration = "*"
 
 [dev-packages]
 

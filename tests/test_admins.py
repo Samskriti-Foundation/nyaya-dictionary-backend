@@ -37,4 +37,5 @@ def test_create_admin_invalid_email(authorized_client):
         "password": "123"
     })
 
+    print(response.json())
     assert response.status_code == 422

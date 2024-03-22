@@ -9,10 +9,6 @@ router = APIRouter(
     tags=["Search"],
 )
 
-def isSanskritWord(word) -> bool:
-    devanagari_range = (0x0900, 0x097F)
-    return all(ord(char) >= devanagari_range[0] and ord(char) <= devanagari_range[1] for char in word)
-
 @router.get("/{word}")
 def search(word: str, limit: int = 5, db: Session = Depends(get_db)):
     if isDevanagariWord(word):

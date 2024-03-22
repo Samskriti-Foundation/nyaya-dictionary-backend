@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Nyaya Dictionary is a Sanskrit-English dictionary developed by the Samskriti Foundation, Mysore.
+The Nyaya Dictionary is a Sanskrit-English dictionary developed by Samskriti Foundation, Mysore.
 
 ## Installation
 

@@ -43,7 +43,7 @@ def update_admin(email: str, admin: schemas.AdminUpdate, db: Session = Depends(g
     if not admin_query.first():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Admin with email {email} not found")
     
-    if db.query(models.Admin).filter(models.Admin.email == admin.email).first():
+    if email != admin.email and db.query(models.Admin).filter(models.Admin.email == admin.email).first():
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=f"Admin with email {admin.email} already exists")
 
     admin_query.update(admin.model_dump())

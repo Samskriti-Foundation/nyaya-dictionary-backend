@@ -56,6 +56,13 @@ The Nyaya Dictionary is a Sanskrit-English dictionary developed by the Samskriti
 uvicorn app.main:app --reload
 ```
 
+## Run tests
+
+1. Run tests with Pytest:
+```bash
+pytest -v
+```
+
 ## API Documentation
 
 The API documentation can be accessed at: `http://localhost:8000/docs`

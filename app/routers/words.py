@@ -201,18 +201,24 @@ def update_word(word: schemas.WordOut, db: Session = Depends(get_db), current_us
     
     
     if word.synonyms:
+        db.query(models.Synonym).filter(models.Synonym.sanskrit_word_id == word.id).delete()
+
         synonyms = [models.Synonym(
             sanskrit_word_id = word.id,
             synonym = synonym
         ) for synonym in word.synonyms]
+        
         db.add_all(synonyms)
     
     
     if word.antonyms:
+        db.query(models.Antonym).filter(models.Antonym.sanskrit_word_id == word.id).delete()
+        
         antonyms = [models.Antonym(
             sanskrit_word_id = word.id,
             antonym = antonym
         ) for antonym in word.antonyms]
+        
         db.add_all(antonyms)
 
     db.commit()
@@ -221,21 +227,19 @@ def update_word(word: schemas.WordOut, db: Session = Depends(get_db), current_us
     return JSONResponse(status_code=status.HTTP_200_OK, content={"message": "Word updated"})
 
 
-@router.delete("/{id}")
+@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_word(id: int, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
     db_word = db.query(models.SanskritWord).filter(models.SanskritWord.id == id).first()
 
     if not db_word:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Word with id {id} not found")
 
-    db.query(models.SanskritWord).filter(models.SanskritWord.id == id).delete()
-    db.query(models.Etymology).filter(models.Etymology.sanskrit_word_id == id).delete()
-    db.query(models.Derivation).filter(models.Derivation.sanskrit_word_id == id).delete()
-    db.query(models.Translation).filter(models.Translation.sanskrit_word_id == id).delete()
-    db.query(models.ReferenceNyayaText).filter(models.ReferenceNyayaText.sanskrit_word_id == id).delete()
-    db.query(models.Synonym).filter(models.Synonym.sanskrit_word_id == id).delete()
-    db.query(models.Antonym).filter(models.Antonym.sanskrit_word_id == id).delete()
+    db.query(models.Etymology).filter(models.Etymology.sanskrit_word_id == id).delete(synchronize_session=False)
+    db.query(models.Derivation).filter(models.Derivation.sanskrit_word_id == id).delete(synchronize_session=False)
+    db.query(models.Translation).filter(models.Translation.sanskrit_word_id == id).delete(synchronize_session=False)
+    db.query(models.ReferenceNyayaText).filter(models.ReferenceNyayaText.sanskrit_word_id == id).delete(synchronize_session=False)
+    db.query(models.Synonym).filter(models.Synonym.sanskrit_word_id == id).delete(synchronize_session=False)
+    db.query(models.Antonym).filter(models.Antonym.sanskrit_word_id == id).delete(synchronize_session=False)
+    db.query(models.SanskritWord).filter(models.SanskritWord.id == id).delete(synchronize_session=False)
 
     db.commit()
-
-    return JSONResponse(status_code=status.HTTP_204_NO_CONTENT, content={"message": "Word deleted"})

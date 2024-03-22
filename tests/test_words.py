@@ -183,6 +183,7 @@ def test_create_word_invalid(authorized_client):
 
     assert response.status_code == 400
 
+
 def test_update_word(authorized_client):
     response = authorized_client.post("/words", json={
         "sanskrit_word": "स्वर्ग",
@@ -302,6 +303,7 @@ def test_update_word_invalid(authorized_client):
 
     assert response.status_code == 404
 
+
 def test_delete_word(authorized_client):
     response = authorized_client.post("/words", json={
         "sanskrit_word": "स्वर्ग",
@@ -334,7 +336,7 @@ def test_delete_word(authorized_client):
     assert response.status_code == 204
 
 
-def test_delete_invalid_word(authorized_client):
+def test_delete_word_invalid(authorized_client):
     response = authorized_client.post("/words", json={
         "sanskrit_word": "स्वर्ग",
         "etymology": [

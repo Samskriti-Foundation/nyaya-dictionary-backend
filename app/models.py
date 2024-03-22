@@ -11,7 +11,7 @@ class SanskritWord(Base):
 
 
 class Etymology(Base):
-    __tablename__ = "etymology"
+    __tablename__ = "etymologies"
 
     id = Column(Integer, primary_key=True, index=True)
     sanskrit_word_id = Column(Integer, ForeignKey("sanskrit_words.id"))
@@ -19,7 +19,7 @@ class Etymology(Base):
 
 
 class Derivation(Base):
-    __tablename__ = "derivation"
+    __tablename__ = "derivations"
 
     id = Column(Integer, primary_key=True, index=True)
     sanskrit_word_id = Column(Integer, ForeignKey("sanskrit_words.id"))

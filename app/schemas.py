@@ -15,10 +15,10 @@ class NyayaTextReference(BaseModel):
 
 class Word(BaseModel):
     sanskrit_word: str
-    etymology: Optional[List[str]] = None
-    derivation: Optional[List[str]] = None
-    translation: Optional[List[WordTranslation]] = None
-    reference_nyaya_text: Optional[List[NyayaTextReference]] = None
+    etymologies: Optional[List[str]] = None
+    derivations: Optional[List[str]] = None
+    translation: Optional[WordTranslation] = None
+    reference_nyaya_texts: Optional[List[NyayaTextReference]] = None
     synonyms: Optional[List[str]] = None
     antonyms: Optional[List[str]] = None
 

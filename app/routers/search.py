@@ -19,9 +19,6 @@ def search(word: str, limit: int = 5, db: Session = Depends(get_db)):
     if not matches:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No match found")
     
-    res = []
-    for match in matches:
-        res.append(match.sanskrit_word)
-        res.append(match.english_word)
+    res = [[match.sanskrit_word, match.english_word] for match in matches]
 
     return res

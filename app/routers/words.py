@@ -21,18 +21,20 @@ def get_words(db: Session = Depends(get_db)):
 
     for db_word in db_words:
         word = {}
-        
+
         word["id"] = db_word.id
         word["sanskrit_word"] = db_word.sanskrit_word
         word["english_word"] = db_word.english_word
-        word["etymology"] = [x.etymology for x in db.query(models.Etymology).filter(models.Etymology.sanskrit_word_id == db_word.id).all()]
-        word["derivation"] = [x.derivation for x in db.query(models.Derivation).filter(models.Derivation.sanskrit_word_id == db_word.id).all()]
-        word["translations"] = [{
-            "english_translation": x.english_translation,
-            "sanskrit_translation": x.hindi_translation,
-            "kannada_translation": x.kannada_translation,
-             } for x in db.query(models.Translation).filter(models.Translation.sanskrit_word_id == db_word.id).all()]
-        word["nyaya_reference_text"] = [{
+        word["etymologies"] = [x.etymology for x in db.query(models.Etymology).filter(models.Etymology.sanskrit_word_id == db_word.id).all()]
+        word["derivations"] = [x.derivation for x in db.query(models.Derivation).filter(models.Derivation.sanskrit_word_id == db_word.id).all()]
+        
+        translation_query = db.query(models.Translation).filter(models.Translation.sanskrit_word_id == db_word.id).all()
+        translations = {}
+        for translation in translation_query:
+            translations.setdefault(translation.language, []).append(translation.translation)
+        word["translations"] = translations
+        
+        word["nyaya_reference_texts"] = [{
             "source": x.source,
             "description": x.description
         } for x in db.query(models.ReferenceNyayaText).filter(models.ReferenceNyayaText.sanskrit_word_id == db_word.id).all()]
@@ -60,12 +62,13 @@ def get_word(word: str, db: Session = Depends(get_db)):
     word["english_word"] = db_word.english_word
     word["etymologies"] = [x.etymology for x in db.query(models.Etymology).filter(models.Etymology.sanskrit_word_id == db_word.id).all()]
     word["derivations"] = [x.derivation for x in db.query(models.Derivation).filter(models.Derivation.sanskrit_word_id == db_word.id).all()]
-    translation = db.query(models.Translation).filter(models.Translation.sanskrit_word_id == db_word.id).first()
-    word["translation"] = {
-        "english_translation": translation.english_translation,
-        "hindi_translation": translation.hindi_translation,
-        "kannada_translation": translation.kannada_translation,
-            } 
+    
+    translation_query = db.query(models.Translation).filter(models.Translation.sanskrit_word_id == db_word.id).all()
+    translations = {}
+    for translation in translation_query:
+        translations.setdefault(translation.language, []).append(translation.translation)
+    word["translations"] = translations
+    
     word["nyaya_reference_texts"] = [{
         "source": x.source,
         "description": x.description
@@ -107,15 +110,21 @@ def create_word(word: schemas.Word, db: Session = Depends(get_db), current_user:
         db.add_all(derivations)
 
 
-    if word.translation:
-        translation = models.Translation(
+    if word.translations:
+        translations = [models.Translation(
+            sanskrit_word_id=new_word.id,
+            language=translation.language,
+            translation=tran
+        ) for translation in word.translations for tran in translation.translation]
+        db.add_all(translations)
+    
+    
+    if word.detailed_description:
+        detailed_description = models.Description(
             sanskrit_word_id = new_word.id,
-            english_translation = word.translation.english_translation,
-            kannada_translation = word.translation.kannada_translation,
-            hindi_translation = word.translation.hindi_translation,
-            detailedDescription = word.translation.detailedDescription,
+            description = word.detailed_description
         )
-        db.add(translation)
+        db.add(detailed_description)
     
     
     if word.reference_nyaya_texts:
@@ -147,12 +156,17 @@ def create_word(word: schemas.Word, db: Session = Depends(get_db), current_user:
     return JSONResponse(status_code=status.HTTP_201_CREATED, content={"message": "Word created"})
 
 @router.put("/")
-def update_word(word: schemas.WordOut, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
-    db_word = db.query(models.SanskritWord).filter(models.SanskritWord.id == word.id).first()
-
-    if not db_word:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Word with id {word.id} not found")
+def update_word(word: schemas.WordUpdate, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
+    if not isDevanagariWord(word.sanskrit_word):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Word is not in Devanagari")
     
+    db_word = db.query(models.SanskritWord).filter(models.SanskritWord.sanskrit_word == word.sanskrit_word).first()
+    
+    if not db_word:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Word not found")
+    
+    if word.id != db_word.id:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Invalid word ID")
     
     db_word.sanskrit_word = word.sanskrit_word
     db_word.english_word = word.english_word
@@ -178,20 +192,28 @@ def update_word(word: schemas.WordOut, db: Session = Depends(get_db), current_us
         db.add_all(derivations)
 
 
-    if word.translation:
+    if word.translations:
         db.query(models.Translation).filter(models.Translation.sanskrit_word_id == word.id).delete()
 
-        translations = models.Translation(
+        translations = [models.Translation(
+            sanskrit_word_id=word.id,
+            language=translation.language,
+            translation=tran
+        ) for translation in word.translations for tran in translation.translation]
+        
+        db.add_all(translations)
+    
+    
+    if word.detailed_description:
+        db.query(models.Description).filter(models.Description.sanskrit_word_id == word.id).delete()
+
+        detailed_description = models.Description(
             sanskrit_word_id = word.id,
-            english_translation = word.translation.english_translation,
-            kannada_translation = word.translation.kannada_translation,
-            hindi_translation = word.translation.hindi_translation,
-            detailedDescription = word.translation.detailedDescription,
+            description = word.detailed_description
         )
         
-        db.add(translations)
-    
-    
+        db.add(detailed_description)
+
     if word.reference_nyaya_texts:
         db.query(models.ReferenceNyayaText).filter(models.ReferenceNyayaText.sanskrit_word_id == word.id).delete()
 
@@ -244,6 +266,7 @@ def delete_word(word: str, db: Session = Depends(get_db), current_user: int = De
     db.query(models.Etymology).filter(models.Etymology.sanskrit_word_id == db_word.id).delete(synchronize_session=False)
     db.query(models.Derivation).filter(models.Derivation.sanskrit_word_id == db_word.id).delete(synchronize_session=False)
     db.query(models.Translation).filter(models.Translation.sanskrit_word_id == db_word.id).delete(synchronize_session=False)
+    db.query(models.Description).filter(models.Description.sanskrit_word_id == db_word.id).delete(synchronize_session=False)
     db.query(models.ReferenceNyayaText).filter(models.ReferenceNyayaText.sanskrit_word_id == db_word.id).delete(synchronize_session=False)
     db.query(models.Synonym).filter(models.Synonym.sanskrit_word_id == db_word.id).delete(synchronize_session=False)
     db.query(models.Antonym).filter(models.Antonym.sanskrit_word_id == db_word.id).delete(synchronize_session=False)

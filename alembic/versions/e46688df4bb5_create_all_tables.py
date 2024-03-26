@@ -57,10 +57,15 @@ def upgrade() -> None:
         'translations',
         sa.Column('id', sa.Integer(), nullable=False, primary_key=True),
         sa.Column('sanskrit_word_id', sa.Integer(), nullable=False),
-        sa.Column('english_translation', sa.String(), nullable=False),
-        sa.Column('kannada_translation', sa.String(), nullable=True),
-        sa.Column('hindi_translation', sa.String(), nullable=True),
-        sa.Column('detailedDescription', sa.String(), nullable=True),
+        sa.Column('language', sa.String(), nullable=False),
+        sa.Column('translation', sa.String(), nullable=False),
+    )
+
+    op.create_table(
+        'descriptions',
+        sa.Column('id', sa.Integer(), nullable=False, primary_key=True),
+        sa.Column('sanskrit_word_id', sa.Integer(), nullable=False),
+        sa.Column('description', sa.String(), nullable=False),
     )
 
     op.create_table(
@@ -100,6 +105,7 @@ def downgrade() -> None:
     op.drop_table("etymologies")
     op.drop_table("derivations")
     op.drop_table("translations")
+    op.drop_table("descriptions")
     op.drop_table("examples")
     op.drop_table("reference_nyaya_texts")
     op.drop_table("synonyms")

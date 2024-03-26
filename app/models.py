@@ -31,11 +31,16 @@ class Translation(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     sanskrit_word_id = Column(Integer, ForeignKey("sanskrit_words.id"))
-    english_translation = Column(String)
-    kannada_translation = Column(String)
-    hindi_translation = Column(String)
-    detailedDescription = Column(String)
+    translation = Column(String, nullable=False)
+    language = Column(String, nullable=False)
 
+
+class Description(Base):
+    __tablename__ = "descriptions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    sanskrit_word_id = Column(Integer, ForeignKey("sanskrit_words.id"))
+    description = Column(String, nullable=False)
 
 class Example(Base):
     __tablename__ = "examples"

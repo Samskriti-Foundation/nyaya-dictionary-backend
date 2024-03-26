@@ -2,7 +2,13 @@
 
 ## Overview
 
-The Nyaya Dictionary is a Sanskrit-English dictionary developed by Samskriti Foundation, Mysore.
+Nyaya Khosha is a Sanskrit-English dictionary developed by Samskriti Foundation, Mysore.
+
+### Links to Related Repositories:
+
+- Nyaya Khosha frontend: [https://github.com/Samskriti-Foundation/nyaya-dictionary-frontend-main](https://github.com/Samskriti-Foundation/nyaya-dictionary-frontend-main)
+
+- Nyaya Admin Panel frontend: [https://github.com/Samskriti-Foundation/nyaya-dictionary-frontend-admin](https://github.com/Samskriti-Foundation/nyaya-dictionary-frontend-admin)
 
 ## Installation
 

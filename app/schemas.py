@@ -1,12 +1,10 @@
 from pydantic import BaseModel, EmailStr
-from typing import List, Optional
+from typing import List, Optional, Dict
 
 
 class WordTranslation(BaseModel):
-    english_translation: Optional[str] = None
-    kannada_translation: Optional[str] = None
-    hindi_translation: Optional[str] = None
-    detailedDescription: Optional[str] = None
+    language: str
+    translation: List[str]
 
 
 class NyayaTextReference(BaseModel):
@@ -17,7 +15,8 @@ class Word(BaseModel):
     sanskrit_word: str
     etymologies: Optional[List[str]] = None
     derivations: Optional[List[str]] = None
-    translation: Optional[WordTranslation] = None
+    translations: Optional[List[WordTranslation]] = None
+    detailed_description: Optional[str] = None
     reference_nyaya_texts: Optional[List[NyayaTextReference]] = None
     synonyms: Optional[List[str]] = None
     antonyms: Optional[List[str]] = None
@@ -26,6 +25,11 @@ class Word(BaseModel):
 class WordOut(Word):
     id: int
     english_word: str
+    translations: Dict[str, List[str]]
+
+
+class WordUpdate(WordOut):
+    translations: Optional[List[WordTranslation]] = None
 
 
 class AdminBase(BaseModel):

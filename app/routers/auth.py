@@ -1,4 +1,5 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from typing import Optional
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
@@ -12,7 +13,21 @@ router = APIRouter(
     tags=['Authentication']
     )
 
-@router.post('/login',response_model=schemas.Token)
+@router.post(
+    '/login',
+    response_model=schemas.Token,
+    description =
+    """
+    Authenticate a user and return an access token.
+
+    Args:
+        user_credentials (OAuth2PasswordRequestForm): The user's credentials.
+        db (Session): The database session.
+
+    Returns:
+        dict: A dictionary containing the access token and token type.
+    """
+    )
 def login(user_credentials: OAuth2PasswordRequestForm = Depends(),db: Session = Depends(get_db)):
     user = db.query(models.Admin).filter(models.Admin.email == user_credentials.username).first()
 
@@ -27,7 +42,22 @@ def login(user_credentials: OAuth2PasswordRequestForm = Depends(),db: Session = 
     return {'access_token':access_token,'token_type':'bearer'}
 
 
-@router.post("/register", status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/register",
+    status_code=status.HTTP_201_CREATED,
+    description=
+    """
+    Register a new admin.
+
+    Args:
+        admin (schemas.AdminBase): The admin details.
+        db (Session): The database session.
+        current_user (int): The current user's ID.
+
+    Returns:
+        JSONResponse: A JSON response indicating success.
+    """
+    )
 def register_admin(admin: schemas.AdminBase, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
     if current_user.is_superuser == False:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
@@ -49,7 +79,21 @@ def register_admin(admin: schemas.AdminBase, db: Session = Depends(get_db), curr
     return JSONResponse(status_code=status.HTTP_201_CREATED, content={"message": "Admin created"})
 
 
-@router.post("/register/superuser", status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/register/superuser",
+    status_code=status.HTTP_201_CREATED,
+    description=
+    """
+    Register a new superuser.
+
+    Args:
+        admin (schemas.AdminBase): The superuser details.
+        db (Session): The database session.
+
+    Returns:
+        JSONResponse: A JSON response indicating success.
+    """
+    )
 def register_superuser(admin: schemas.AdminBase, db: Session = Depends(get_db)):#, current_user: int = Depends(oauth2.get_current_user)):
     # if current_user.is_superuser == False:
     #     raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,

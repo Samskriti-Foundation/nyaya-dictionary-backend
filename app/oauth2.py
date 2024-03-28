@@ -1,4 +1,4 @@
-from jose import JWTError, jwt
+import jwt
 from datetime import datetime, timedelta, UTC
 from app import schemas, database, models
 from fastapi import Depends, status, HTTPException
@@ -16,7 +16,7 @@ REFRESH_TOKEN_EXPIRE_MINUTES = settings.refresh_token_expire_minutes
 
 def create_access_token(data: dict):
     to_encode = data.copy()
-    
+
     expire = datetime.now(UTC) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     to_encode.update({"exp": expire})
 
@@ -36,7 +36,6 @@ def create_refresh_token(data: dict):
 
 def verify_access_token(token: str, credentials_exception):
     try:
-
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         email: str = payload.get("email")
 
@@ -45,7 +44,7 @@ def verify_access_token(token: str, credentials_exception):
 
         token_data = schemas.TokenData(email=email)
     
-    except JWTError:
+    except jwt.ExpiredSignatureError as e:
         raise credentials_exception
 
     return token_data

@@ -38,15 +38,16 @@ def verify_access_token(token: str, credentials_exception):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         email: str = payload.get("email")
-
         if email is None:
             raise credentials_exception
-
         token_data = schemas.TokenData(email=email)
-    
-    except jwt.ExpiredSignatureError as e:
-        raise credentials_exception
 
+    except jwt.ExpiredSignatureError:
+        raise credentials_exception
+    
+    except jwt.InvalidTokenError:
+        raise credentials_exception
+    
     return token_data
 
 

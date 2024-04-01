@@ -15,6 +15,15 @@ router = APIRouter(
 
 @router.get("/", response_model=List[schemas.WordOut])
 def get_words(db: Session = Depends(get_db)):
+    """
+    Retrieves a list of words from the database and returns them as a list of `schemas.WordOut` objects.
+
+    Parameters:
+        db (Session): The database session object.
+
+    Returns:
+        List[schemas.WordOut]: A list of `schemas.WordOut` objects representing the retrieved words.
+    """
     db_words = db.query(models.SanskritWord).all()
 
     words = []
@@ -47,6 +56,19 @@ def get_words(db: Session = Depends(get_db)):
 
 @router.get("/{word}", response_model=schemas.WordOut)
 def get_word(word: str, db: Session = Depends(get_db)):
+    """
+    Retrieves information about a word from the database based on the provided word.
+    
+    Parameters:
+        word (str): The word to retrieve information for.
+        db (Session, optional): The database session. Defaults to the result of the `get_db` function.
+    
+    Returns:
+        dict: A dictionary containing information about the word, including its ID, Sanskrit word, English word, etymologies, derivations, translations, reference texts, synonyms, and antonyms.
+    
+    Raises:
+        HTTPException: If the word is not found in the database.
+    """
     if isDevanagariWord(word):
         db_word = db.query(models.SanskritWord).filter(models.SanskritWord.sanskrit_word == word).first()
     else:
@@ -80,6 +102,9 @@ def get_word(word: str, db: Session = Depends(get_db)):
 
 @router.post("/")
 def create_word(word: schemas.Word, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
+    """
+    Create a new Sanskrit word in the database. Checks if the word already exists, if it's in Devanagari script, and then adds it to the database along with its translations, etymologies, derivations, detailed description, reference Nyaya texts, synonyms, and antonyms. Returns a message confirming the word creation. 
+    """
     db_word = db.query(models.SanskritWord).filter(models.SanskritWord.sanskrit_word == word.sanskrit_word).first()
 
     if db_word:
@@ -157,6 +182,20 @@ def create_word(word: schemas.Word, db: Session = Depends(get_db), current_user:
 
 @router.put("/")
 def update_word(word: schemas.WordUpdate, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
+    """
+    Updates a word in the database.
+
+    Parameters:
+        word (schemas.WordUpdate): The updated word object.
+        db (Session, optional): The database session. Defaults to Depends(get_db).
+        current_user (int, optional): The ID of the current user. Defaults to Depends(oauth2.get_current_user).
+
+    Raises:
+        HTTPException: If the word is not in Devanagari, if the word is not found in the database, or if the word ID is invalid.
+
+    Returns:
+        JSONResponse: A JSON response with the message "Word updated" and a status code of 200.
+    """
     if not isDevanagariWord(word.sanskrit_word):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Word is not in Devanagari")
     
@@ -255,6 +294,17 @@ def update_word(word: schemas.WordUpdate, db: Session = Depends(get_db), current
 
 @router.delete("/{word}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_word(word: str, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
+    """
+    Delete a word from the database along with all associated etymologies, derivations, translations, descriptions, reference nyaya texts, synonyms, antonyms.
+    
+    Parameters:
+    - word: str - the word to be deleted
+    - db: Session - database session
+    - current_user: int - the current user id
+    
+    Returns:
+    None
+    """
     if isDevanagariWord(word):
         db_word = db.query(models.SanskritWord).filter(models.SanskritWord.sanskrit_word == word).first()
     else:

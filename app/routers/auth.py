@@ -14,6 +14,19 @@ router = APIRouter(
 
 @router.post('/login',response_model=schemas.Token)
 def login(user_credentials: OAuth2PasswordRequestForm = Depends(),db: Session = Depends(get_db)):
+    """
+    Logs in a user with the provided credentials.
+
+    Parameters:
+        user_credentials (OAuth2PasswordRequestForm): The user's credentials for authentication.
+        db (Session): The database session to query the user.
+
+    Returns:
+        dict: A dictionary containing the access token and token type.
+
+    Raises:
+        HTTPException: If the user credentials are invalid.
+    """
     user = db.query(models.Admin).filter(models.Admin.email == user_credentials.username).first()
 
     if not user:
@@ -29,6 +42,20 @@ def login(user_credentials: OAuth2PasswordRequestForm = Depends(),db: Session = 
 
 @router.post("/register", status_code=status.HTTP_201_CREATED)
 def register_admin(admin: schemas.AdminBase, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
+    """
+    Registers a new admin user.
+
+    Parameters:
+        - admin (schemas.AdminBase): The admin user information.
+        - db (Session, optional): The database session. Defaults to the result of the `get_db` dependency.
+        - current_user (int, optional): The current user's ID. Defaults to the result of the `oauth2.get_current_user` dependency.
+
+    Raises:
+        - HTTPException: If the current user is not a superuser or if an admin with the same email already exists.
+
+    Returns:
+        - JSONResponse: A JSON response with a status code of 201 and a message indicating that the admin was created.
+    """
     if current_user.is_superuser == False:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
                             detail="Not authorized to perform requested action")
@@ -51,6 +78,19 @@ def register_admin(admin: schemas.AdminBase, db: Session = Depends(get_db), curr
 
 @router.post("/register/superuser", status_code=status.HTTP_201_CREATED)
 def register_superuser(admin: schemas.AdminBase, db: Session = Depends(get_db)):#, current_user: int = Depends(oauth2.get_current_user)):
+    """
+    Register a superuser with the provided admin details in the database.
+
+    Args:
+        admin (schemas.AdminBase): The admin details for the superuser registration.
+        db (Session, optional): The database session. Defaults to Depends(get_db).
+
+    Raises:
+        HTTPException: If the current user is not authorized or if a superuser with the same email already exists.
+
+    Returns:
+        JSONResponse: A JSON response indicating the superuser creation status.
+    """
     # if current_user.is_superuser == False:
     #     raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
     #                         detail="Not authorized to perform requested action")

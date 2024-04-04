@@ -53,7 +53,7 @@ class Example(Base):
     sanskrit_word_id = Column(Integer, ForeignKey("sanskrit_words.id"))
     meaning_id = Column(Integer, ForeignKey("meanings.id"))
     example_sentence = Column(String)
-    applicableModernContext = Column(String)
+    applicable_modern_context = Column(String)
 
 
 class ReferenceNyayaText(Base):

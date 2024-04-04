@@ -78,7 +78,7 @@ def upgrade() -> None:
         sa.Column('sanskrit_word_id', sa.Integer, sa.ForeignKey('sanskrit_words.id'), nullable=False),
         sa.Column('meaning_id', sa.Integer, sa.ForeignKey('meanings.id'), nullable=False),
         sa.Column('example_sentence', sa.String, nullable=False),
-        sa.Column('applicableModernContext', sa.String, nullable=True),
+        sa.Column('applicable_modern_concept', sa.String, nullable=True),
     )
 
     op.create_table(
@@ -112,7 +112,7 @@ def upgrade() -> None:
         sa.Column('table_name', sa.String, nullable=False),
         sa.Column('record_id', sa.Integer, nullable=False),
         sa.Column('operation', sa.String, nullable=False),
-        sa.Column('user_id', sa.Integer, sa.ForeignKey('db_managers.id'), nullable=False),
+        sa.Column('db_manager_id', sa.Integer, sa.ForeignKey('db_managers.id'), nullable=False),
         sa.Column('timestamp', sa.DateTime, default=datetime.now(UTC)),
         sa.Column('new_value', sa.String, nullable=False),
     )
@@ -120,8 +120,8 @@ def upgrade() -> None:
     op.create_table(
         'login_audits',
         sa.Column('id', sa.Integer, nullable=False, primary_key=True),
-        sa.Column('created_user_id', sa.Integer, sa.ForeignKey('db_managers.id'), nullable=False),
-        sa.Column('admin_id', sa.Integer, sa.ForeignKey('db_managers.id'), nullable=False),
+        sa.Column('db_manager_id', sa.Integer, sa.ForeignKey('db_managers.id'), nullable=False),
+        sa.Column('ip_address', sa.String, nullable=False),
         sa.Column('timestamp', sa.DateTime, default=datetime.now(UTC)),
     )
 
@@ -138,3 +138,4 @@ def downgrade() -> None:
     op.drop_table("synonyms")
     op.drop_table("antonyms")
     op.drop_table("database_audits")
+    op.drop_table("login_audits")

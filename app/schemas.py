@@ -13,6 +13,7 @@ class NyayaTextReference(BaseModel):
 
 class Word(BaseModel):
     sanskrit_word: str
+    english_transliteration: str | None
     etymologies: Optional[List[str]] = None
     derivations: Optional[List[str]] = None
     translations: Optional[List[WordTranslation]] = None
@@ -24,7 +25,6 @@ class Word(BaseModel):
 
 class WordOut(Word):
     id: int
-    english_word: str
     translations: Dict[str, List[str]]
 
 

@@ -8,6 +8,7 @@ from indic_transliteration import sanscript
 from indic_transliteration.sanscript import transliterate
 from app.utils.lang import isDevanagariWord
 
+
 router = APIRouter(
     prefix="/words",
     tags=["Words"],
@@ -18,7 +19,6 @@ def get_words(db: Session = Depends(get_db)):
     db_words = db.query(models.SanskritWord).all()
 
     words = []
-
     for db_word in db_words:
         word = {}
 
@@ -42,7 +42,7 @@ def get_words(db: Session = Depends(get_db)):
         word["antonyms"] = [x.antonym for x in db.query(models.Antonym).filter(models.Antonym.sanskrit_word_id == db_word.id).all()]
 
         words.append(word)
-        
+
     return words
 
 @router.get("/{word}", response_model=schemas.WordOut)

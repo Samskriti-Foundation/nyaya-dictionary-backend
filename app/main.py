@@ -3,8 +3,8 @@ import app.models
 from app.database import engine
 from app.routers import search, upload, words, auth, admins
 from fastapi.middleware.cors import CORSMiddleware
-
-from app.config import settings
+from starlette.middleware.base import BaseHTTPMiddleware
+from app.middleware.logger_middleware import log_database_operations
 
 app.models.Base.metadata.create_all(bind=engine)
 
@@ -14,10 +14,11 @@ with open("app/DESCRIPTION.md", "r") as f:
 
 
 app = FastAPI(
-    title=settings.app_name,
+    title="Nyaya Khosha",
     description=description,
 )
 
+app.add_middleware(BaseHTTPMiddleware, dispatch=log_database_operations)
 
 origins = [
     "http://localhost:5173",

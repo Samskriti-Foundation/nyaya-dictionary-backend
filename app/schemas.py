@@ -8,8 +8,13 @@ class Translation(BaseModel):
 
 
 class NyayaTextReference(BaseModel):
-    source: Optional[str] = None
+    source: str
     description: Optional[str] = None
+
+
+class Example(BaseModel):
+    example_sentence: str
+    applicable_modern_context: Optional[str] = None
 
 
 class Meaning(BaseModel):
@@ -18,25 +23,35 @@ class Meaning(BaseModel):
     derivations: Optional[List[str]] = None
     translations: Optional[List[Translation]] = None
     reference_nyaya_texts: Optional[List[NyayaTextReference]] = None
+    examples: Optional[List[Example]] = None
     synonyms: Optional[List[str]] = None
     antonyms: Optional[List[str]] = None
 
 
-# class MeaningOut(Meaning):
-#     meaning_id: int
+class MeaningOut(Meaning):
+    meaning_id: int
+    translations: Dict[str, List[str]]
+
+
+class MeaningUpdate(Meaning):
+    meaning_id: int
+    translations: Optional[List[Translation]] = None
+
 
 class Word(BaseModel):
     sanskrit_word: str
-    english_transliteration: str | None
+    english_transliteration: Optional[str] = None
     meanings: List[Meaning]
+
 
 class WordOut(Word):
     id: int
-    meaning_id: int
-    # meanings = List[MeaningOut]
+    meanings: List[MeaningOut]
 
-class WordUpdate(WordOut):
-    translations: Optional[List[Translation]] = None
+
+class WordUpdate(Word):
+    id: int
+    meanings: List[MeaningUpdate]
 
 
 class AdminBase(BaseModel):

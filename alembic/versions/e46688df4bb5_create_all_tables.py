@@ -23,7 +23,7 @@ depends_on: Union[str, Sequence[str], None] = None
 def upgrade() -> None:
     op.create_table(
         'db_managers',
-        sa.Column('id', sa.Integer, nullable=False, primary_key=True),
+        sa.Column('id', sa.Integer, nullable=False, primary_key=True, index=True),
         sa.Column('email', sa.String, nullable=False, unique=True),
         sa.Column('password', sa.String, nullable=False),
         sa.Column('first_name', sa.String, nullable=False),
@@ -35,21 +35,21 @@ def upgrade() -> None:
 
     op.create_table(
         'sanskrit_words',
-        sa.Column('id', sa.Integer, nullable=False, primary_key=True),
-        sa.Column('sanskrit_word', sa.String, nullable=False),
+        sa.Column('id', sa.Integer, nullable=False, primary_key=True, index=True),
+        sa.Column('sanskrit_word', sa.String, nullable=False, index=True),
         sa.Column('english_transliteration', sa.String, nullable=False, index=True),
     )
 
     op.create_table(
         'meanings',
-        sa.Column('id', sa.Integer, nullable=False, primary_key=True),
+        sa.Column('id', sa.Integer, nullable=False, primary_key=True, index=True),
         sa.Column('sanskrit_word_id', sa.Integer, sa.ForeignKey('sanskrit_words.id'), nullable=False),
         sa.Column('meaning', sa.String, nullable=False),
     )
 
     op.create_table(
         'etymologies',
-        sa.Column('id', sa.Integer, nullable=False, primary_key=True),
+        sa.Column('id', sa.Integer, nullable=False, primary_key=True, index=True),
         sa.Column('sanskrit_word_id', sa.Integer, sa.ForeignKey('sanskrit_words.id'),nullable=False),
         sa.Column('meaning_id', sa.Integer, sa.ForeignKey('meanings.id'), nullable=False),
         sa.Column('etymology', sa.String, nullable=False),
@@ -57,7 +57,7 @@ def upgrade() -> None:
 
     op.create_table(
         'derivations',
-        sa.Column('id', sa.Integer, nullable=False, primary_key=True),
+        sa.Column('id', sa.Integer, nullable=False, primary_key=True, index=True),
         sa.Column('sanskrit_word_id', sa.Integer, sa.ForeignKey('sanskrit_words.id'), nullable=False),
         sa.Column('meaning_id', sa.Integer, sa.ForeignKey('meanings.id'), nullable=False),
         sa.Column('derivation', sa.String, nullable=False),
@@ -65,7 +65,7 @@ def upgrade() -> None:
 
     op.create_table(
         'translations',
-        sa.Column('id', sa.Integer, nullable=False, primary_key=True),
+        sa.Column('id', sa.Integer, nullable=False, primary_key=True, index=True),
         sa.Column('sanskrit_word_id', sa.Integer, sa.ForeignKey('sanskrit_words.id'), nullable=False),
         sa.Column('meaning_id', sa.Integer, sa.ForeignKey('meanings.id'), nullable=False),
         sa.Column('language', sa.String, nullable=False),
@@ -74,16 +74,16 @@ def upgrade() -> None:
 
     op.create_table(
         'examples',
-        sa.Column('id', sa.Integer, nullable=False, primary_key=True),
+        sa.Column('id', sa.Integer, nullable=False, primary_key=True, index=True),
         sa.Column('sanskrit_word_id', sa.Integer, sa.ForeignKey('sanskrit_words.id'), nullable=False),
         sa.Column('meaning_id', sa.Integer, sa.ForeignKey('meanings.id'), nullable=False),
         sa.Column('example_sentence', sa.String, nullable=False),
-        sa.Column('applicable_modern_concept', sa.String, nullable=True),
+        sa.Column('applicable_modern_context', sa.String, nullable=True),
     )
 
     op.create_table(
         'reference_nyaya_texts',
-        sa.Column('id', sa.Integer, nullable=False, primary_key=True),
+        sa.Column('id', sa.Integer, nullable=False, primary_key=True, index=True),
         sa.Column('sanskrit_word_id', sa.Integer, sa.ForeignKey('sanskrit_words.id'), nullable=False),
         sa.Column('meaning_id', sa.Integer, sa.ForeignKey('meanings.id'), nullable=False),
         sa.Column('source', sa.String, nullable=False),
@@ -92,7 +92,7 @@ def upgrade() -> None:
 
     op.create_table(
         'synonyms',
-        sa.Column('id', sa.Integer, nullable=False, primary_key=True),
+        sa.Column('id', sa.Integer, nullable=False, primary_key=True, index=True),
         sa.Column('sanskrit_word_id', sa.Integer, sa.ForeignKey('sanskrit_words.id'), nullable=False),
         sa.Column('meaning_id', sa.Integer, sa.ForeignKey('meanings.id'), nullable=False),
         sa.Column('synonym', sa.String, nullable=False),
@@ -100,7 +100,7 @@ def upgrade() -> None:
 
     op.create_table(
         'antonyms',
-        sa.Column('id', sa.Integer, nullable=False, primary_key=True),
+        sa.Column('id', sa.Integer, nullable=False, primary_key=True, index=True),
         sa.Column('sanskrit_word_id', sa.Integer, sa.ForeignKey('sanskrit_words.id'), nullable=False),
         sa.Column('meaning_id', sa.Integer, sa.ForeignKey('meanings.id'), nullable=False),
         sa.Column('antonym', sa.String, nullable=False),
@@ -108,7 +108,7 @@ def upgrade() -> None:
 
     op.create_table(
         'database_audits',
-        sa.Column('id', sa.Integer, nullable=False, primary_key=True),
+        sa.Column('id', sa.Integer, nullable=False, primary_key=True, index=True),
         sa.Column('table_name', sa.String, nullable=False),
         sa.Column('record_id', sa.Integer, nullable=False),
         sa.Column('operation', sa.String, nullable=False),
@@ -119,7 +119,7 @@ def upgrade() -> None:
 
     op.create_table(
         'login_audits',
-        sa.Column('id', sa.Integer, nullable=False, primary_key=True),
+        sa.Column('id', sa.Integer, nullable=False, primary_key=True, index=True),
         sa.Column('db_manager_id', sa.Integer, sa.ForeignKey('db_managers.id'), nullable=False),
         sa.Column('ip_address', sa.String, nullable=False),
         sa.Column('timestamp', sa.DateTime, default=datetime.now(UTC)),

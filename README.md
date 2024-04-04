@@ -15,7 +15,7 @@ Nyaya Khosha is a Sanskrit-English dictionary developed by Samskriti Foundation,
 1. **Clone the Repository:**
 
    ```bash
-   git clone https://github.com/Raghav1909/nyaya-dictionary-backend.git
+   git clone https://github.com/Samskriti-Foundation/nyaya-dictionary-backend.git
    ```
 
 2. **Install Dependencies:**

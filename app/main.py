@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 import app.models
 from app.database import engine
-from app.routers import search, upload, words, auth, admins
+from app.routers import db_managers, search, upload, words, auth
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.base import BaseHTTPMiddleware
 from app.middleware.logger_middleware import log_database_operations
@@ -34,7 +34,7 @@ app.add_middleware(
 )
 
 app.include_router(auth.router)
-app.include_router(admins.router)
+app.include_router(db_managers.router)
 app.include_router(search.router)
 app.include_router(upload.router)
 app.include_router(words.router)

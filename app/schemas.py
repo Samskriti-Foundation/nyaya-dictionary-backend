@@ -1,5 +1,6 @@
 from pydantic import BaseModel, EmailStr
 from typing import List, Optional, Dict
+from enum import Enum
 
 
 class Translation(BaseModel):
@@ -54,27 +55,40 @@ class WordUpdate(Word):
     meanings: List[MeaningUpdate]
 
 
-class AdminBase(BaseModel):
+class Role(str, Enum):
+    SUPERUSER = "SUPERUSER"
+    ADMIN = "ADMIN"
+    EDITOR = "EDITOR"
+
+
+class Access(str, Enum):
+    READ_ONLY = "READ_ONLY"
+    READ_WRITE = "READ_WRITE"
+    READ_WRITE_MODIFY = "READ_WRITE_MODIFY"
+    ALL = "ALL"
+
+
+class DBManager(BaseModel):
     email: EmailStr 
+    first_name: str
+    last_name: str
+    role: Role = Role.EDITOR
+    access: Access = Access.READ_ONLY
+
+
+class DBManagerIn(DBManager):
     password: str
-    first_name: str
-    last_name: str
 
 
-class AdminOut(BaseModel):
-    email: EmailStr
-    first_name: str
-    last_name: str
-    is_superuser: bool
+class DBManagerOut(DBManager):
+    pass
 
 
-class AdminUpdate(BaseModel):
-    email: EmailStr | None
-    first_name: str | None
-    last_name: str | None
+class DBManagerUpdate(DBManager):
+    pass
 
 
-class AdminUpdatePassword(BaseModel):
+class PasswordUpdate(BaseModel):
     current_password: str
     new_password: str
 

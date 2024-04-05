@@ -28,8 +28,8 @@ def upgrade() -> None:
         sa.Column('password', sa.String, nullable=False),
         sa.Column('first_name', sa.String, nullable=False),
         sa.Column('last_name', sa.String),
-        sa.Column('role', sa.Enum('superuser', 'admin', 'editor', name='role'), default='editor'),
-        sa.Column('access_token', sa.Enum('READ_ONLY', 'READ_WRITE', 'READ_WRITE_MODIFY', 'ALL', name='access_token'), default='READ_ONLY'),
+        sa.Column('role', sa.Enum('SUPERUSER', 'ADMIN', 'EDITOR', name='role'), default='EDITOR'),
+        sa.Column('access', sa.Enum('READ_ONLY', 'READ_WRITE', 'READ_WRITE_MODIFY', 'ALL', name='access'), default='READ_ONLY'),
         sa.Column('created_at', sa.DateTime, default= lambda: datetime.now(UTC)),
     )
 

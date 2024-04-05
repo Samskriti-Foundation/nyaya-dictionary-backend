@@ -85,7 +85,7 @@ class Antonym(Base):
 
 
 
-class DBManagers(Base):
+class DBManager(Base):
     __tablename__ = "db_managers"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -93,8 +93,8 @@ class DBManagers(Base):
     password = Column(String)
     first_name = Column(String)
     last_name = Column(String)
-    role = Column(Enum("superuser", "admin", "editor"), default="editor")
-    access_token = Column(Enum("READ_ONLY", "READ_WRITE", "READ_WRITE_MODIFY", "ALL"), default="READ_ONLY")
+    role = Column(Enum("SUPERUSER", "ADMIN", "EDITOR"), default="EDITOR")
+    access = Column(Enum("READ_ONLY", "READ_WRITE", "READ_WRITE_MODIFY", "ALL"), default="READ_ONLY")
     created_at = Column(DateTime, default=datetime.now(UTC))
 
 

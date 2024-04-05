@@ -208,7 +208,7 @@ def create_word(word: schemas.Word, db: Session = Depends(get_db)):#, current_us
     return JSONResponse(status_code=status.HTTP_201_CREATED, content={"message": "Word created"})
 
 @router.put("/")
-def update_word(word: schemas.WordUpdate, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
+def update_word(word: schemas.WordUpdate, db: Session = Depends(get_db)):#, current_user: int = Depends(oauth2.get_current_user)):
     if not isDevanagariWord(word.sanskrit_word):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Word is not in Devanagari")
     

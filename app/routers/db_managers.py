@@ -14,8 +14,19 @@ router = APIRouter(
 
 
 @router.get("/", response_model=List[schemas.DBManagerOut])
-def get_db_managers(db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(auth_middleware.get_current_db_manager_is_superuser)):
-    db_managers = db.query(models.DBManager).all()
+def get_db_managers(role: schemas.Role = None, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(auth_middleware.get_current_db_manager_is_admin)):
+    if current_db_manager.role == schemas.Role.SUPERUSER:
+        if role is None:
+            db_managers = db.query(models.DBManager).all()
+        else:
+            db_managers = db.query(models.DBManager).filter(models.DBManager.role == role).all()
+    
+    if current_db_manager.role == schemas.Role.ADMIN:
+        if role == schemas.Role.EDITOR:
+            db_managers = db.query(models.DBManager).filter(models.DBManager.role == schemas.Role.EDITOR).all()
+        else:
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
+    
     return db_managers
 
 

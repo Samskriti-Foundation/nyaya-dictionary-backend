@@ -48,7 +48,7 @@ def register_db_manager(db_manager: schemas.DBManagerIn, db: Session = Depends(g
     db.add(db_manager)
     db.commit()
     db.refresh(db_manager)
-    
+
     return JSONResponse(status_code=status.HTTP_201_CREATED, content={"message": "DB Manager created"})
 
 

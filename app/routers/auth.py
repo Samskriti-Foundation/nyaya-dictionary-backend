@@ -60,6 +60,8 @@ def register_superuser(superuser: schemas.DBManagerIn, db: Session = Depends(get
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=f"Superuser with email: {superuser.email} already exists")
     
     superuser.password = encrypt.hash(superuser.password)
+    superuser.role = schemas.Role.SUPERUSER
+    superuser.access = schemas.Access.ALL
 
     db_superuser = models.DBManager(**superuser.model_dump())
     db.add(db_superuser)

@@ -6,14 +6,15 @@ from app import models, schemas, oauth2
 from typing import List
 from indic_transliteration import sanscript
 from indic_transliteration.sanscript import transliterate
+from app.utils.converter import access_to_int
 from app.utils.lang import isDevanagariWord
+from app.middleware import auth_middleware
 
-from pprint import pprint
 
 router = APIRouter(
     prefix="/words",
     tags=["Words"],
-)
+) 
 
 @router.get("/", response_model=List[schemas.WordOut])
 def get_words(db: Session = Depends(get_db)):
@@ -122,7 +123,10 @@ def get_word(word: str, db: Session = Depends(get_db)):
     return word
 
 @router.post("/")
-def create_word(word: schemas.Word, db: Session = Depends(get_db)):#, current_user: int = Depends(oauth2.get_current_user)):
+def create_word(word: schemas.Word, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+    if access_to_int(current_db_manager.access) < access_to_int(schemas.Access.READ_WRITE):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
+
     db_word = db.query(models.SanskritWord).filter(models.SanskritWord.sanskrit_word == word.sanskrit_word).first()
 
     if db_word:
@@ -148,7 +152,6 @@ def create_word(word: schemas.Word, db: Session = Depends(get_db)):#, current_us
         db.flush()
 
 
-
         if meaning.etymologies:
             etymologies = [models.Etymology(
                 sanskrit_word_id = new_word.id,
@@ -156,6 +159,7 @@ def create_word(word: schemas.Word, db: Session = Depends(get_db)):#, current_us
                 etymology = etymology
             ) for etymology in meaning.etymologies]
             db.add_all(etymologies)
+
 
         if meaning.derivations:
             derivations = [models.Derivation(
@@ -208,7 +212,10 @@ def create_word(word: schemas.Word, db: Session = Depends(get_db)):#, current_us
     return JSONResponse(status_code=status.HTTP_201_CREATED, content={"message": "Word created"})
 
 @router.put("/")
-def update_word(word: schemas.WordUpdate, db: Session = Depends(get_db)):#, current_user: int = Depends(oauth2.get_current_user)):
+def update_word(word: schemas.WordUpdate, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+    if access_to_int(current_db_manager.access) < access_to_int(schemas.Access.READ_WRITE_MODIFY):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
+
     if not isDevanagariWord(word.sanskrit_word):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Word is not in Devanagari")
     
@@ -274,6 +281,19 @@ def update_word(word: schemas.WordUpdate, db: Session = Depends(get_db)):#, curr
             
             db.add_all(references)
         
+
+        if meaning.examples:
+            db.query(models.Example).filter(models.Example.sanskrit_word_id == word.id, models.Example.meaning_id == meaning.meaning_id).delete()
+
+            examples = [models.Example(
+                sanskrit_word_id = word.id,
+                meaning_id = meaning.meaning_id,
+                example = example.example_sentence,
+                applicable_modern_context = example.applicable_modern_context
+            ) for example in meaning.examples]
+            
+            db.add_all(examples)
+
         
         if meaning.synonyms:
             db.query(models.Synonym).filter(models.Synonym.sanskrit_word_id == word.id).delete()
@@ -305,7 +325,10 @@ def update_word(word: schemas.WordUpdate, db: Session = Depends(get_db)):#, curr
 
 
 @router.delete("/{word}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_word(word: str, db: Session = Depends(get_db)):#, current_user: int = Depends(oauth2.get_current_user)):
+def delete_word(word: str, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+    if access_to_int(current_db_manager.access) < access_to_int(schemas.Access.ALL):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
+
     if isDevanagariWord(word):
         db_word = db.query(models.SanskritWord).filter(models.SanskritWord.sanskrit_word == word).first()
     else:
@@ -319,6 +342,7 @@ def delete_word(word: str, db: Session = Depends(get_db)):#, current_user: int =
     db.query(models.Derivation).filter(models.Derivation.sanskrit_word_id == db_word.id).delete(synchronize_session=False)
     db.query(models.Translation).filter(models.Translation.sanskrit_word_id == db_word.id).delete(synchronize_session=False)
     db.query(models.ReferenceNyayaText).filter(models.ReferenceNyayaText.sanskrit_word_id == db_word.id).delete(synchronize_session=False)
+    db.query(models.Example).filter(models.Example.sanskrit_word_id == db_word.id).delete(synchronize_session=False)
     db.query(models.Synonym).filter(models.Synonym.sanskrit_word_id == db_word.id).delete(synchronize_session=False)
     db.query(models.Antonym).filter(models.Antonym.sanskrit_word_id == db_word.id).delete(synchronize_session=False)
     db.query(models.SanskritWord).filter(models.SanskritWord.id == db_word.id).delete(synchronize_session=False)

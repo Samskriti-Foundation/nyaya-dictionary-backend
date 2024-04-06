@@ -31,19 +31,6 @@ def session():
         db.close()
 
 
-@pytest.fixture()
-def client(session):
-    def override_get_db():
-        try:
-            yield session
-        finally:
-            session.close()
-    
-    app.dependency_overrides[get_db] = override_get_db
-    yield TestClient(app)
-
-
-# Superuser
 @pytest.fixture
 def test_superuser():
     db = TestingSessionLocal()
@@ -72,21 +59,8 @@ def test_superuser():
 
     return superuser
 
-@pytest.fixture
-def token_superuser(test_superuser):
-    return create_access_token({"email": test_superuser['email']})
 
 
-@pytest.fixture
-def authorized_superuser(client: TestClient, token_superuser: str):
-    client.headers = {
-        **client.headers,
-        "Authorization": f"Bearer {token_superuser}"
-    }
-    return client
-
-
-# Admin
 @pytest.fixture
 def test_admin():
     db = TestingSessionLocal()
@@ -116,21 +90,8 @@ def test_admin():
     return admin
 
 
-@pytest.fixture
-def token_admin(test_admin):
-    return create_access_token({"email": test_admin['email']})
 
 
-@pytest.fixture
-def authorized_admin(client: TestClient, token_admin: str):
-    client.headers = {
-        **client.headers,
-        "Authorization": f"Bearer {token_admin}"
-    }
-    return client
-
-
-# Editor
 @pytest.fixture
 def test_editor():
     db = TestingSessionLocal()
@@ -160,15 +121,29 @@ def test_editor():
     return editor
 
 
-@pytest.fixture
-def token_editor(test_editor):
-    return create_access_token({"email": test_editor['email']})
+@pytest.fixture()
+def client(session):
+    def override_get_db():
+        try:
+            yield session
+        finally:
+            session.close()
+    
+    app.dependency_overrides[get_db] = override_get_db
+    yield TestClient(app)
 
+@pytest.fixture()
+def authorized_client(session):
+    def _authorized_client(db_manager):
+        def override_get_db():
+            try:
+                yield session
+            finally:
+                session.close()
+        
+        app.dependency_overrides[get_db] = override_get_db
+        access_token = create_access_token({"email": db_manager['email']})
+        headers = {"Authorization": f"Bearer {access_token}"}
+        return TestClient(app, headers=headers)
 
-@pytest.fixture
-def authorized_editor(client: TestClient, token_editor: str):
-    client.headers = {
-        **client.headers,
-        "Authorization": f"Bearer {token_editor}"
-    }
-    return client
+    yield _authorized_client

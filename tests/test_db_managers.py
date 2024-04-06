@@ -1,6 +1,5 @@
 import pytest
 from fastapi import Response
-from pprint import pprint
 
 
 @pytest.fixture
@@ -38,47 +37,169 @@ def editor_data(access = "READ_ONLY"):
     }
 
 
-def test_create_superuser_by_superuser(authorized_superuser, superuser_data):
+def test_create_superuser_by_superuser(authorized_client, test_superuser, superuser_data):
+    authorized_superuser = authorized_client(test_superuser)
     response: Response = authorized_superuser.post("/auth/register", json = superuser_data)
     assert response.status_code == 201
 
 
-def test_create_superuser_by_admin(authorized_admin, superuser_data):
-    pprint(authorized_admin.__dict__)
+def test_create_superuser_by_admin(authorized_client, test_admin, superuser_data):
+    authorized_admin = authorized_client(test_admin)
     response: Response = authorized_admin.post("/auth/register", json = superuser_data)
     assert response.status_code == 403
 
 
-def test_create_superuser_by_editor(authorized_editor, superuser_data):
+def test_create_superuser_by_editor(authorized_client, test_editor, superuser_data):
+    authorized_editor = authorized_client(test_editor)
     response: Response = authorized_editor.post("/auth/register", json = superuser_data)
     assert response.status_code == 403
 
 
-def test_create_admin_by_superuser(authorized_superuser, admin_data):
+def test_create_admin_by_superuser(authorized_client, test_superuser, admin_data):
+    authorized_superuser = authorized_client(test_superuser)
     response: Response = authorized_superuser.post("/auth/register", json = admin_data)
     assert response.status_code == 201
 
 
-def test_create_admin_by_admin(authorized_admin, admin_data):
+def test_create_admin_by_admin(authorized_client, test_admin, admin_data):
+    authorized_admin = authorized_client(test_admin)
     response: Response = authorized_admin.post("/auth/register", json = admin_data)
     assert response.status_code == 403
 
 
-def test_create_admin_by_editor(authorized_editor, admin_data):
+def test_create_admin_by_editor(authorized_client, test_editor, admin_data):
+    authorized_editor = authorized_client(test_editor)
     response: Response = authorized_editor.post("/auth/register", json = admin_data)
     assert response.status_code == 403
 
 
-def test_create_editor_by_superuser(authorized_superuser, editor_data):
+def test_create_editor_by_superuser(authorized_client, test_superuser, editor_data):
+    authorized_superuser = authorized_client(test_superuser)
     response: Response = authorized_superuser.post("/auth/register", json = editor_data)
     assert response.status_code == 201
 
 
-def test_create_editor_by_admin(authorized_admin, editor_data):
+def test_create_editor_by_admin(authorized_client, test_admin, editor_data):
+    authorized_admin = authorized_client(test_admin)
     response: Response = authorized_admin.post("/auth/register", json = editor_data)
     assert response.status_code == 201
 
 
-def test_create_editor_by_editor(authorized_editor, editor_data):
+def test_create_editor_by_editor(authorized_client, test_editor, editor_data):
+    authorized_editor = authorized_client(test_editor)
     response: Response = authorized_editor.post("/auth/register", json = editor_data)
     assert response.status_code == 403
+
+
+def test_create_db_manager_duplicate(authorized_client, test_superuser, admin_data):
+    authorized_superuser = authorized_client(test_superuser)
+    response: Response = authorized_superuser.post("/auth/register", json = admin_data)
+    assert response.status_code == 201
+    response: Response = authorized_superuser.post("/auth/register", json = admin_data)
+    assert response.status_code == 409
+
+
+def test_create_db_manager_invalid_email(authorized_client, test_superuser, admin_data):
+    authorized_superuser = authorized_client(test_superuser)
+    
+    response: Response = authorized_superuser.post("/auth/register", json = admin_data)
+    assert response.status_code == 201
+
+    invalid_data = admin_data.update({"email": "invalidemail"})
+
+    response: Response = authorized_superuser.post("/auth/register", json = invalid_data)
+    assert response.status_code == 422
+
+def test_get_db_managers_by_superuser(authorized_client, test_superuser, admin_data, editor_data, superuser_data):
+    authorized_superuser = authorized_client(test_superuser)
+    
+    response: Response = authorized_superuser.post("/auth/register", json = admin_data)
+    assert response.status_code == 201
+    response: Response = authorized_superuser.post("/auth/register", json = editor_data)
+    assert response.status_code == 201
+    response: Response = authorized_superuser.post("/auth/register", json = superuser_data)
+    assert response.status_code == 201
+
+    response: Response = authorized_superuser.get("/db-managers")
+    assert response.status_code == 200
+
+    for manager in response.json():
+        assert manager['role'] in ['ADMIN', 'EDITOR', 'SUPERUSER']
+    
+
+def test_get_db_managers_by_admin(authorized_client, test_superuser, test_admin, admin_data, editor_data, superuser_data):
+    authorized_superuser = authorized_client(test_superuser)
+    authorized_admin = authorized_client(test_admin)
+
+    response: Response = authorized_superuser.post("/auth/register", json = admin_data)
+    assert response.status_code == 201
+    response: Response = authorized_superuser.post("/auth/register", json = editor_data)
+    assert response.status_code == 201
+    response: Response = authorized_superuser.post("/auth/register", json = superuser_data)
+    assert response.status_code == 201
+
+    response: Response = authorized_admin.get("/db-managers")
+    
+    assert response.status_code == 200
+
+    for manager in response.json():
+        assert manager['role'] == 'EDITOR'
+    
+
+def test_get_db_managers_by_editor(authorized_client, test_superuser, test_editor, admin_data, editor_data, superuser_data):
+    authorized_superuser = authorized_client(test_superuser)
+    authorized_editor = authorized_client(test_editor)
+
+    response: Response = authorized_superuser.post("/auth/register", json = admin_data)
+    assert response.status_code == 201
+    response: Response = authorized_superuser.post("/auth/register", json = editor_data)
+    assert response.status_code == 201
+    response: Response = authorized_superuser.post("/auth/register", json = superuser_data)
+    assert response.status_code == 201
+
+    response: Response = authorized_editor.get("/db-managers")
+    assert response.status_code == 403
+
+
+def test_get_db_managers_query_by_superuser(authorized_client, test_superuser, admin_data, editor_data, superuser_data):
+    authorized_superuser = authorized_client(test_superuser)
+    
+    response: Response = authorized_superuser.post("/auth/register", json = admin_data)
+    assert response.status_code == 201
+    response: Response = authorized_superuser.post("/auth/register", json = editor_data)
+    assert response.status_code == 201
+    response: Response = authorized_superuser.post("/auth/register", json = superuser_data)
+    assert response.status_code == 201
+
+    
+    for role in ['ADMIN', 'EDITOR', 'SUPERUSER']:
+        response: Response = authorized_superuser.get(f"/db-managers?role={role}")
+        assert response.status_code == 200
+
+        for manager in response.json():
+            assert manager['role'] == role
+
+
+def test_get_db_managers_query_by_admin(authorized_client, test_superuser, test_admin, admin_data, editor_data, superuser_data):
+    authorized_superuser = authorized_client(test_superuser)
+    authorized_admin = authorized_client(test_admin)
+
+    response: Response = authorized_superuser.post("/auth/register", json = admin_data)
+    assert response.status_code == 201
+    response: Response = authorized_superuser.post("/auth/register", json = editor_data)
+    assert response.status_code == 201
+    response: Response = authorized_superuser.post("/auth/register", json = superuser_data)
+    assert response.status_code == 201
+
+    
+    for role in ['ADMIN', 'EDITOR', 'SUPERUSER']:
+        response: Response = authorized_admin.get(f"/db-managers?role={role}")
+        
+        if role == 'SUPERUSER' or role == 'ADMIN':
+            assert response.status_code == 403
+
+        else:
+            assert response.status_code == 200
+
+        for manager in response.json():
+            assert manager['role'] == role

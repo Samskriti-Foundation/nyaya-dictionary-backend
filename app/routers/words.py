@@ -14,7 +14,8 @@ from app.middleware import auth_middleware
 router = APIRouter(
     prefix="/words",
     tags=["Words"],
-) 
+)
+
 
 @router.get("/", response_model=List[schemas.WordOut])
 def get_words(db: Session = Depends(get_db)):
@@ -67,6 +68,7 @@ def get_words(db: Session = Depends(get_db)):
         words.append(word)
 
     return words
+
 
 @router.get("/{word}", response_model=schemas.WordOut)
 def get_word(word: str, db: Session = Depends(get_db)):
@@ -121,6 +123,10 @@ def get_word(word: str, db: Session = Depends(get_db)):
         word["meanings"].append(meaning)
     
     return word
+
+
+
+
 
 @router.post("/")
 def create_word(word: schemas.Word, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
@@ -348,3 +354,20 @@ def delete_word(word: str, db: Session = Depends(get_db), current_db_manager: sc
     db.query(models.SanskritWord).filter(models.SanskritWord.id == db_word.id).delete(synchronize_session=False)
 
     db.commit()
+
+@router.get("/{word}/basic")
+def get_word_basic(word: str, db: Session = Depends(get_db)):
+    if isDevanagariWord(word):
+        db_word = db.query(models.SanskritWord).filter(models.SanskritWord.sanskrit_word == word).first()
+    else:
+        db_word = db.query(models.SanskritWord).filter(models.SanskritWord.english_transliteration == word).first()
+
+    if not db_word:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Word - {word} not found")
+    
+    word = {}
+
+    word["sanskrit_word"] = db_word.sanskrit_word
+    word["english_transliteration"] = db_word.english_transliteration
+
+    return word

@@ -42,7 +42,7 @@ class MeaningUpdate(Meaning):
 class Word(BaseModel):
     sanskrit_word: str
     english_transliteration: Optional[str] = None
-    meanings: List[Meaning]
+    meanings: Optional[List[Meaning]] = None
 
 
 class WordOut(Word):

@@ -49,7 +49,7 @@ def register_db_manager(db_manager: schemas.DBManagerIn, db: Session = Depends(g
     db.commit()
     db.refresh(db_manager)
 
-    return JSONResponse(status_code=status.HTTP_201_CREATED, content={"message": "DB Manager created"})
+    return JSONResponse(status_code=status.HTTP_201_CREATED, content={"message": f"{db_manager.role} created"})
 
 
 @router.post("/register/superuser", status_code=status.HTTP_201_CREATED)

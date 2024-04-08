@@ -1,17 +1,15 @@
 from fastapi import FastAPI
-import app.models
+from . import models
 from app.database import engine
 from app.routers import db_managers, search, upload, words, auth
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.base import BaseHTTPMiddleware
-from app.middleware.logger_middleware import log_database_operations
+from app.middleware.logger_middleware import log_database_operations, log_login_operations
 
-app.models.Base.metadata.create_all(bind=engine)
-
+models.Base.metadata.create_all(bind=engine)
 
 with open("app/DESCRIPTION.md", "r") as f:
     description = f.read()
-
 
 app = FastAPI(
     title="Nyaya Khosha",
@@ -19,11 +17,12 @@ app = FastAPI(
 )
 
 app.add_middleware(BaseHTTPMiddleware, dispatch=log_database_operations)
+app.add_middleware(BaseHTTPMiddleware, dispatch=log_login_operations)
+
 
 origins = [
     "http://localhost:5173",
 ]
-
 
 app.add_middleware(
     CORSMiddleware,

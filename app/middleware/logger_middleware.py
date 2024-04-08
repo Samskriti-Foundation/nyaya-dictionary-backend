@@ -14,5 +14,4 @@ async def log_database_operations(request: Request, call_next):
 
 async def log_login_operations(request: Request, call_next):
     response = await call_next(request)
-    pprint(response)
     return response

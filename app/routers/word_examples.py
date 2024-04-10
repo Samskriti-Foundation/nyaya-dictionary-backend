@@ -17,7 +17,6 @@ router = APIRouter(
 )
 
 
-
 @router.get("/{word}/{meaning_id}/examples")
 def get_word_examples(word: str, meaning_id: int, db: Session = Depends(get_db)):
     if isDevanagariWord(word):

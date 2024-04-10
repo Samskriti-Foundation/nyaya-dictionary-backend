@@ -67,12 +67,14 @@ def create_word(word: schemas.WordCreate, db: Session = Depends(get_db), current
     if db_word:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=f"Word - {word.sanskrit_word} already exists")
 
-
-    if not isEnglishWord(word.english_transliteration) or not word.english_transliteration:
+    if not word.english_transliteration:
         word.english_transliteration = transliterate(word.sanskrit_word, sanscript.DEVANAGARI, sanscript.IAST)
+    else:
+        if not isEnglishWord(word.english_transliteration):
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"Invalid English Transliteration - {word.english_transliteration}")
         
 
-    new_word = models.SanskritWord(word.model_dump())
+    new_word = models.SanskritWord(**word.model_dump())
     db.add(new_word)
     db.commit()
     db.refresh(new_word)
@@ -80,26 +82,30 @@ def create_word(word: schemas.WordCreate, db: Session = Depends(get_db), current
     return JSONResponse(status_code=status.HTTP_201_CREATED, content={"message": "Word added successfully"})
 
 
-@router.put("/")
-def update_word(word: schemas.WordUpdate, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+@router.put("/{word}", status_code=status.HTTP_200_OK)
+def update_word(word: str, wordIn: schemas.WordUpdate, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
     if access_to_int(current_db_manager.access) < access_to_int(schemas.Access.ALL):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
 
-    if isDevanagariWord(word.sanskrit_word):
-        db_word = db.query(models.SanskritWord).filter(models.SanskritWord.sanskrit_word == word.sanskrit_word).first()
+    if isDevanagariWord(wordIn.sanskrit_word):
+        db_word = db.query(models.SanskritWord).filter(models.SanskritWord.sanskrit_word == wordIn.sanskrit_word).first()
     else:
-        db_word = db.query(models.SanskritWord).filter(models.SanskritWord.english_transliteration == word.english_transliteration).first()
+        db_word = db.query(models.SanskritWord).filter(models.SanskritWord.english_transliteration == wordIn.english_transliteration).first()
 
     if not db_word:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Word - {word.sanskrit_word} not found")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Word - {wordIn.sanskrit_word} not found")
     
-    if not isEnglishWord(word.english_transliteration) or not word.english_transliteration:
-        word.english_transliteration = transliterate(word.sanskrit_word, sanscript.DEVANAGARI, sanscript.IAST)
-
-    db_word.model_dump(word.model_dump())
+    if wordIn.sanskrit_word != word and db.query(models.SanskritWord).filter(models.SanskritWord.sanskrit_word == wordIn.sanskrit_word).first():
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=f"Word - {wordIn.sanskrit_word} already exists")
+    
+    db_word.sanskrit_word = wordIn.sanskrit_word
+    db_word.english_transliteration = wordIn.english_transliteration
+    
     db.commit()
     db.refresh(db_word)
-    return
+    
+    return JSONResponse(status_code=status.HTTP_200_OK, content={"message": "Word updated successfully"})
+
 
 
 @router.delete("/{word}", status_code=status.HTTP_204_NO_CONTENT)

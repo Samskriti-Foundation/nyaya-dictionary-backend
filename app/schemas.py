@@ -3,6 +3,19 @@ from typing import List, Optional, Dict
 from enum import Enum
 
 
+class Meaning(BaseModel):
+    sanskrit_word_id: int
+    meaning: str
+    
+
+class MeaningOut(Meaning):
+    id: int
+
+
+class MeaningCreate(BaseModel):
+    meaning: str
+
+
 class Etymology(BaseModel):
     sanskrit_word_id: int
     meaning_id: int
@@ -50,25 +63,9 @@ class ExampleOut(Example):
     id: int
 
 
-class Meaning(BaseModel):
-    meaning: str
-    etymologies: Optional[List[str]] = None
-    derivations: Optional[List[str]] = None
-    translations: Optional[List[Translation]] = None
-    reference_nyaya_texts: Optional[List[NyayaTextReference]] = None
-    examples: Optional[List[Example]] = None
-    synonyms: Optional[List[str]] = None
-    antonyms: Optional[List[str]] = None
-
-
-class MeaningOut(Meaning):
-    meaning_id: int
-    translations: Dict[str, List[str]]
-
-
-class MeaningUpdate(Meaning):
-    meaning_id: int
-    translations: Optional[List[Translation]] = None
+# class MeaningUpdate(Meaning):
+#     meaning_id: int
+#     translations: Optional[List[Translation]] = None
 
 
 class Word(BaseModel):
@@ -90,9 +87,10 @@ class WordCreate(BaseModel):
     sanskrit_word: str
     english_transliteration: Optional[str] = None
 
+
 class WordUpdate(Word):
-    id: int
-    meanings: List[MeaningUpdate]
+    sanskrit_word: Optional[str] = None
+    english_transliteration: Optional[str] = None
 
 
 class Role(str, Enum):

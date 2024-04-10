@@ -30,95 +30,35 @@ def session():
     finally:
         db.close()
 
-
 @pytest.fixture
-def test_superuser():
-    db = TestingSessionLocal()
+def test_user():
+    def _create_user(email, role, access):
+        db = TestingSessionLocal()
 
-    superuser = {
-        "email": "superuser@gmail.com",
-        "first_name": "Super",
-        "last_name": "User",
-        "role": "SUPERUSER",
-        "access": "ALL",
-        "password": "123"
-    }
+        user = {
+            "email": email,
+            "first_name": "First",
+            "last_name": "Last",
+            "role": role,
+            "access": access,
+            "password": "123"
+        }
+        user["password"] = encrypt.hash(user["password"])
+        db_user = models.DBManager(**user)
 
-    superuser["password"] = encrypt.hash(superuser["password"])
-    db_superuser = models.DBManager(**superuser)
+        db.add(db_user)
+        db.commit()
+        db.refresh(db_user)
 
-    db.add(db_superuser)
-    db.commit()
-    db.refresh(db_superuser)
+        assert db_user.email == user['email']
+        assert db_user.first_name == user['first_name']
+        assert db_user.last_name == user['last_name']
+        assert db_user.role == user['role']
+        assert db_user.access == user['access']
 
-    assert db_superuser.email == superuser['email']
-    assert db_superuser.first_name == superuser['first_name']
-    assert db_superuser.last_name == superuser['last_name']
-    assert db_superuser.role == superuser['role']
-    assert db_superuser.access == superuser['access']
+        return user
 
-    return superuser
-
-
-
-@pytest.fixture
-def test_admin():
-    db = TestingSessionLocal()
-    
-    admin = {
-        "email": "admin@gmail.com",
-        "first_name": "Admin",
-        "last_name": "User",
-        "role": "ADMIN",
-        "access": "ALL",
-        "password": "123"
-    }
-
-    admin["password"] = encrypt.hash(admin["password"])
-    db_admin = models.DBManager(**admin)
-
-    db.add(db_admin)
-    db.commit()
-    db.refresh(db_admin)
-
-    assert db_admin.email == admin['email']
-    assert db_admin.first_name == admin['first_name']
-    assert db_admin.last_name == admin['last_name']
-    assert db_admin.role == admin['role']
-    assert db_admin.access == admin['access']
-
-    return admin
-
-
-
-
-@pytest.fixture
-def test_editor():
-    db = TestingSessionLocal()
-    
-    editor = {
-        "email": "editor@gmail.com",
-        "first_name": "Editor",
-        "last_name": "User",
-        "role": "EDITOR",
-        "access": "READ_WRITE_MODIFY",
-        "password": "123"
-    }
-
-    editor["password"] = encrypt.hash(editor["password"])
-    db_editor = models.DBManager(**editor)
-
-    db.add(db_editor)
-    db.commit()
-    db.refresh(db_editor)
-
-    assert db_editor.email == editor['email']
-    assert db_editor.first_name == editor['first_name']
-    assert db_editor.last_name == editor['last_name']
-    assert db_editor.role == editor['role']
-    assert db_editor.access == editor['access']
-
-    return editor
+    return _create_user
 
 
 @pytest.fixture()
@@ -147,3 +87,28 @@ def authorized_client(session):
         return TestClient(app, headers=headers)
 
     yield _authorized_client
+
+
+@pytest.fixture
+def test_superuser(test_user):
+    return test_user("superuser@gmail.com", "SUPERUSER", "ALL")
+
+
+@pytest.fixture
+def test_admin(test_user):
+    return test_user("admin@example.com", "ADMIN", "ALL")
+
+
+@pytest.fixture
+def test_editor_read_write(test_user):
+    return test_user("editor_read_write@gmail.com", "EDITOR", "READ_WRITE")
+
+
+@pytest.fixture
+def test_editor_read_write_modify(test_user):
+    return test_user("editor_read_write_modify@gmail.com", "EDITOR", "READ_WRITE_MODIFY")
+
+
+@pytest.fixture
+def authorized_admin(authorized_client, test_admin):
+    return authorized_client(test_admin)

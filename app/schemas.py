@@ -3,9 +3,33 @@ from typing import List, Optional, Dict
 from enum import Enum
 
 
+class Etymology(BaseModel):
+    sanskrit_word_id: int
+    meaning_id: int
+    etymology: str
+
+
+class EtymologyOut(Etymology):
+    id: int
+
+
+class Derivation(BaseModel):
+    sanskrit_word_id: int
+    meaning_id: int
+    derivation: str
+
+
+class DerivationOut(Derivation):
+    id: int
+
+
 class Translation(BaseModel):
     language: str
     translation: List[str]
+
+
+class TranslationOut(Translation):
+    id: int
 
 
 class NyayaTextReference(BaseModel):
@@ -13,9 +37,17 @@ class NyayaTextReference(BaseModel):
     description: Optional[str] = None
 
 
+class NyayaTextReferenceOut(NyayaTextReference):
+    id: int
+
+
 class Example(BaseModel):
     example_sentence: str
     applicable_modern_context: Optional[str] = None
+
+
+class ExampleOut(Example):
+    id: int
 
 
 class Meaning(BaseModel):
@@ -42,13 +74,21 @@ class MeaningUpdate(Meaning):
 class Word(BaseModel):
     sanskrit_word: str
     english_transliteration: Optional[str] = None
-    meanings: Optional[List[Meaning]] = None
+    meaning_ids: Optional[List[int]] = None
+
+    def __init__(self, **data):
+        super().__init__(**data)
+        if self.meaning_ids is None:
+            self.meaning_ids = []
 
 
 class WordOut(Word):
     id: int
-    meanings: List[MeaningOut]
 
+
+class WordCreate(BaseModel):
+    sanskrit_word: str
+    english_transliteration: Optional[str] = None
 
 class WordUpdate(Word):
     id: int

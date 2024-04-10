@@ -13,7 +13,7 @@ from app.middleware import auth_middleware
 
 router = APIRouter(
     prefix="/words",
-    tags=["Words"],
+    tags=["Word - Examples"],
 )
 
 

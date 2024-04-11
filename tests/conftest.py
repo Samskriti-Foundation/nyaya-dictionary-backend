@@ -100,6 +100,11 @@ def test_admin(test_user):
 
 
 @pytest.fixture
+def test_editor_read_only(test_user):
+    return test_user("editor_read_only@gmail.com", "EDITOR", "READ_ONLY")
+
+
+@pytest.fixture
 def test_editor_read_write(test_user):
     return test_user("editor_read_write@gmail.com", "EDITOR", "READ_WRITE")
 

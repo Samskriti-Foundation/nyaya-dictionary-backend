@@ -17,23 +17,23 @@ class MeaningCreate(BaseModel):
 
 
 class Etymology(BaseModel):
-    sanskrit_word_id: int
-    meaning_id: int
     etymology: str
 
 
 class EtymologyOut(Etymology):
+    sanskrit_word_id: int
+    meaning_id: int
     id: int
 
 
 class Derivation(BaseModel):
-    sanskrit_word_id: int
-    meaning_id: int
     derivation: str
 
 
 class DerivationOut(Derivation):
     id: int
+    sanskrit_word_id: int
+    meaning_id: int
 
 
 class Translation(BaseModel):
@@ -61,11 +61,8 @@ class Example(BaseModel):
 
 class ExampleOut(Example):
     id: int
-
-
-# class MeaningUpdate(Meaning):
-#     meaning_id: int
-#     translations: Optional[List[Translation]] = None
+    sanskrit_word_id: int
+    meaning_id: int
 
 
 class Word(BaseModel):

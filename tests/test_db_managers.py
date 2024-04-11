@@ -49,8 +49,8 @@ def test_create_superuser_by_admin(authorized_client, test_admin, superuser_data
     assert response.status_code == 403
 
 
-def test_create_superuser_by_editor(authorized_client, test_editor, superuser_data):
-    authorized_editor = authorized_client(test_editor)
+def test_create_superuser_by_editor(authorized_client, test_editor_read_write, superuser_data):
+    authorized_editor = authorized_client(test_editor_read_write)
     response: Response = authorized_editor.post("/auth/register", json = superuser_data)
     assert response.status_code == 403
 
@@ -67,8 +67,8 @@ def test_create_admin_by_admin(authorized_client, test_admin, admin_data):
     assert response.status_code == 403
 
 
-def test_create_admin_by_editor(authorized_client, test_editor, admin_data):
-    authorized_editor = authorized_client(test_editor)
+def test_create_admin_by_editor(authorized_client, test_editor_read_write, admin_data):
+    authorized_editor = authorized_client(test_editor_read_write)
     response: Response = authorized_editor.post("/auth/register", json = admin_data)
     assert response.status_code == 403
 
@@ -85,8 +85,8 @@ def test_create_editor_by_admin(authorized_client, test_admin, editor_data):
     assert response.status_code == 201
 
 
-def test_create_editor_by_editor(authorized_client, test_editor, editor_data):
-    authorized_editor = authorized_client(test_editor)
+def test_create_editor_by_editor(authorized_client, test_editor_read_write, editor_data):
+    authorized_editor = authorized_client(test_editor_read_write)
     response: Response = authorized_editor.post("/auth/register", json = editor_data)
     assert response.status_code == 403
 
@@ -146,9 +146,9 @@ def test_get_db_managers_by_admin(authorized_client, test_superuser, test_admin,
         assert manager['role'] == 'EDITOR'
     
 
-def test_get_db_managers_by_editor(authorized_client, test_superuser, test_editor, admin_data, editor_data, superuser_data):
+def test_get_db_managers_by_editor(authorized_client, test_superuser, test_editor_read_write, admin_data, editor_data, superuser_data):
     authorized_superuser = authorized_client(test_superuser)
-    authorized_editor = authorized_client(test_editor)
+    authorized_editor = authorized_client(test_editor_read_write)
 
     response: Response = authorized_superuser.post("/auth/register", json = admin_data)
     assert response.status_code == 201
@@ -197,9 +197,9 @@ def test_get_db_managers_query_by_admin(authorized_client, test_superuser, test_
         
         if role == 'SUPERUSER' or role == 'ADMIN':
             assert response.status_code == 403
+            return
 
-        else:
-            assert response.status_code == 200
+        assert response.status_code == 200
 
         for manager in response.json():
-            assert manager['role'] == role
+            assert manager['role'] == 'EDITOR'

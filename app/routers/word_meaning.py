@@ -51,7 +51,10 @@ def get_word_meaning(word: str, meaning_id: int, db: Session = Depends(get_db)):
 
 
 @router.post("/{word}/meanings", status_code=status.HTTP_201_CREATED)
-def create_word_meaning(word: str, meaning: schemas.MeaningCreate, db: Session = Depends(get_db)):
+def create_word_meaning(word: str, meaning: schemas.MeaningCreate, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+    if access_to_int(current_user.access) < access_to_int(schemas.Access.READ_WRITE):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
+    
     if isDevanagariWord(word):
         db_word = db.query(models.SanskritWord).filter(models.SanskritWord.sanskrit_word == word).first()
     else:
@@ -68,8 +71,11 @@ def create_word_meaning(word: str, meaning: schemas.MeaningCreate, db: Session =
     return JSONResponse(status_code=status.HTTP_201_CREATED, content={"message": "Meaning created successfully"})
 
 
-@router.delete("{word}/meanings/{meaning_id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_word_meaning(word: str, meaning_id: int, db: Session = Depends(get_db)):
+@router.delete("/{word}/meanings/{meaning_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_word_meaning(word: str, meaning_id: int, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+    if access_to_int(current_user.access) < access_to_int(schemas.Access.ALL):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
+    
     if isDevanagariWord(word):
         db_word = db.query(models.SanskritWord).filter(models.SanskritWord.sanskrit_word == word).first()
     else:
@@ -82,8 +88,11 @@ def delete_word_meaning(word: str, meaning_id: int, db: Session = Depends(get_db
     db.commit()
 
 
-@router.delete("{word}/meanings", status_code=status.HTTP_204_NO_CONTENT)
-def delete_word_meanings(word: str, db: Session = Depends(get_db)):
+@router.delete("/{word}/meanings", status_code=status.HTTP_204_NO_CONTENT)
+def delete_word_meanings(word: str, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+    if access_to_int(current_user.access) < access_to_int(schemas.Access.ALL):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
+    
     if isDevanagariWord(word):
         db_word = db.query(models.SanskritWord).filter(models.SanskritWord.sanskrit_word == word).first()
     else:

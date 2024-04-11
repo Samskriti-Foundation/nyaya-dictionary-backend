@@ -49,7 +49,10 @@ def get_word_derivation(word: str, meaning_id: int, derivation_id: int, db: Sess
 
 
 @router.post("/{word}/{meaning_id}/derivations")
-def create_word_derivation(word: str, meaning_id: int, db: Session = Depends(get_db)):
+def create_word_derivation(word: str, meaning_id: int, derivation: schemas.Derivation, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+    if access_to_int(current_user.access) < access_to_int(schemas.Access.READ_WRITE):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
+    
     if isDevanagariWord(word):
         db_word = db.query(models.SanskritWord).filter(models.SanskritWord.sanskrit_word == word).first()
     else:
@@ -58,7 +61,7 @@ def create_word_derivation(word: str, meaning_id: int, db: Session = Depends(get
     if not db_word:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Word - {word} not found")
     
-    db_derivation = models.Derivation(sanskrit_word_id=db_word.id, meaning_id=meaning_id, derivation="")
+    db_derivation = models.Derivation(sanskrit_word_id=db_word.id, meaning_id=meaning_id, derivation=derivation.derivation)
 
     db.add(db_derivation)
     db.commit()

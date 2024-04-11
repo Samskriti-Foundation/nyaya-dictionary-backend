@@ -6,6 +6,7 @@ from app.utils.lang import isDevanagariWord
 from app.utils.converter import access_to_int
 from app import schemas, models
 from app.middleware.auth_middleware import get_current_db_manager
+from typing import List
 
 
 router = APIRouter(
@@ -14,7 +15,7 @@ router = APIRouter(
 )
 
 
-@router.get("/{word}/{meaning_id}/etymologies")
+@router.get("/{word}/{meaning_id}/etymologies", response_model=List[schemas.EtymologyOut])
 def get_word_etymologies(word: str, meaning_id: int, db: Session = Depends(get_db)):
     if isDevanagariWord(word):
         db_word = db.query(models.SanskritWord).filter(models.SanskritWord.sanskrit_word == word).first()
@@ -34,7 +35,7 @@ def get_word_etymologies(word: str, meaning_id: int, db: Session = Depends(get_d
     return db_etymologies
 
 
-@router.get("/{word}/{meaning_id}/etymologies/{etymology_id}")
+@router.get("/{word}/{meaning_id}/etymologies/{etymology_id}", response_model=schemas.EtymologyOut)
 def get_word_etymology(word: str, meaning_id: int, etymology_id: int, db: Session = Depends(get_db)):
     if isDevanagariWord(word):
         db_word = db.query(models.SanskritWord).filter(models.SanskritWord.sanskrit_word == word).first()
@@ -57,9 +58,8 @@ def get_word_etymology(word: str, meaning_id: int, etymology_id: int, db: Sessio
     return db_etymology
 
 
-
-@router.post("/{word}/{meaning_id}/etymologies", response_model=schemas.Etymology)
-def add_word_etymology(word: str, meaning_id: int, etymology: str, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(get_current_db_manager)):
+@router.post("/{word}/{meaning_id}/etymologies")
+def add_word_etymology(word: str, meaning_id: int, etymology: schemas.Etymology, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(get_current_db_manager)):
     if access_to_int(current_db_manager.access) < access_to_int(schemas.Access.READ_WRITE):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
 
@@ -74,7 +74,7 @@ def add_word_etymology(word: str, meaning_id: int, etymology: str, db: Session =
     etymology = models.Etymology(
         sanskrit_word_id = db_word.id,
         meaning_id = meaning_id,
-        etymology = etymology
+        etymology = etymology.etymology
     )
 
     db.add(etymology)
@@ -85,7 +85,7 @@ def add_word_etymology(word: str, meaning_id: int, etymology: str, db: Session =
 
 
 @router.put("/{word}/{meaning_id}/etymologies/{etymology_id}")
-def update_word_etymology(word: str, meaning_id: int, etymology_id: int, etymology: str, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(get_current_db_manager)):
+def update_word_etymology(word: str, meaning_id: int, etymology_id: int, etymology: schemas.Etymology, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(get_current_db_manager)):
     if access_to_int(current_db_manager.access) < access_to_int(schemas.Access.READ_WRITE_MODIFY):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
 

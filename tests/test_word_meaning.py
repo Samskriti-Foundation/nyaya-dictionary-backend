@@ -36,7 +36,7 @@ def sample_meaning_output():
 
 
 
-def test_create_word_meaning(authorized_client, test_admin, sample_word_input, sample_meaning_input, sample_meaning_output):
+def test_create_meaning(authorized_client, test_admin, sample_word_input, sample_meaning_input, sample_meaning_output):
     authorized_admin = authorized_client(test_admin)
     
     response: Response = authorized_admin.post("/words", json=sample_word_input)
@@ -49,7 +49,7 @@ def test_create_word_meaning(authorized_client, test_admin, sample_word_input, s
     assert response.json() == sample_meaning_output
 
 
-def test_meaning_invalid_access(authorized_client, test_admin, test_editor_read_only, sample_word_input, sample_meaning_input):
+def test_create_meaning_invalid_access(authorized_client, test_admin, test_editor_read_only, sample_word_input, sample_meaning_input):
     authorized_admin = authorized_client(test_admin)
     authorized_editor = authorized_client(test_editor_read_only)
     

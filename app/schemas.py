@@ -85,7 +85,7 @@ class WordCreate(BaseModel):
     english_transliteration: Optional[str] = None
 
 
-class WordUpdate(Word):
+class WordUpdate(BaseModel):
     sanskrit_word: Optional[str] = None
     english_transliteration: Optional[str] = None
 

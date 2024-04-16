@@ -15,7 +15,6 @@ router = APIRouter(
 )
 
 
-
 @router.get("/{word}/meanings", response_model=List[schemas.MeaningOut])
 def get_word_meanings(word: str, db: Session = Depends(get_db)):
     if isDevanagariWord(word):
@@ -71,6 +70,26 @@ def create_word_meaning(word: str, meaning: schemas.MeaningCreate, db: Session =
     return JSONResponse(status_code=status.HTTP_201_CREATED, content={"message": "Meaning created successfully"})
 
 
+@router.put("/{word}/meanings/{meaning_id}", status_code=status.HTTP_200_OK)
+def update_word_meaning(word: str, meaning_id: int, meaning: schemas.MeaningCreate, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+    if access_to_int(current_user.access) < access_to_int(schemas.Access.READ_WRITE_MODIFY):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
+    
+    if isDevanagariWord(word):
+        db_word = db.query(models.SanskritWord).filter(models.SanskritWord.sanskrit_word == word).first()
+    else:
+        db_word = db.query(models.SanskritWord).filter(models.SanskritWord.english_transliteration == word).first()
+    
+    if not db_word:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Word - {word} not found")
+
+    db_meaning = db.query(models.Meaning).filter(models.Meaning.id == meaning_id).first()
+    db_meaning.meaning = meaning.meaning
+    db.commit()
+
+    return JSONResponse(status_code=status.HTTP_200_OK, content={"message": "Meaning updated successfully"})
+
+
 @router.delete("/{word}/meanings/{meaning_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_word_meaning(word: str, meaning_id: int, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
     if access_to_int(current_user.access) < access_to_int(schemas.Access.ALL):
@@ -103,4 +122,3 @@ def delete_word_meanings(word: str, db: Session = Depends(get_db), current_user:
 
     db.query(models.Meaning).filter(models.Meaning.sanskrit_word_id == db_word.id).delete()
     db.commit()
-    

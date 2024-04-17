@@ -103,6 +103,9 @@ def update_word(word: str, wordIn: schemas.WordUpdate, db: Session = Depends(get
     if wordIn.english_transliteration != db_word.english_transliteration and db.query(models.SanskritWord).filter(models.SanskritWord.english_transliteration == wordIn.english_transliteration).first():
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=f"English Transliteration - {wordIn.english_transliteration} already exists")
     
+    if not wordIn.english_transliteration or wordIn.english_transliteration == "":
+        wordIn.english_transliteration = transliterate(wordIn.sanskrit_word, sanscript.DEVANAGARI, sanscript.IAST)
+    
     db_word.sanskrit_word = wordIn.sanskrit_word
     db_word.english_transliteration = wordIn.english_transliteration
     

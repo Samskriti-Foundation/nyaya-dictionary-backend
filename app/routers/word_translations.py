@@ -2,10 +2,8 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import JSONResponse
 from app.database import get_db
 from sqlalchemy.orm import Session
-from app import models, schemas, oauth2
+from app import models, schemas
 from typing import List
-from indic_transliteration import sanscript
-from indic_transliteration.sanscript import transliterate
 from app.utils.converter import access_to_int
 from app.utils.lang import isDevanagariWord
 from app.middleware import auth_middleware
@@ -29,9 +27,7 @@ def get_word_translations(word: str, meaning_id: int, db: Session = Depends(get_
     
     db_translations = db.query(models.Translation).filter(models.Translation.sanskrit_word_id == db_word.id, models.Translation.meaning_id == meaning_id).all()
 
-    translations = [x.translation for x in db_translations]
-
-    return translations
+    return db_translations
 
 
 @router.get("/{word}/{meaning_id}/translations/{translation_id}")

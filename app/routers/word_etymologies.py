@@ -108,7 +108,7 @@ def update_word_etymology(word: str, meaning_id: int, etymology_id: int, etymolo
     if not db_etymology:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Etymology - {etymology_id} not found")
     
-    db_etymology.etymology = etymology
+    db_etymology.etymology = etymology.etymology
 
     db.commit()
     db.refresh(db_etymology)

@@ -38,11 +38,13 @@ class DerivationOut(Derivation):
 
 class Translation(BaseModel):
     language: str
-    translation: List[str]
+    translation: str
 
 
 class TranslationOut(Translation):
     id: int
+    sanskrit_word_id: int
+    meaning_id: int
 
 
 class NyayaTextReference(BaseModel):

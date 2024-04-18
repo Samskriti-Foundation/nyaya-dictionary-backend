@@ -54,6 +54,8 @@ class NyayaTextReference(BaseModel):
 
 class NyayaTextReferenceOut(NyayaTextReference):
     id: int
+    sanskrit_word_id: int
+    meaning_id: int
 
 
 class Example(BaseModel):
@@ -62,6 +64,26 @@ class Example(BaseModel):
 
 
 class ExampleOut(Example):
+    id: int
+    sanskrit_word_id: int
+    meaning_id: int
+
+
+class Synonym(BaseModel):
+    synonym: str
+
+
+class SynonymOut(Synonym):
+    id: int
+    sanskrit_word_id: int
+    meaning_id: int
+
+
+class Antonym(BaseModel):
+    antonym: str
+
+
+class AntonymOut(Antonym):
     id: int
     sanskrit_word_id: int
     meaning_id: int

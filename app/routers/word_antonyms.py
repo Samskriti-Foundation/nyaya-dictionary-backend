@@ -27,12 +27,10 @@ def get_word_antonyms(word: str, meaning_id: int, db: Session = Depends(get_db))
     
     db_antonyms = db.query(models.Antonym).filter(models.Antonym.sanskrit_word_id == db_word.id, models.Antonym.meaning_id == meaning_id).all()
 
-    antonyms = [x.antonym for x in db_antonyms]
-
-    return antonyms
+    return db_antonyms
 
 
-@router.get("{word}/{meaning_id}/antonyms/{antonym_id}")
+@router.get("/{word}/{meaning_id}/antonyms/{antonym_id}")
 def get_word_anyonym(word: str, meaning_id: int, antonym_id: int, db: Session = Depends(get_db)):
     if isDevanagariWord(word):
         db_word = db.query(models.SanskritWord).filter(models.SanskritWord.sanskrit_word == word).first()

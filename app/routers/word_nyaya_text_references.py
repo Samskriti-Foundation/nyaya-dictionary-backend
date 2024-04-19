@@ -68,7 +68,7 @@ def create_word_reference_nyaya_text(word: str, meaning_id: int, reference_nyaya
 
 @router.put("{word}/{meaning_id}/nyaya_text_references/{nyaya_text_id}", status_code=status.HTTP_204_NO_CONTENT)
 def update_word_reference_nyaya_text(word: str, meaning_id: int, nyaya_text_id: int, reference_nyaya_text: schemas.NyayaTextReference, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
-    if access_to_int(current_db_manager.access) < access_to_int(schemas.Access.READ_WRITE):
+    if access_to_int(current_db_manager.access) < access_to_int(schemas.Access.READ_WRITE_MODIFY):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
     if isDevanagariWord(word):
@@ -92,7 +92,7 @@ def update_word_reference_nyaya_text(word: str, meaning_id: int, nyaya_text_id: 
 
 @router.delete("/{word}/{meaning_id}/nyaya_text_references/{nyaya_text_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_word_reference_nyaya_text(word: str, meaning_id: int, nyaya_text_id: int, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
-    if access_to_int(current_db_manager.access) < access_to_int(schemas.Access.READ_WRITE):
+    if access_to_int(current_db_manager.access) < access_to_int(schemas.Access.ALL):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
     if isDevanagariWord(word):

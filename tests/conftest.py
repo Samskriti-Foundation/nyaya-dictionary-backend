@@ -74,7 +74,7 @@ def client(session):
 
 @pytest.fixture()
 def authorized_client(session):
-    def _authorized_client(db_manager):
+    def _authorized_client(user):
         def override_get_db():
             try:
                 yield session
@@ -82,38 +82,30 @@ def authorized_client(session):
                 session.close()
         
         app.dependency_overrides[get_db] = override_get_db
-        access_token = create_access_token({"email": db_manager['email']})
+        access_token = create_access_token({"email": user['email']})
         headers = {"Authorization": f"Bearer {access_token}"}
         return TestClient(app, headers=headers)
 
     yield _authorized_client
 
 
-@pytest.fixture
-def test_superuser(test_user):
-    return test_user("superuser@gmail.com", "SUPERUSER", "ALL")
-
-
-@pytest.fixture
-def test_admin(test_user):
-    return test_user("admin@example.com", "ADMIN", "ALL")
-
-
-@pytest.fixture
-def test_editor_read_only(test_user):
-    return test_user("editor_read_only@gmail.com", "EDITOR", "READ_ONLY")
-
-
-@pytest.fixture
-def test_editor_read_write(test_user):
-    return test_user("editor_read_write@gmail.com", "EDITOR", "READ_WRITE")
-
-
-@pytest.fixture
-def test_editor_read_write_modify(test_user):
-    return test_user("editor_read_write_modify@gmail.com", "EDITOR", "READ_WRITE_MODIFY")
-
-
-@pytest.fixture
-def authorized_admin(authorized_client, test_admin):
-    return authorized_client(test_admin)
+@pytest.fixture()
+def test_users():
+    def _test_users(user: str):
+        match user:
+            case "superuser":
+                return test_user("superuser@gmail.com", "SUPERUSER", "ALL")
+            case "admin":
+                return test_user("admin@example.com", "ADMIN", "ALL")
+            case "editor_read_only":
+                return test_user("editor_read_only@gmail.com", "EDITOR", "READ_ONLY")
+            case "editor_read_write":
+                return test_user("editor_read_write@gmail.com", "EDITOR", "READ_WRITE")
+            case "editor_read_write_modify":
+                return test_user("editor_read_write_modify@gmail.com", "EDITOR", "READ_WRITE_MODIFY")
+            case "editor_all":
+                return test_user("editor_all@gmail.com", "EDITOR", "ALL")
+            case _:
+                raise Exception("Invalid user")
+        
+    return _test_users

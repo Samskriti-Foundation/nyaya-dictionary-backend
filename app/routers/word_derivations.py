@@ -71,7 +71,10 @@ def create_word_derivation(word: str, meaning_id: int, derivation: schemas.Deriv
 
 
 @router.put("/{word}/{meaning_id}/derivations/{derivation_id}")
-def update_word_derivation(word: str, meaning_id: int, derivation_id: int, db: Session = Depends(get_db)):
+def update_word_derivation(word: str, meaning_id: int, derivation_id: int, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+    if access_to_int(current_user.access) < access_to_int(schemas.Access.READ_WRITE):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
+    
     if isDevanagariWord(word):
         db_word = db.query(models.SanskritWord).filter(models.SanskritWord.sanskrit_word == word).first()
     else:
@@ -87,7 +90,10 @@ def update_word_derivation(word: str, meaning_id: int, derivation_id: int, db: S
 
 
 @router.delete("/{word}/{meaning_id}/derivations", status_code=status.HTTP_204_NO_CONTENT)
-def delete_word_derivations(word: str, meaning_id: int, db: Session = Depends(get_db)):
+def delete_word_derivations(word: str, meaning_id: int, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+    if access_to_int(current_user.access) < access_to_int(schemas.Access.ALL):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
+    
     if isDevanagariWord(word):
         db_word = db.query(models.SanskritWord).filter(models.SanskritWord.sanskrit_word == word).first()
     else:
@@ -103,7 +109,10 @@ def delete_word_derivations(word: str, meaning_id: int, db: Session = Depends(ge
 
 
 @router.delete("/{word}/{meaning_id}/derivations/{derivation_id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_word_derivation(word: str, meaning_id: int, derivation_id: int, db: Session = Depends(get_db)):
+def delete_word_derivation(word: str, meaning_id: int, derivation_id: int, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+    if access_to_int(current_user.access) < access_to_int(schemas.Access.ALL):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
+    
     if isDevanagariWord(word):
         db_word = db.query(models.SanskritWord).filter(models.SanskritWord.sanskrit_word == word).first()
     else:

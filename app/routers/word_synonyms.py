@@ -95,7 +95,7 @@ def update_word_synonym(word: str, meaning_id: int, synonym_id: int, synonym: sc
 
 @router.delete("/{word}/{meaning_id}/synonyms/{synonym_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_word_synonym(word: str, meaning_id: int, synonym_id: int, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
-    if access_to_int(current_user.access) < access_to_int(schemas.Access.READ_WRITE_MODIFY):
+    if access_to_int(current_user.access) < access_to_int(schemas.Access.ALL):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
     if isDevanagariWord(word):
@@ -118,7 +118,7 @@ def delete_word_synonym(word: str, meaning_id: int, synonym_id: int, db: Session
 
 @router.delete("/{word}/{meaning_id}/synonyms", status_code=status.HTTP_204_NO_CONTENT)
 def delete_word_synonyms(word: str, meaning_id: int, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
-    if access_to_int(current_user.access) < access_to_int(schemas.Access.READ_WRITE_MODIFY):
+    if access_to_int(current_user.access) < access_to_int(schemas.Access.ALL):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
     if isDevanagariWord(word):

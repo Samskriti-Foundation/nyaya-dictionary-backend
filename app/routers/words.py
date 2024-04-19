@@ -7,7 +7,7 @@ from typing import List
 from indic_transliteration import sanscript
 from indic_transliteration.sanscript import transliterate
 from app.utils.converter import access_to_int
-from app.utils.lang import isDevanagariWord, isEnglishWord
+from app.utils.lang import isDevanagariWord
 from app.middleware import auth_middleware
 
 
@@ -56,7 +56,7 @@ def get_word(word: str, db: Session = Depends(get_db)):
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
 def create_word(word: schemas.WordCreate, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
-    if access_to_int(current_db_manager.access) < access_to_int(schemas.Access.ALL):
+    if access_to_int(current_db_manager.access) < access_to_int(schemas.Access.READ_WRITE):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
     if word.sanskrit_word == "" or not word.sanskrit_word:

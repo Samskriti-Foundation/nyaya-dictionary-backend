@@ -96,7 +96,7 @@ def update_word_antonym(word: str, meaning_id: int, antonym_id: int, antonym: sc
 
 @router.delete("/{word}/{meaning_id}/antonyms/{antonym_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_word_antonym(word: str, meaning_id: int, antonym_id: int, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
-    if access_to_int(current_db_manager.access) < access_to_int(schemas.Access.READ_WRITE):
+    if access_to_int(current_db_manager.access) < access_to_int(schemas.Access.ALL):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
     if isDevanagariWord(word):
@@ -113,7 +113,7 @@ def delete_word_antonym(word: str, meaning_id: int, antonym_id: int, db: Session
 
 @router.delete("/{word}/{meaning_id}/antonyms", status_code=status.HTTP_204_NO_CONTENT)
 def delete_word_antonyms(word: str, meaning_id: int, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
-    if access_to_int(current_db_manager.access) < access_to_int(schemas.Access.READ_WRITE):
+    if access_to_int(current_db_manager.access) < access_to_int(schemas.Access.ALL):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
     if isDevanagariWord(word):

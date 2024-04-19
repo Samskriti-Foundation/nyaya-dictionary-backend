@@ -72,7 +72,7 @@ def create_word_example(word: str, meaning_id, example: schemas.Example, db: Ses
 
 @router.put("/{word}/{meaning_id}/examples/{examples_id}", status_code=status.HTTP_202_ACCEPTED)
 def update_word_example(word: str, meaning_id, example_id, example: schemas.Example, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
-    if access_to_int(current_user.access) < access_to_int(schemas.Access.READ_WRITE):
+    if access_to_int(current_user.access) < access_to_int(schemas.Access.READ_WRITE_MODIFY):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
     if isDevanagariWord(word):

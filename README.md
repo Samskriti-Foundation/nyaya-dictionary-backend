@@ -17,23 +17,14 @@ Nyaya Khosha is a Sanskrit-English dictionary developed by Samskriti Foundation,
    ```bash
    git clone https://github.com/Raghav1909/nyaya-dictionary-backend.git
    ```
+   
+2. **Navigate to the project directory:**
 
-2. **Install Dependencies:**
-   
-   **Option 1: Using pipenv**
-   
-   a. Install pipenv if not already installed:
    ```bash
-   pip install pipenv
-   ```
-   b. Create a virtual environment and install dependencies:
-  
-   ```bash
-   cd nyaya-dictionary-backend  # Navigate to the project directory
-   pipenv install
+   cd nyaya-dictionary-backend
    ```
 
-   **Option 2: Using a Virtual Environment**
+3. **Install dependencies using a Virtual Environment:**
 
    a. Create a virtual environment:
    ```bash

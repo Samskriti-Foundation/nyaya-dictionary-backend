@@ -72,7 +72,7 @@ def create_word_derivation(word: str, meaning_id: int, derivation: schemas.Deriv
 
 @router.put("/{word}/{meaning_id}/derivations/{derivation_id}")
 def update_word_derivation(word: str, meaning_id: int, derivation_id: int, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
-    if access_to_int(current_user.access) < access_to_int(schemas.Access.READ_WRITE):
+    if access_to_int(current_user.access) < access_to_int(schemas.Access.READ_WRITE_MODIFY):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
     if isDevanagariWord(word):

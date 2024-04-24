@@ -70,7 +70,7 @@ def create_word_meaning(word: str, meaning: schemas.MeaningCreate, db: Session =
     return JSONResponse(status_code=status.HTTP_201_CREATED, content={"message": "Meaning created successfully"})
 
 
-@router.put("/{word}/meanings/{meaning_id}", status_code=status.HTTP_200_OK)
+@router.put("/{word}/meanings/{meaning_id}", status_code=status.HTTP_204_NO_CONTENT)
 def update_word_meaning(word: str, meaning_id: int, meaning: schemas.MeaningCreate, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
     if access_to_int(current_user.access) < access_to_int(schemas.Access.READ_WRITE_MODIFY):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
@@ -86,8 +86,6 @@ def update_word_meaning(word: str, meaning_id: int, meaning: schemas.MeaningCrea
     db_meaning = db.query(models.Meaning).filter(models.Meaning.id == meaning_id).first()
     db_meaning.meaning = meaning.meaning
     db.commit()
-
-    return JSONResponse(status_code=status.HTTP_200_OK, content={"message": "Meaning updated successfully"})
 
 
 @router.delete("/{word}/meanings/{meaning_id}", status_code=status.HTTP_204_NO_CONTENT)

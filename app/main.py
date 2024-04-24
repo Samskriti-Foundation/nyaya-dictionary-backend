@@ -16,8 +16,8 @@ app = FastAPI(
     description=description,
 )
 
-app.add_middleware(BaseHTTPMiddleware, dispatch=log_database_operations)
-app.add_middleware(BaseHTTPMiddleware, dispatch=log_login_operations)
+# app.add_middleware(BaseHTTPMiddleware, dispatch=log_database_operations)
+# app.add_middleware(BaseHTTPMiddleware, dispatch=log_login_operations)
 
 
 origins = [

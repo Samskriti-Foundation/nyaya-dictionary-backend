@@ -11,7 +11,7 @@ REFRESH_TOKEN_EXPIRE_MINUTES = settings.refresh_token_expire_minutes
 
 
 def create_access_token(data: dict):
-    to_encode = data.copy() # Data to be encoded in JWT token (email in this case).
+    to_encode = data.copy() # Data to be encoded in JWT token (email, role, access in this case).
 
     expire = datetime.now(UTC) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     to_encode.update({"exp": expire})
@@ -37,8 +37,18 @@ def verify_access_token(token: str, credentials_exception):
 
         if email is None:
             raise credentials_exception
+        
+        role: schemas.Role = payload.get("role")
 
-        token_data = schemas.TokenData(email=email)
+        if role is None:
+            raise credentials_exception
+        
+        access: schemas.Access = payload.get("access")
+
+        if access is None:
+            raise credentials_exception
+
+        token_data = schemas.TokenData(email=email, role=role, access=access)
     
     except jwt.ExpiredSignatureError:
         raise credentials_exception

@@ -84,7 +84,7 @@ def add_word_etymology(word: str, meaning_id: int, etymology: schemas.Etymology,
     return JSONResponse(status_code=status.HTTP_201_CREATED, content={"message": "Etymology added successfully"})
 
 
-@router.put("/{word}/{meaning_id}/etymologies/{etymology_id}")
+@router.put("/{word}/{meaning_id}/etymologies/{etymology_id}", status_code=status.HTTP_204_NO_CONTENT)
 def update_word_etymology(word: str, meaning_id: int, etymology_id: int, etymology: schemas.Etymology, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(get_current_db_manager)):
     if access_to_int(current_db_manager.access) < access_to_int(schemas.Access.READ_WRITE_MODIFY):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
@@ -112,8 +112,6 @@ def update_word_etymology(word: str, meaning_id: int, etymology_id: int, etymolo
 
     db.commit()
     db.refresh(db_etymology)
-
-    return JSONResponse(status_code=status.HTTP_200_OK, content={"message": "Etymology updated successfully"})
 
 
 @router.delete("/{word}/{meaning_id}/etymologies", status_code=status.HTTP_204_NO_CONTENT)

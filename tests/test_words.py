@@ -27,8 +27,8 @@ def sample_output_data():
     ("editor_read_write_modify", 201),
     ("editor_all", 201),
 ])
-def test_create_word(authorized_client, user_role, test_users, sample_input_data, expected_status_code):
-    authorized_user = authorized_client(test_users(user_role))
+def test_create_word(authorized_client, sample_input_data, user_role, test_users, expected_status_code):
+    authorized_user = authorized_client(test_users[user_role])
     response: Response = authorized_user.post("/words", json=sample_input_data)
     assert response.status_code == expected_status_code
 
@@ -38,8 +38,8 @@ def test_get_words(client):
     assert response.status_code == 200
 
 
-def test_get_word(authorized_client, test_editor_read_write, client, sample_input_data, sample_output_data):
-    authorized_editor = authorized_client(test_editor_read_write)
+def test_get_word(authorized_client, test_users, client, sample_input_data, sample_output_data):
+    authorized_editor = authorized_client(test_users["editor_all"])
     response: Response = authorized_editor.post("/words", json=sample_input_data)
     assert response.status_code == 201
 
@@ -54,15 +54,16 @@ def test_get_word(authorized_client, test_editor_read_write, client, sample_inpu
     ("superuser", 200),
     ("admin", 200),
     ("editor_read_only", 403),
-    ("editor_read_write", 200),
+    ("editor_read_write", 403),
     ("editor_read_write_modify", 200),
     ("editor_all", 200),
 ])
-def test_update_word(authorized_client, user_role, test_users, sample_input_data, sample_output_data, expected_status_code):
-    authorized_user = authorized_client(test_users[user_role])
-    response: Response = authorized_user.post("/words", json=sample_input_data)
+def test_update_word(authorized_client, user_role, test_users, sample_input_data, expected_status_code):
+    authorized_admin = authorized_client(test_users["admin"])
+    response: Response = authorized_admin.post("/words", json=sample_input_data)
     assert response.status_code == 201
 
+    authorized_user = authorized_client(test_users[user_role])
     response: Response = authorized_user.put(f"/words/{sample_input_data['sanskrit_word']}", json={
         "sanskrit_word": "स्वर्ग",
         "english_transliteration": "svarg",
@@ -74,25 +75,23 @@ def test_update_word(authorized_client, user_role, test_users, sample_input_data
         assert response.json()["english_transliteration"] == "svarg"
 
 
-# def test_delete_word_by_superuser(authorized_client, test_superuser, sample_input_data):
-#     authorized_superuser = authorized_client(test_superuser)
-#     response: Response = authorized_superuser.post("/words", json=sample_input_data)
-#     assert response.status_code == 201
+@pytest.mark.parametrize("user_role, expected_status_code", [
+    ("superuser", 204),
+    ("admin", 204),
+    ("editor_read_only", 403),
+    ("editor_read_write", 403),
+    ("editor_read_write_modify", 403),
+    ("editor_all", 204),
+])
+def test_delete_word(authorized_client, user_role, test_users, sample_input_data, expected_status_code):
+    authorized_admin = authorized_client(test_users["admin"])
+    response: Response = authorized_admin.post("/words", json=sample_input_data)
+    assert response.status_code == 201
 
-#     response: Response = authorized_superuser.delete(f"/words/{sample_input_data['sanskrit_word']}")
-#     assert response.status_code == 200
+    authorized_user = authorized_client(test_users[user_role])
+    response: Response = authorized_user.delete(f"/words/{sample_input_data['sanskrit_word']}")
+    assert response.status_code == expected_status_code
 
-#     response: Response = authorized_superuser.get(f"/words/{sample_input_data['sanskrit_word']}")
-#     assert response.status_code == 404
-
-
-# def test_delete_word_by_admin(authorized_client, test_admin, sample_input_data):
-#     authorized_admin = authorized_client(test_admin)
-#     response: Response = authorized_admin.post("/words", json=sample_input_data)
-#     assert response.status_code == 201
-
-#     response: Response = authorized_admin.delete(f"/words/{sample_input_data['sanskrit_word']}")
-#     assert response.status_code == 200
-
-#     response: Response = authorized_admin.get(f"/words/{sample_input_data['sanskrit_word']}")
-#     assert response.status_code == 404
+    if expected_status_code == 204:
+        response: Response = authorized_user.get(f"/words/{sample_input_data['sanskrit_word']}")
+        assert response.status_code == 404

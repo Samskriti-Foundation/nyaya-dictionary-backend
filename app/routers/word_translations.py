@@ -15,7 +15,7 @@ router = APIRouter(
 )
 
 
-@router.get("/{word}/{meaning_id}/translations")
+@router.get("/{word}/{meaning_id}/translations", response_model=List[schemas.TranslationOut])
 def get_word_translations(word: str, meaning_id: int, db: Session = Depends(get_db)):
     if isDevanagariWord(word):
         db_word = db.query(models.SanskritWord).filter(models.SanskritWord.sanskrit_word == word).first()
@@ -30,7 +30,7 @@ def get_word_translations(word: str, meaning_id: int, db: Session = Depends(get_
     return db_translations
 
 
-@router.get("/{word}/{meaning_id}/translations/{translation_id}")
+@router.get("/{word}/{meaning_id}/translations/{translation_id}", response_model=schemas.TranslationOut)
 def get_word_translation(word: str, meaning_id: int, translation_id: int, db: Session = Depends(get_db)):
     if isDevanagariWord(word):
         db_word = db.query(models.SanskritWord).filter(models.SanskritWord.sanskrit_word == word).first()

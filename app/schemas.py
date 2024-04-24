@@ -136,7 +136,7 @@ class DBManager(BaseModel):
 
 
 class DBManagerIn(DBManager):
-    password: str
+    password: str | bytes
 
 
 class DBManagerOut(DBManager):
@@ -148,8 +148,8 @@ class DBManagerUpdate(DBManager):
 
 
 class PasswordUpdate(BaseModel):
-    current_password: str
-    new_password: str
+    current_password: str | bytes
+    new_password: str | bytes
 
 
 class Token(BaseModel):
@@ -159,3 +159,5 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     email: EmailStr
+    role: Role
+    access: Access

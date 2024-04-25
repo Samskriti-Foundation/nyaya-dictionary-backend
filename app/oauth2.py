@@ -31,10 +31,19 @@ def create_refresh_token(data: dict):
     return encoded_jwt
 
 def verify_access_token(token: str, credentials_exception):
+    """
+    Verify the access token by decoding the token using the secret key and algorithm.
+    
+    Parameters:
+    - token (str): The access token to be verified.
+    - credentials_exception: The exception to be raised if credentials are invalid.
+    
+    Returns:
+    - TokenData: The token data containing the user's email.
+    """
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         email: str = payload.get("email")
-
         if email is None:
             raise credentials_exception
         
@@ -52,5 +61,5 @@ def verify_access_token(token: str, credentials_exception):
     
     except jwt.ExpiredSignatureError:
         raise credentials_exception
-
+    
     return token_data

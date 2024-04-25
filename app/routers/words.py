@@ -19,6 +19,15 @@ router = APIRouter(
 
 @router.get("/", response_model=List[schemas.WordOut])
 def get_words(db: Session = Depends(get_db)):
+    """
+    Retrieves a list of words from the database and returns them as a list of `schemas.WordOut` objects.
+
+    Parameters:
+        db (Session): The database session object.
+
+    Returns:
+        List[schemas.WordOut]: A list of `schemas.WordOut` objects representing the retrieved words.
+    """
     db_words = db.query(models.SanskritWord).all()
 
     words = []
@@ -36,6 +45,19 @@ def get_words(db: Session = Depends(get_db)):
 
 @router.get("/{word}", response_model=schemas.WordOut)
 def get_word(word: str, db: Session = Depends(get_db)):
+    """
+    Retrieves information about a word from the database based on the provided word.
+    
+    Parameters:
+        word (str): The word to retrieve information for.
+        db (Session, optional): The database session. Defaults to the result of the `get_db` function.
+    
+    Returns:
+        dict: A dictionary containing information about the word, including its ID, Sanskrit word, English word, etymologies, derivations, translations, reference texts, synonyms, and antonyms.
+    
+    Raises:
+        HTTPException: If the word is not found in the database.
+    """
     if isDevanagariWord(word):
         db_word = db.query(models.SanskritWord).filter(models.SanskritWord.sanskrit_word == word).first()
     else:

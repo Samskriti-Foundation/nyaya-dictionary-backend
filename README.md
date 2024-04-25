@@ -39,10 +39,11 @@ Nyaya Khosha is a Sanskrit-English dictionary developed by Samskriti Foundation,
      source venv/bin/activate
      ```
    - **Windows:**
-     `bash
-venv\Scripts\activate
-`
-     c. Install the required dependencies:
+     ```bash
+      venv\Scripts\activate
+     ```
+
+   c. Install the required dependencies:
 
    ```bash
    pip install -r requirements.txt

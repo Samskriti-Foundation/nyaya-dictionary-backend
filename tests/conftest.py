@@ -1,5 +1,4 @@
 from fastapi.testclient import TestClient
-from fastapi import Response
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -30,95 +29,35 @@ def session():
     finally:
         db.close()
 
-
 @pytest.fixture
-def test_superuser():
-    db = TestingSessionLocal()
+def test_user():
+    def _create_user(email, role, access):
+        db = TestingSessionLocal()
 
-    superuser = {
-        "email": "superuser@gmail.com",
-        "first_name": "Super",
-        "last_name": "User",
-        "role": "SUPERUSER",
-        "access": "ALL",
-        "password": "123"
-    }
+        user = {
+            "email": email,
+            "first_name": "First",
+            "last_name": "Last",
+            "role": role,
+            "access": access,
+            "password": "123"
+        }
+        user["password"] = encrypt.hash(user["password"])
+        db_user = models.DBManager(**user)
 
-    superuser["password"] = encrypt.hash(superuser["password"])
-    db_superuser = models.DBManager(**superuser)
+        db.add(db_user)
+        db.commit()
+        db.refresh(db_user)
 
-    db.add(db_superuser)
-    db.commit()
-    db.refresh(db_superuser)
+        assert db_user.email == user['email']
+        assert db_user.first_name == user['first_name']
+        assert db_user.last_name == user['last_name']
+        assert db_user.role == user['role']
+        assert db_user.access == user['access']
 
-    assert db_superuser.email == superuser['email']
-    assert db_superuser.first_name == superuser['first_name']
-    assert db_superuser.last_name == superuser['last_name']
-    assert db_superuser.role == superuser['role']
-    assert db_superuser.access == superuser['access']
+        return user
 
-    return superuser
-
-
-
-@pytest.fixture
-def test_admin():
-    db = TestingSessionLocal()
-    
-    admin = {
-        "email": "admin@gmail.com",
-        "first_name": "Admin",
-        "last_name": "User",
-        "role": "ADMIN",
-        "access": "ALL",
-        "password": "123"
-    }
-
-    admin["password"] = encrypt.hash(admin["password"])
-    db_admin = models.DBManager(**admin)
-
-    db.add(db_admin)
-    db.commit()
-    db.refresh(db_admin)
-
-    assert db_admin.email == admin['email']
-    assert db_admin.first_name == admin['first_name']
-    assert db_admin.last_name == admin['last_name']
-    assert db_admin.role == admin['role']
-    assert db_admin.access == admin['access']
-
-    return admin
-
-
-
-
-@pytest.fixture
-def test_editor():
-    db = TestingSessionLocal()
-    
-    editor = {
-        "email": "editor@gmail.com",
-        "first_name": "Editor",
-        "last_name": "User",
-        "role": "EDITOR",
-        "access": "READ_WRITE_MODIFY",
-        "password": "123"
-    }
-
-    editor["password"] = encrypt.hash(editor["password"])
-    db_editor = models.DBManager(**editor)
-
-    db.add(db_editor)
-    db.commit()
-    db.refresh(db_editor)
-
-    assert db_editor.email == editor['email']
-    assert db_editor.first_name == editor['first_name']
-    assert db_editor.last_name == editor['last_name']
-    assert db_editor.role == editor['role']
-    assert db_editor.access == editor['access']
-
-    return editor
+    return _create_user
 
 
 @pytest.fixture()
@@ -134,7 +73,7 @@ def client(session):
 
 @pytest.fixture()
 def authorized_client(session):
-    def _authorized_client(db_manager):
+    def _authorized_client(user):
         def override_get_db():
             try:
                 yield session
@@ -142,8 +81,53 @@ def authorized_client(session):
                 session.close()
         
         app.dependency_overrides[get_db] = override_get_db
-        access_token = create_access_token({"email": db_manager['email']})
+        access_token = create_access_token({"email": user['email'], "role": user['role'], "access": user['access']})
         headers = {"Authorization": f"Bearer {access_token}"}
         return TestClient(app, headers=headers)
 
     yield _authorized_client
+
+
+@pytest.fixture
+def test_users(test_user):
+    return {
+        "superuser": test_user("superuser@example.com", "SUPERUSER", "ALL"),
+        "admin": test_user("admin@example.com", "ADMIN", "ALL"),
+        "editor_read_only": test_user("editor.read.only@example.com", "EDITOR", "READ_ONLY"),
+        "editor_read_write": test_user("editor.read.write@example.com", "EDITOR", "READ_WRITE"),
+        "editor_read_write_modify": test_user("editor.read.write.modify@example.com", "EDITOR", "READ_WRITE_MODIFY"),
+        "editor_all": test_user("editor.all@example.com", "EDITOR", "ALL"),
+    }
+
+
+@pytest.fixture
+def sample_word_input():
+    return {
+        "sanskrit_word": "स्वर्ग",
+        "english_transliteration": "svarga",
+    }
+
+
+@pytest.fixture
+def sample_word_output():
+    return {
+        "id": 1,
+        "sanskrit_word": "स्वर्ग",
+        "english_transliteration": "svarga",
+    }
+
+
+@pytest.fixture
+def sample_meaning_input():
+    return {
+        "meaning": "test"
+    }
+
+
+@pytest.fixture
+def sample_meaning_output():
+    return {
+        "id": 1,
+        "sanskrit_word_id": 1,
+        "meaning": "test"
+    }

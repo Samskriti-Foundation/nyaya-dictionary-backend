@@ -14,7 +14,7 @@ router = APIRouter(
 )
 
 
-@router.get("/{word}/{meaning_id}/nyaya_text_references", response_model=List[schemas.NyayaTextReferenceOut])
+@router.get("/{word}/{meaning_id}/nyaya-text-references", response_model=List[schemas.NyayaTextReferenceOut])
 def get_word_nyaya_text_references(word: str, meaning_id: int, db: Session = Depends(get_db)):
     if isDevanagariWord(word):
         db_word = db.query(models.SanskritWord).filter(models.SanskritWord.sanskrit_word == word).first()
@@ -29,7 +29,7 @@ def get_word_nyaya_text_references(word: str, meaning_id: int, db: Session = Dep
     return db_nyaya_text_references
 
 
-@router.get("/{word}/{meaning_id}/nyaya_text_references/{nyaya_text_id}", response_model=schemas.NyayaTextReferenceOut)
+@router.get("/{word}/{meaning_id}/nyaya-text-references/{nyaya_text_id}", response_model=schemas.NyayaTextReferenceOut)
 def get_word_reference_nyaya_text(word: str, meaning_id: int, nyaya_text_id: int, db: Session = Depends(get_db)):
     if isDevanagariWord(word):
         db_word = db.query(models.SanskritWord).filter(models.SanskritWord.sanskrit_word == word).first()
@@ -47,7 +47,7 @@ def get_word_reference_nyaya_text(word: str, meaning_id: int, nyaya_text_id: int
     return db_reference_nyaya_text
 
 
-@router.post("/{word}/{meaning_id}/nyaya_text_references", status_code=status.HTTP_201_CREATED)
+@router.post("/{word}/{meaning_id}/nyaya-text-references", status_code=status.HTTP_201_CREATED)
 def create_word_reference_nyaya_text(word: str, meaning_id: int, reference_nyaya_text: schemas.NyayaTextReference, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
     if access_to_int(current_db_manager.access) < access_to_int(schemas.Access.READ_WRITE):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
@@ -66,7 +66,7 @@ def create_word_reference_nyaya_text(word: str, meaning_id: int, reference_nyaya
     db.refresh(new_reference_nyaya_text)
 
 
-@router.put("{word}/{meaning_id}/nyaya_text_references/{nyaya_text_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.put("/{word}/{meaning_id}/nyaya-text-references/{nyaya_text_id}", status_code=status.HTTP_204_NO_CONTENT)
 def update_word_reference_nyaya_text(word: str, meaning_id: int, nyaya_text_id: int, reference_nyaya_text: schemas.NyayaTextReference, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
     if access_to_int(current_db_manager.access) < access_to_int(schemas.Access.READ_WRITE_MODIFY):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
@@ -90,7 +90,7 @@ def update_word_reference_nyaya_text(word: str, meaning_id: int, nyaya_text_id: 
     db.commit()
 
 
-@router.delete("/{word}/{meaning_id}/nyaya_text_references/{nyaya_text_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{word}/{meaning_id}/nyaya-text-references/{nyaya_text_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_word_reference_nyaya_text(word: str, meaning_id: int, nyaya_text_id: int, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
     if access_to_int(current_db_manager.access) < access_to_int(schemas.Access.ALL):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
@@ -103,13 +103,13 @@ def delete_word_reference_nyaya_text(word: str, meaning_id: int, nyaya_text_id: 
     if not db_word:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Word - {word} not found")
     
-    db.query(models.ReferenceNyayaText).filter(models.ReferenceNyayaText.id == nyaya_text_id).delete()
+    db.query(models.ReferenceNyayaText).filter(models.ReferenceNyayaText.meaning_id == meaning_id, models.ReferenceNyayaText.id == nyaya_text_id).delete()
     db.commit()
 
 
-@router.delete("/{word}/{meaning_id}/nyaya_text_references", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{word}/{meaning_id}/nyaya-text-references", status_code=status.HTTP_204_NO_CONTENT)
 def delete_word_nyaya_text_references(word: str, meaning_id: int, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
-    if access_to_int(current_db_manager.access) < access_to_int(schemas.Access.READ_WRITE):
+    if access_to_int(current_db_manager.access) < access_to_int(schemas.Access.ALL):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
     if isDevanagariWord(word):

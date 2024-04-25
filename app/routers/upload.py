@@ -10,6 +10,14 @@ router = APIRouter(
 )
 
 
+"""
+
+-- IDEA --
+
+Keep a count of existing words, new_words and send it back after inserting
+
+"""
+
 def checkFileTypeAndReturnDataFrame(file: UploadFile) -> pd.DataFrame | None:
     if file.filename.endswith(".csv"):
         df = pd.read_csv(file.file)

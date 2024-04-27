@@ -4,4 +4,4 @@ venv/
 .pytest_cache
 ~$Dictionary Test.xlsx
 *.db-journal
-*.db
+test.db

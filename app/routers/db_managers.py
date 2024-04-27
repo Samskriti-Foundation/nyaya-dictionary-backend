@@ -48,16 +48,21 @@ def get_db_manager(email: str, db: Session = Depends(get_db), current_db_manager
     return db_manager_in_db
 
 
-@router.put("/")
-def update_db_manager(db_manager: schemas.DBManagerUpdate, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(auth_middleware.get_current_db_manager_is_admin)):
-    db_manager_in_db = db.query(models.DBManager).filter(models.DBManager.email == db_manager.email).first()
+@router.put("/{email}", status_code=status.HTTP_200_OK)
+def update_db_manager(email: str, db_manager: schemas.DBManagerUpdate, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(auth_middleware.get_current_db_manager_is_admin)):
+    db_manager_in_db = db.query(models.DBManager).filter(models.DBManager.email == email).first()
 
     if not db_manager_in_db:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"db_manager with email {db_manager.email} not found")
     
     auth_middleware.check_access_in_accessing_db_manager(current_db_manager, db_manager_in_db)
     
+    db_manager_in_db.first_name = db_manager.first_name
+    db_manager_in_db.last_name = db_manager.last_name
+    db_manager_in_db.email = db_manager.email
     db_manager_in_db.role = db_manager.role
+    db_manager_in_db.access = db_manager.access
+
     db.commit()
     db.refresh(db_manager_in_db)
 

@@ -6,7 +6,7 @@ from app import models, schemas
 from typing import List
 from app.utils.converter import access_to_int
 from app.utils.lang import isDevanagariWord
-from app.middleware import auth_middleware
+from app.middleware import auth_middleware, logger_middleware
 
 
 router = APIRouter(
@@ -48,7 +48,7 @@ def get_word_anyonym(word: str, meaning_id: int, antonym_id: int, db: Session = 
     return db_antonym
 
 @router.post("/{word}/{meaning_id}/antonyms", status_code=status.HTTP_201_CREATED)
-def create_word_antonym(word: str, meaning_id: int, antonym: schemas.Antonym, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+async def create_word_antonym(word: str, meaning_id: int, antonym: schemas.Antonym, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
     if access_to_int(current_db_manager.access) < access_to_int(schemas.Access.READ_WRITE):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
@@ -66,11 +66,13 @@ def create_word_antonym(word: str, meaning_id: int, antonym: schemas.Antonym, db
     db.commit()
     db.refresh(new_antonym)
 
+    await logger_middleware.log_database_operations("antonyms", new_antonym.id, "CREATE", current_db_manager.email, antonym.antonym)
+
     return JSONResponse(status_code=status.HTTP_201_CREATED, content={"message": "Successfully created antonym"})
 
 
 @router.put("/{word}/{meaning_id}/antonyms/{antonym_id}", status_code=status.HTTP_204_NO_CONTENT)
-def update_word_antonym(word: str, meaning_id: int, antonym_id: int, antonym: schemas.Antonym, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+async def update_word_antonym(word: str, meaning_id: int, antonym_id: int, antonym: schemas.Antonym, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
     if access_to_int(current_db_manager.access) < access_to_int(schemas.Access.READ_WRITE_MODIFY):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
@@ -91,9 +93,11 @@ def update_word_antonym(word: str, meaning_id: int, antonym_id: int, antonym: sc
     db.commit()
     db.refresh(db_antonym)
 
+    await logger_middleware.log_database_operations("antonyms", antonym_id, "UPDATE", current_db_manager.email, antonym.antonym)
+
 
 @router.delete("/{word}/{meaning_id}/antonyms/{antonym_id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_word_antonym(word: str, meaning_id: int, antonym_id: int, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+async def delete_word_antonym(word: str, meaning_id: int, antonym_id: int, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
     if access_to_int(current_db_manager.access) < access_to_int(schemas.Access.ALL):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
@@ -105,12 +109,19 @@ def delete_word_antonym(word: str, meaning_id: int, antonym_id: int, db: Session
     if not db_word:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Word - {word} not found")
     
+    antonym = db.query(models.Antonym).filter(models.Antonym.sanskrit_word_id == db_word.id, models.Antonym.meaning_id == meaning_id, models.Antonym.id == antonym_id).first()
+    
+    if not antonym:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Antonym - {antonym} not found")
+    
     db.query(models.Antonym).filter(models.Antonym.sanskrit_word_id == db_word.id, models.Antonym.meaning_id == meaning_id, models.Antonym.id == antonym_id).delete()
     db.commit()
 
+    await logger_middleware.log_database_operations("antonyms", antonym_id, "DELETE", current_db_manager.email, antonym.antonym)
+
 
 @router.delete("/{word}/{meaning_id}/antonyms", status_code=status.HTTP_204_NO_CONTENT)
-def delete_word_antonyms(word: str, meaning_id: int, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+async def delete_word_antonyms(word: str, meaning_id: int, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
     if access_to_int(current_db_manager.access) < access_to_int(schemas.Access.ALL):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
@@ -124,3 +135,5 @@ def delete_word_antonyms(word: str, meaning_id: int, db: Session = Depends(get_d
     
     db.query(models.Antonym).filter(models.Antonym.sanskrit_word_id == db_word.id, models.Antonym.meaning_id == meaning_id).delete()
     db.commit()
+
+    await logger_middleware.log_database_operations("antonyms", meaning_id, "DELETE_ALL", current_db_manager.email)

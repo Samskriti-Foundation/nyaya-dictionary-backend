@@ -6,6 +6,7 @@ from app.utils.lang import isDevanagariWord
 from app.utils.converter import access_to_int
 from app import schemas, models
 from app.middleware.auth_middleware import get_current_db_manager
+from app.middleware.logger_middleware import log_database_operations
 from typing import List
 
 
@@ -59,7 +60,7 @@ def get_word_etymology(word: str, meaning_id: int, etymology_id: int, db: Sessio
 
 
 @router.post("/{word}/{meaning_id}/etymologies")
-def add_word_etymology(word: str, meaning_id: int, etymology: schemas.Etymology, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(get_current_db_manager)):
+async def add_word_etymology(word: str, meaning_id: int, etymology: schemas.Etymology, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(get_current_db_manager)):
     if access_to_int(current_db_manager.access) < access_to_int(schemas.Access.READ_WRITE):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
 
@@ -81,11 +82,13 @@ def add_word_etymology(word: str, meaning_id: int, etymology: schemas.Etymology,
     db.commit()
     db.refresh(etymology)
 
+    await log_database_operations("etymology", etymology.id, "CREATE", current_db_manager.email, etymology.etymology)
+
     return JSONResponse(status_code=status.HTTP_201_CREATED, content={"message": "Etymology added successfully"})
 
 
 @router.put("/{word}/{meaning_id}/etymologies/{etymology_id}", status_code=status.HTTP_204_NO_CONTENT)
-def update_word_etymology(word: str, meaning_id: int, etymology_id: int, etymology: schemas.Etymology, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(get_current_db_manager)):
+async def update_word_etymology(word: str, meaning_id: int, etymology_id: int, etymology: schemas.Etymology, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(get_current_db_manager)):
     if access_to_int(current_db_manager.access) < access_to_int(schemas.Access.READ_WRITE_MODIFY):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
 
@@ -113,9 +116,11 @@ def update_word_etymology(word: str, meaning_id: int, etymology_id: int, etymolo
     db.commit()
     db.refresh(db_etymology)
 
+    await log_database_operations("etymology", db_etymology.id, "UPDATE", current_db_manager.email, db_etymology.etymology)
+
 
 @router.delete("/{word}/{meaning_id}/etymologies", status_code=status.HTTP_204_NO_CONTENT)
-def delete_word_etymologies(word: str, meaning_id: int, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(get_current_db_manager)):
+async def delete_word_etymologies(word: str, meaning_id: int, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(get_current_db_manager)):
     if access_to_int(current_db_manager.access) < access_to_int(schemas.Access.ALL):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
 
@@ -129,12 +134,13 @@ def delete_word_etymologies(word: str, meaning_id: int, db: Session = Depends(ge
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Word - {word} not found")
     
     db.query(models.Etymology).filter(models.Etymology.sanskrit_word_id == db_word.id, models.Etymology.meaning_id == meaning_id).delete()
-
     db.commit()
+
+    await log_database_operations("etymology", meaning_id, "DELETE_ALL", current_db_manager.email)
 
 
 @router.delete("/{word}/{meaning_id}/etymologies/{etymology_id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_word_etymology(word: str, meaning_id: int, etymology_id: int, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(get_current_db_manager)):
+async def delete_word_etymology(word: str, meaning_id: int, etymology_id: int, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(get_current_db_manager)):
     if access_to_int(current_db_manager.access) < access_to_int(schemas.Access.ALL):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
 
@@ -147,5 +153,12 @@ def delete_word_etymology(word: str, meaning_id: int, etymology_id: int, db: Ses
     if not db_word:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Word - {word} not found")
     
-    db.query(models.Etymology).filter(models.Etymology.sanskrit_word_id == db_word.id, models.Etymology.meaning_id == meaning_id, models.Etymology.id == etymology_id).delete(synchronize_session=False)
+    db_etymology = db.query(models.Etymology).filter(models.Etymology.sanskrit_word_id == db_word.id, models.Etymology.meaning_id == meaning_id, models.Etymology.id == etymology_id).first()
+
+    if not db_etymology:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Etymology - {etymology_id} not found")
+    
+    db.query(models.Etymology).filter(models.Etymology.sanskrit_word_id == db_word.id, models.Etymology.meaning_id == meaning_id, models.Etymology.id == etymology_id).delete()
     db.commit()
+
+    await log_database_operations("etymology", etymology_id, "DELETE", current_db_manager.email, db_etymology.etymology)

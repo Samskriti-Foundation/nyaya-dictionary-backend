@@ -6,7 +6,7 @@ from app import models, schemas
 from typing import List
 from app.utils.converter import access_to_int
 from app.utils.lang import isDevanagariWord
-from app.middleware import auth_middleware
+from app.middleware import auth_middleware, logger_middleware
 
 
 router = APIRouter(
@@ -49,7 +49,7 @@ def get_word_synonym(word: str, meaning_id: int, synonym_id: int, db: Session = 
 
 
 @router.post("/{word}/{meaning_id}/synonyms", status_code=status.HTTP_201_CREATED)
-def create_word_synonym(word: str, meaning_id: int, synonym: schemas.Synonym, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+async def create_word_synonym(word: str, meaning_id: int, synonym: schemas.Synonym, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
     if access_to_int(current_user.access) < access_to_int(schemas.Access.READ_WRITE):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
@@ -67,11 +67,13 @@ def create_word_synonym(word: str, meaning_id: int, synonym: schemas.Synonym, db
     db.commit()
     db.refresh(new_synonym)
 
+    await logger_middleware.log_database_operations("synonyms", new_synonym.id, "CREATE", current_user.email, new_synonym.synonym)
+
     return JSONResponse(status_code=status.HTTP_201_CREATED, content={"message": "Synonym created successfully"})
 
 
 @router.put("/{word}/{meaning_id}/synonyms/{synonym_id}", status_code=status.HTTP_204_NO_CONTENT)
-def update_word_synonym(word: str, meaning_id: int, synonym_id: int, synonym: schemas.Synonym, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+async def update_word_synonym(word: str, meaning_id: int, synonym_id: int, synonym: schemas.Synonym, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
     if access_to_int(current_user.access) < access_to_int(schemas.Access.READ_WRITE_MODIFY):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
@@ -92,9 +94,11 @@ def update_word_synonym(word: str, meaning_id: int, synonym_id: int, synonym: sc
     db.commit()
     db.refresh(db_synonym)
 
+    await logger_middleware.log_database_operations("synonyms", db_synonym.id, "UPDATE", current_user.email, db_synonym.synonym)
+
 
 @router.delete("/{word}/{meaning_id}/synonyms/{synonym_id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_word_synonym(word: str, meaning_id: int, synonym_id: int, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+async def delete_word_synonym(word: str, meaning_id: int, synonym_id: int, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
     if access_to_int(current_user.access) < access_to_int(schemas.Access.ALL):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
@@ -114,10 +118,11 @@ def delete_word_synonym(word: str, meaning_id: int, synonym_id: int, db: Session
     db.query(models.Synonym).filter(models.Synonym.sanskrit_word_id == db_word.id, models.Synonym.meaning_id == meaning_id, models.Synonym.id == synonym_id).delete()
     db.commit()
 
+    await logger_middleware.log_database_operations("synonyms", db_synonym.id, "DELETE", current_user.email, db_synonym.synonym)
 
 
 @router.delete("/{word}/{meaning_id}/synonyms", status_code=status.HTTP_204_NO_CONTENT)
-def delete_word_synonyms(word: str, meaning_id: int, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+async def delete_word_synonyms(word: str, meaning_id: int, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
     if access_to_int(current_user.access) < access_to_int(schemas.Access.ALL):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
@@ -132,3 +137,5 @@ def delete_word_synonyms(word: str, meaning_id: int, db: Session = Depends(get_d
     
     db.query(models.Synonym).filter(models.Synonym.sanskrit_word_id == db_word.id, models.Synonym.meaning_id == meaning_id).delete()
     db.commit()
+
+    await logger_middleware.log_database_operations("synonyms", meaning_id, "DELETE", current_user.email, "ALL")

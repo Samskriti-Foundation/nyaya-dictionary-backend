@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from app import models, schemas
 from app.utils.converter import access_to_int
 from app.utils.lang import isDevanagariWord
-from app.middleware import auth_middleware
+from app.middleware import auth_middleware, logger_middleware
 from typing import List
 
 
@@ -49,7 +49,7 @@ def get_word_example(word: str, meaning_id: int, examples_id: int, db: Session =
     
 
 @router.post("/{word}/{meaning_id}/examples", status_code=status.HTTP_201_CREATED)
-def create_word_example(word: str, meaning_id: int, example: schemas.Example, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+async def create_word_example(word: str, meaning_id: int, example: schemas.Example, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
     if access_to_int(current_user.access) < access_to_int(schemas.Access.READ_WRITE):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
@@ -67,11 +67,13 @@ def create_word_example(word: str, meaning_id: int, example: schemas.Example, db
     db.commit()
     db.refresh(new_example)
 
+    await logger_middleware.log_database_operations("examples", new_example.id, "CREATE", current_user.email, f"{new_example.example_sentence} - {new_example.applicable_modern_context}")
+
     return JSONResponse(status_code=status.HTTP_201_CREATED, content={"message": "Example created successfully"})
 
 
 @router.put("/{word}/{meaning_id}/examples/{examples_id}", status_code=status.HTTP_204_NO_CONTENT)
-def update_word_example(word: str, meaning_id: int, examples_id: int, example: schemas.Example, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+async def update_word_example(word: str, meaning_id: int, examples_id: int, example: schemas.Example, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
     if access_to_int(current_user.access) < access_to_int(schemas.Access.READ_WRITE_MODIFY):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
@@ -93,9 +95,11 @@ def update_word_example(word: str, meaning_id: int, examples_id: int, example: s
     db.commit()
     db.refresh(db_example)
 
+    await logger_middleware.log_database_operations("examples", examples_id, "UPDATE", current_user.email, f"{db_example.example_sentence} - {db_example.applicable_modern_context}")
+
 
 @router.delete("/{word}/{meaning_id}/examples/{examples_id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_word_example(word: str, meaning_id: int, examples_id: int, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+async def delete_word_example(word: str, meaning_id: int, examples_id: int, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
     if access_to_int(current_user.access) < access_to_int(schemas.Access.ALL):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
@@ -107,12 +111,19 @@ def delete_word_example(word: str, meaning_id: int, examples_id: int, db: Sessio
     if not db_word:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Word - {word} not found")
     
+    db_example = db.query(models.Example).filter(models.Example.meaning_id == meaning_id, models.Example.id == examples_id).first()
+
+    if not db_example:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Example - {examples_id} not found")
+    
     db.query(models.Example).filter(models.Example.meaning_id == meaning_id, models.Example.id == examples_id).delete()
     db.commit()
 
+    await logger_middleware.log_database_operations("examples", examples_id, "DELETE", current_user.email, db_example.example_sentence)
+
 
 @router.delete("/{word}/{meaning_id}/examples", status_code=status.HTTP_204_NO_CONTENT)
-def delete_word_examples(word: str, meaning_id, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+async def delete_word_examples(word: str, meaning_id, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
     if access_to_int(current_user.access) < access_to_int(schemas.Access.ALL):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
@@ -126,3 +137,5 @@ def delete_word_examples(word: str, meaning_id, db: Session = Depends(get_db), c
     
     db.query(models.Example).filter(models.Example.sanskrit_word_id == db_word.id, models.Example.meaning_id == meaning_id).delete()
     db.commit()
+
+    await logger_middleware.log_database_operations("examples", meaning_id, "DELETE_ALL", current_user.email)

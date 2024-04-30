@@ -8,7 +8,7 @@ from indic_transliteration import sanscript
 from indic_transliteration.sanscript import transliterate
 from app.utils.converter import access_to_int
 from app.utils.lang import isDevanagariWord
-from app.middleware import auth_middleware
+from app.middleware import auth_middleware, logger_middleware
 
 
 router = APIRouter(
@@ -77,7 +77,7 @@ def get_word(word: str, db: Session = Depends(get_db)):
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
-def create_word(word: schemas.WordCreate, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+async def create_word(word: schemas.WordCreate, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
     if access_to_int(current_db_manager.access) < access_to_int(schemas.Access.READ_WRITE):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
@@ -103,11 +103,13 @@ def create_word(word: schemas.WordCreate, db: Session = Depends(get_db), current
     db.commit()
     db.refresh(new_word)
 
+    await logger_middleware.log_database_operations(table_name="sanskrit_words", record_id=new_word.id, operation="CREATE", db_manager_email=current_db_manager.email, new_value=f"{new_word.sanskrit_word} - {new_word.english_transliteration}")
+
     return JSONResponse(status_code=status.HTTP_201_CREATED, content={"message": "Word added successfully"})
 
 
-@router.put("/{word}", status_code=status.HTTP_200_OK)
-def update_word(word: str, wordIn: schemas.WordUpdate, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+@router.put("/{word}", status_code=status.HTTP_204_NO_CONTENT)
+async def update_word(word: str, wordIn: schemas.WordUpdate, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
     if access_to_int(current_db_manager.access) < access_to_int(schemas.Access.READ_WRITE_MODIFY):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
 
@@ -134,12 +136,10 @@ def update_word(word: str, wordIn: schemas.WordUpdate, db: Session = Depends(get
     db.commit()
     db.refresh(db_word)
     
-    return JSONResponse(status_code=status.HTTP_200_OK, content={"message": "Word updated successfully", "word": db_word.sanskrit_word})
-
-
+    await logger_middleware.log_database_operations(table_name="sanskrit_words", record_id=db_word.id, operation="UPDATE", db_manager_email=current_db_manager.email, new_value=f"{db_word.sanskrit_word} - {db_word.english_transliteration}")
 
 @router.delete("/{word}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_word(word: str, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+async def delete_word(word: str, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
     if access_to_int(current_db_manager.access) < access_to_int(schemas.Access.ALL):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
 
@@ -150,6 +150,8 @@ def delete_word(word: str, db: Session = Depends(get_db), current_db_manager: sc
 
     if not db_word:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Word - {word} not found")
+    
+    word_id = db_word.id
 
     db.query(models.Meaning).filter(models.Meaning.sanskrit_word_id == db_word.id).delete(synchronize_session=False)
     db.query(models.Etymology).filter(models.Etymology.sanskrit_word_id == db_word.id).delete(synchronize_session=False)
@@ -162,3 +164,5 @@ def delete_word(word: str, db: Session = Depends(get_db), current_db_manager: sc
     db.query(models.SanskritWord).filter(models.SanskritWord.id == db_word.id).delete(synchronize_session=False)
 
     db.commit()
+
+    await logger_middleware.log_database_operations(table_name="sanskrit_words", record_id=word_id, operation="DELETE", db_manager_email=current_db_manager.email, new_value=word)

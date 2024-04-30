@@ -51,12 +51,12 @@ def test_get_word(authorized_client, test_users, client, sample_input_data, samp
 
 
 @pytest.mark.parametrize("user_role, expected_status_code", [
-    ("superuser", 200),
-    ("admin", 200),
+    ("superuser", 204),
+    ("admin", 204),
     ("editor_read_only", 403),
     ("editor_read_write", 403),
-    ("editor_read_write_modify", 200),
-    ("editor_all", 200),
+    ("editor_read_write_modify", 204),
+    ("editor_all", 204),
 ])
 def test_update_word(authorized_client, user_role, test_users, sample_input_data, expected_status_code):
     authorized_admin = authorized_client(test_users["admin"])
@@ -70,7 +70,7 @@ def test_update_word(authorized_client, user_role, test_users, sample_input_data
     })
     assert response.status_code == expected_status_code
 
-    if expected_status_code == 200:
+    if expected_status_code == 204:
         response: Response = authorized_user.get(f"/words/{sample_input_data['sanskrit_word']}")
         assert response.json()["english_transliteration"] == "svarg"
 

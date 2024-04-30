@@ -6,7 +6,7 @@ from app import models, schemas
 from typing import List
 from app.utils.converter import access_to_int
 from app.utils.lang import isDevanagariWord
-from app.middleware import auth_middleware
+from app.middleware import auth_middleware, logger_middleware
 
 
 router = APIRouter(
@@ -49,7 +49,7 @@ def get_word_derivation(word: str, meaning_id: int, derivation_id: int, db: Sess
 
 
 @router.post("/{word}/{meaning_id}/derivations")
-def create_word_derivation(word: str, meaning_id: int, derivation: schemas.Derivation, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+async def create_word_derivation(word: str, meaning_id: int, derivation: schemas.Derivation, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
     if access_to_int(current_user.access) < access_to_int(schemas.Access.READ_WRITE):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
@@ -67,11 +67,13 @@ def create_word_derivation(word: str, meaning_id: int, derivation: schemas.Deriv
     db.commit()
     db.refresh(db_derivation)
 
+    await logger_middleware.log_database_operations("derivations", db_derivation.id, "CREATE", current_user.email, db_derivation.derivation)
+
     return JSONResponse(status_code=status.HTTP_201_CREATED, content={"message": "Derivation added successfully"})
 
 
 @router.put("/{word}/{meaning_id}/derivations/{derivation_id}")
-def update_word_derivation(word: str, meaning_id: int, derivation_id: int, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+async def update_word_derivation(word: str, meaning_id: int, derivation_id: int, derivation: schemas.Derivation, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
     if access_to_int(current_user.access) < access_to_int(schemas.Access.READ_WRITE_MODIFY):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
@@ -83,14 +85,18 @@ def update_word_derivation(word: str, meaning_id: int, derivation_id: int, db: S
     if not db_word:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Word - {word} not found")
     
-    db.query(models.Derivation).filter(models.Derivation.sanskrit_word_id == db_word.id, models.Derivation.meaning_id == meaning_id, models.Derivation.id == derivation_id).update({"derivation": ""})
+    updated_derivation = db.query(models.Derivation).filter(models.Derivation.sanskrit_word_id == db_word.id, models.Derivation.meaning_id == meaning_id, models.Derivation.id == derivation_id).first()
+    updated_derivation.derivation = derivation.derivation
+    
     db.commit()
+
+    await logger_middleware.log_database_operations("derivations", derivation_id, "UPDATE", current_user.email, derivation.derivation)
 
     return JSONResponse(status_code=status.HTTP_204_NO_CONTENT, content={"message": "Derivation updated successfully"})
 
 
 @router.delete("/{word}/{meaning_id}/derivations", status_code=status.HTTP_204_NO_CONTENT)
-def delete_word_derivations(word: str, meaning_id: int, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+async def delete_word_derivations(word: str, meaning_id: int, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
     if access_to_int(current_user.access) < access_to_int(schemas.Access.ALL):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
@@ -101,15 +107,15 @@ def delete_word_derivations(word: str, meaning_id: int, db: Session = Depends(ge
     
     if not db_word:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Word - {word} not found")
+    
     
     db.query(models.Derivation).filter(models.Derivation.sanskrit_word_id == db_word.id, models.Derivation.meaning_id == meaning_id).delete()
     db.commit()
 
-    return JSONResponse(status_code=status.HTTP_204_NO_CONTENT, content={"message": "Derivations deleted successfully"})
-
+    await logger_middleware.log_database_operations("derivations", meaning_id, "DELETE_ALL", current_user.email)
 
 @router.delete("/{word}/{meaning_id}/derivations/{derivation_id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_word_derivation(word: str, meaning_id: int, derivation_id: int, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+async def delete_word_derivation(word: str, meaning_id: int, derivation_id: int, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
     if access_to_int(current_user.access) < access_to_int(schemas.Access.ALL):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
@@ -121,7 +127,12 @@ def delete_word_derivation(word: str, meaning_id: int, derivation_id: int, db: S
     if not db_word:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Word - {word} not found")
     
+    db_derivation = db.query(models.Derivation).filter(models.Derivation.sanskrit_word_id == db_word.id, models.Derivation.meaning_id == meaning_id, models.Derivation.id == derivation_id).first()
+
+    if not db_derivation:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Derivation - {derivation_id} not found")
+    
     db.query(models.Derivation).filter(models.Derivation.sanskrit_word_id == db_word.id, models.Derivation.meaning_id == meaning_id, models.Derivation.id == derivation_id).delete()
     db.commit()
 
-    return JSONResponse(status_code=status.HTTP_204_NO_CONTENT, content={"message": "Derivation deleted successfully"})
+    await logger_middleware.log_database_operations("derivations", derivation_id, "DELETE", current_user.email, db_derivation.derivation)

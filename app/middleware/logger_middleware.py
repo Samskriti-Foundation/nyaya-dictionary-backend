@@ -5,6 +5,6 @@ async def log_database_operations(table_name: str, record_id: str, operation: st
     db_logger.info(log_message)
 
 
-async def log_login_operations(client: str):
-    log_message = f"{client}"
+async def log_login_operations(client: str, db_manager_email: str):
+    log_message = f"{client} - {db_manager_email}"
     auth_logger.info(log_message)

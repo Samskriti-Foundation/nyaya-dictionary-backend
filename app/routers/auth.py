@@ -27,7 +27,7 @@ async def login(request: Request, user_credentials: OAuth2PasswordRequestForm = 
     access_token = oauth2.create_access_token(data={'email': db_manager.email, 'role': db_manager.role, 'access': db_manager.access})
     
     client = request.scope["client"]
-    await logger_middleware.log_login_operations(client)
+    await logger_middleware.log_login_operations(client, db_manager.email)
 
     return {'access_token':access_token,'token_type':'bearer'}
 

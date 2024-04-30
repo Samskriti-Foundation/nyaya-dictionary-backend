@@ -138,4 +138,4 @@ async def delete_word_synonyms(word: str, meaning_id: int, db: Session = Depends
     db.query(models.Synonym).filter(models.Synonym.sanskrit_word_id == db_word.id, models.Synonym.meaning_id == meaning_id).delete()
     db.commit()
 
-    await logger_middleware.log_database_operations("synonyms", meaning_id, "DELETE", current_user.email, "ALL")
+    await logger_middleware.log_database_operations("synonyms", meaning_id, "DELETE_ALL", current_user.email)

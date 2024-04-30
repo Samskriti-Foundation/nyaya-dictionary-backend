@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Request, status
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
@@ -6,7 +6,8 @@ from fastapi.security.oauth2 import OAuth2PasswordRequestForm
 from app import schemas, models, oauth2
 from app.utils import encrypt
 from app.database import get_db
-from app.middleware import auth_middleware
+from app.middleware import auth_middleware, logger_middleware
+
 
 router = APIRouter(
     prefix='/auth',
@@ -14,7 +15,7 @@ router = APIRouter(
     )
 
 @router.post('/login',response_model=schemas.Token)
-def login(user_credentials: OAuth2PasswordRequestForm = Depends(),db: Session = Depends(get_db)):
+async def login(request: Request, user_credentials: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     db_manager = db.query(models.DBManager).filter(models.DBManager.email == user_credentials.username).first()
 
     if not db_manager:
@@ -25,6 +26,9 @@ def login(user_credentials: OAuth2PasswordRequestForm = Depends(),db: Session = 
     
     access_token = oauth2.create_access_token(data={'email': db_manager.email, 'role': db_manager.role, 'access': db_manager.access})
     
+    client = request.scope["client"]
+    await logger_middleware.log_login_operations(client)
+
     return {'access_token':access_token,'token_type':'bearer'}
 
 
@@ -53,7 +57,7 @@ def register_db_manager(db_manager: schemas.DBManagerIn, db: Session = Depends(g
 
 
 @router.post("/register/superuser", status_code=status.HTTP_201_CREATED)
-def register_superuser(superuser: schemas.DBManagerIn, db: Session = Depends(get_db)):#, current_user: int = Depends(oauth2.get_current_user)):
+def register_superuser(superuser: schemas.DBManagerIn, db: Session = Depends(get_db)):
     db_superuser = db.query(models.DBManager).filter(models.DBManager.email == superuser.email).first()
     
     if db_superuser:

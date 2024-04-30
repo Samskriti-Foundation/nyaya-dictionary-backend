@@ -1,10 +1,8 @@
 from fastapi import FastAPI
-from . import models
+from app import models
 from app.database import engine
 from app.routers import db_managers, search, upload, auth, word_nyaya_text_references, words, word_antonyms, word_derivations, word_etymologies, word_synonyms, word_translations, word_examples, word_meaning
 from fastapi.middleware.cors import CORSMiddleware
-from starlette.middleware.base import BaseHTTPMiddleware
-from app.middleware.logger_middleware import log_database_operations, log_login_operations
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -15,10 +13,6 @@ app = FastAPI(
     title="Nyaya Khosha",
     description=description,
 )
-
-# app.add_middleware(BaseHTTPMiddleware, dispatch=log_database_operations)
-# app.add_middleware(BaseHTTPMiddleware, dispatch=log_login_operations)
-
 
 origins = [
     "http://localhost:5173",

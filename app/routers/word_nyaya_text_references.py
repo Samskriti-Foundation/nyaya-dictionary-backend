@@ -137,4 +137,4 @@ async def delete_word_nyaya_text_references(word: str, meaning_id: int, db: Sess
     db.query(models.ReferenceNyayaText).filter(models.ReferenceNyayaText.sanskrit_word_id == db_word.id, models.ReferenceNyayaText.meaning_id == meaning_id).delete()
     db.commit()
 
-    await logger_middleware.log_database_operations("reference_nyaya_texts", meaning_id, "DELETE", current_db_manager.email, "ALL")
+    await logger_middleware.log_database_operations("reference_nyaya_texts", meaning_id, "DELETE_ALL", current_db_manager.email)

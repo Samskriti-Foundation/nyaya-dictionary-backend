@@ -1,6 +1,7 @@
 from pydantic import BaseModel, EmailStr
-from typing import List, Optional, Dict
+from typing import List, Optional
 from enum import Enum
+from datetime import datetime
 
 
 class Meaning(BaseModel):
@@ -151,6 +152,20 @@ class PasswordUpdate(BaseModel):
     current_password: str | bytes
     new_password: str | bytes
 
+
+class DBLog(BaseModel):
+    timestamp: datetime
+    table_name: str
+    record_id: int
+    operation: str
+    db_manager_email: str
+    affected_value: str
+
+
+class AuthLog(BaseModel):
+    timestamp: datetime
+    client_ip: str
+    db_manager_email: str
 
 class Token(BaseModel):
     access_token: str

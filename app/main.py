@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from app import models
 from app.database import engine
-from app.routers import db_managers, search, upload, auth, word_nyaya_text_references, words, word_antonyms, word_derivations, word_etymologies, word_synonyms, word_translations, word_examples, word_meaning
+from app.routers import db_managers, search, upload, auth, word_nyaya_text_references, words, word_antonyms, word_derivations, word_etymologies, word_synonyms, word_translations, word_examples, word_meaning, logs
 from fastapi.middleware.cors import CORSMiddleware
 
 models.Base.metadata.create_all(bind=engine)
@@ -30,6 +30,7 @@ app.include_router(auth.router)
 app.include_router(db_managers.router)
 app.include_router(search.router)
 app.include_router(upload.router)
+app.include_router(logs.router)
 app.include_router(words.router)
 app.include_router(word_meaning.router)
 app.include_router(word_etymologies.router)

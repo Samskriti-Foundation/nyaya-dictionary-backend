@@ -5,4 +5,4 @@ venv/
 ~$Dictionary Test.xlsx
 *.db-journal
 *.db
-logs
+logs/

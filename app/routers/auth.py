@@ -25,11 +25,25 @@ async def login(request: Request, user_credentials: OAuth2PasswordRequestForm = 
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,detail='Invalid Credentials')
     
     access_token = oauth2.create_access_token(data={'email': db_manager.email, 'role': db_manager.role, 'access': db_manager.access})
+    refresh_token = oauth2.create_refresh_token(data={'email': db_manager.email, 'role': db_manager.role, 'access': db_manager.access})
     
     client = request.scope["client"]
     await logger_middleware.log_login_operations(client, db_manager.email)
 
-    return {'access_token':access_token,'token_type':'bearer'}
+    return {'access_token':access_token, 'refresh_token':refresh_token,'token_type':'bearer'}
+
+
+@router.post("/refresh")
+def refresh(refresh_token: schemas.RefreshToken, db: Session = Depends(get_db)):
+    data = oauth2.verify_access_token(refresh_token.refresh_token, credentials_exception=HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate credentials", headers={"WWW-Authenticate": "Bearer"}))
+    
+    db_manager = db.query(models.DBManager).filter(models.DBManager.email == data.email).first()
+
+    if not db_manager:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+    
+    access_token = oauth2.create_access_token(data={'email': data.email, 'role': data.role, 'access': data.access})
+    return {'access_token':access_token, 'token_type':'bearer'}
 
 
 @router.post("/register", status_code=status.HTTP_201_CREATED)

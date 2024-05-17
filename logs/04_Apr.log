@@ -1,0 +1,549 @@
+INFO - 2024-04-30 10:35:14,973 - db_logger - sanskrit_words - 15 - DELETE - user@example.com - सुपर्वन्
+INFO - 2024-04-30 10:35:20,173 - db_logger - sanskrit_words - 15 - CREATE - user@example.com - सुपर्वन् - suparvan
+INFO - 2024-04-30 10:48:18,722 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 10:48:18,882 - db_logger - antonyms - 1 - CREATE - superuser@example.com - त्रिदिव
+INFO - 2024-04-30 10:48:24,159 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 10:48:24,404 - db_logger - antonyms - 1 - CREATE - admin@example.com - त्रिदिव
+INFO - 2024-04-30 10:48:30,069 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 10:48:35,788 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 10:48:35,944 - db_logger - antonyms - 1 - CREATE - editor.read.write@example.com - त्रिदिव
+INFO - 2024-04-30 10:48:41,473 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 10:48:41,643 - db_logger - antonyms - 1 - CREATE - editor.read.write.modify@example.com - त्रिदिव
+INFO - 2024-04-30 10:48:46,882 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 10:48:47,047 - db_logger - antonyms - 1 - CREATE - editor.all@example.com - त्रिदिव
+INFO - 2024-04-30 10:48:52,165 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 10:48:52,404 - db_logger - antonyms - 1 - CREATE - admin@example.com - त्रिदिव
+INFO - 2024-04-30 10:48:52,511 - db_logger - antonyms - 2 - CREATE - admin@example.com - त्रिदिव
+INFO - 2024-04-30 10:48:52,668 - db_logger - antonyms - 3 - CREATE - admin@example.com - त्रिदिव
+INFO - 2024-04-30 10:48:52,768 - db_logger - antonyms - 4 - CREATE - admin@example.com - त्रिदिव
+INFO - 2024-04-30 10:48:52,930 - db_logger - antonyms - 5 - CREATE - admin@example.com - त्रिदिव
+INFO - 2024-04-30 10:48:58,382 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 10:48:58,592 - db_logger - antonyms - 1 - CREATE - admin@example.com - त्रिदिव
+INFO - 2024-04-30 10:49:03,931 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 10:49:04,210 - db_logger - antonyms - 1 - CREATE - admin@example.com - त्रिदिव
+INFO - 2024-04-30 10:49:04,322 - db_logger - antonyms - 1 - UPDATE - superuser@example.com - सुरलोक
+INFO - 2024-04-30 10:49:09,711 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 10:49:09,905 - db_logger - antonyms - 1 - CREATE - admin@example.com - त्रिदिव
+INFO - 2024-04-30 10:49:10,001 - db_logger - antonyms - 1 - UPDATE - admin@example.com - सुरलोक
+INFO - 2024-04-30 10:49:15,369 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 10:49:15,560 - db_logger - antonyms - 1 - CREATE - admin@example.com - त्रिदिव
+INFO - 2024-04-30 10:49:20,731 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 10:49:20,891 - db_logger - antonyms - 1 - CREATE - admin@example.com - त्रिदिव
+INFO - 2024-04-30 10:49:26,211 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 10:49:26,407 - db_logger - antonyms - 1 - CREATE - admin@example.com - त्रिदिव
+INFO - 2024-04-30 10:49:26,514 - db_logger - antonyms - 1 - UPDATE - editor.read.write.modify@example.com - सुरलोक
+INFO - 2024-04-30 10:49:31,755 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 10:49:31,933 - db_logger - antonyms - 1 - CREATE - admin@example.com - त्रिदिव
+INFO - 2024-04-30 10:49:32,039 - db_logger - antonyms - 1 - UPDATE - editor.all@example.com - सुरलोक
+INFO - 2024-04-30 10:49:37,503 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 10:49:37,725 - db_logger - antonyms - 1 - CREATE - admin@example.com - त्रिदिव
+INFO - 2024-04-30 10:49:37,833 - db_logger - antonyms - 1 - DELETE - superuser@example.com - त्रिदिव
+INFO - 2024-04-30 10:49:43,264 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 10:49:43,459 - db_logger - antonyms - 1 - CREATE - admin@example.com - त्रिदिव
+INFO - 2024-04-30 10:49:43,535 - db_logger - antonyms - 1 - DELETE - admin@example.com - त्रिदिव
+INFO - 2024-04-30 10:49:48,977 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 10:49:49,194 - db_logger - antonyms - 1 - CREATE - admin@example.com - त्रिदिव
+INFO - 2024-04-30 10:49:54,536 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 10:49:54,691 - db_logger - antonyms - 1 - CREATE - admin@example.com - त्रिदिव
+INFO - 2024-04-30 10:49:59,994 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 10:50:00,194 - db_logger - antonyms - 1 - CREATE - admin@example.com - त्रिदिव
+INFO - 2024-04-30 10:50:05,750 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 10:50:05,966 - db_logger - antonyms - 1 - CREATE - admin@example.com - त्रिदिव
+INFO - 2024-04-30 10:50:06,082 - db_logger - antonyms - 1 - DELETE - editor.all@example.com - त्रिदिव
+INFO - 2024-04-30 10:50:11,516 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 10:50:11,662 - db_logger - antonyms - 1 - CREATE - admin@example.com - त्रिदिव
+INFO - 2024-04-30 10:50:11,743 - db_logger - antonyms - 1 - DELETE - superuser@example.com - ALL
+INFO - 2024-04-30 10:50:17,353 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 10:50:17,577 - db_logger - antonyms - 1 - CREATE - admin@example.com - त्रिदिव
+INFO - 2024-04-30 10:50:17,672 - db_logger - antonyms - 1 - DELETE - admin@example.com - ALL
+INFO - 2024-04-30 10:50:23,177 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 10:50:23,403 - db_logger - antonyms - 1 - CREATE - admin@example.com - त्रिदिव
+INFO - 2024-04-30 10:50:28,792 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 10:50:28,992 - db_logger - antonyms - 1 - CREATE - admin@example.com - त्रिदिव
+INFO - 2024-04-30 10:50:34,481 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 10:50:34,661 - db_logger - antonyms - 1 - CREATE - admin@example.com - त्रिदिव
+INFO - 2024-04-30 10:50:40,159 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 10:50:40,357 - db_logger - antonyms - 1 - CREATE - admin@example.com - त्रिदिव
+INFO - 2024-04-30 10:50:40,450 - db_logger - antonyms - 1 - DELETE - editor.all@example.com - ALL
+INFO - 2024-04-30 11:02:17,816 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:02:18,053 - db_logger - derivations - 1 - CREATE - superuser@example.com - कृत्वे स्वर्गः इति रूपम् ।
+INFO - 2024-04-30 11:02:23,707 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:02:23,877 - db_logger - derivations - 1 - CREATE - admin@example.com - कृत्वे स्वर्गः इति रूपम् ।
+INFO - 2024-04-30 11:02:29,207 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:02:34,912 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:02:35,139 - db_logger - derivations - 1 - CREATE - editor.read.write@example.com - कृत्वे स्वर्गः इति रूपम् ।
+INFO - 2024-04-30 11:02:40,674 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:02:40,855 - db_logger - derivations - 1 - CREATE - editor.read.write.modify@example.com - कृत्वे स्वर्गः इति रूपम् ।
+INFO - 2024-04-30 11:02:46,200 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:02:46,435 - db_logger - derivations - 1 - CREATE - editor.all@example.com - कृत्वे स्वर्गः इति रूपम् ।
+INFO - 2024-04-30 11:02:51,915 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:02:52,107 - db_logger - derivations - 1 - CREATE - admin@example.com - कृत्वे स्वर्गः इति रूपम् ।
+INFO - 2024-04-30 11:02:52,211 - db_logger - derivations - 2 - CREATE - admin@example.com - कृत्वे स्वर्गः इति रूपम् ।
+INFO - 2024-04-30 11:02:52,290 - db_logger - derivations - 3 - CREATE - admin@example.com - कृत्वे स्वर्गः इति रूपम् ।
+INFO - 2024-04-30 11:02:52,370 - db_logger - derivations - 4 - CREATE - admin@example.com - कृत्वे स्वर्गः इति रूपम् ।
+INFO - 2024-04-30 11:02:52,450 - db_logger - derivations - 5 - CREATE - admin@example.com - कृत्वे स्वर्गः इति रूपम् ।
+INFO - 2024-04-30 11:02:57,748 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:02:57,923 - db_logger - derivations - 1 - CREATE - admin@example.com - कृत्वे स्वर्गः इति रूपम् ।
+INFO - 2024-04-30 11:03:03,223 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:03:03,453 - db_logger - derivations - 1 - CREATE - admin@example.com - कृत्वे स्वर्गः इति रूपम् ।
+INFO - 2024-04-30 11:03:03,585 - db_logger - derivations - 1 - UPDATE - superuser@example.com - सु पूर्वक `अर्ज अर्जने  इत्यस्माद्धातोः `अकर्तरि च कारके संज्ञायाम्
+INFO - 2024-04-30 11:03:08,903 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:03:09,088 - db_logger - derivations - 1 - CREATE - admin@example.com - कृत्वे स्वर्गः इति रूपम् ।
+INFO - 2024-04-30 11:03:09,178 - db_logger - derivations - 1 - UPDATE - admin@example.com - सु पूर्वक `अर्ज अर्जने  इत्यस्माद्धातोः `अकर्तरि च कारके संज्ञायाम्
+INFO - 2024-04-30 11:03:14,677 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:03:14,914 - db_logger - derivations - 1 - CREATE - admin@example.com - कृत्वे स्वर्गः इति रूपम् ।
+INFO - 2024-04-30 11:03:20,493 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:03:20,728 - db_logger - derivations - 1 - CREATE - admin@example.com - कृत्वे स्वर्गः इति रूपम् ।
+INFO - 2024-04-30 11:03:26,022 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:03:26,208 - db_logger - derivations - 1 - CREATE - admin@example.com - कृत्वे स्वर्गः इति रूपम् ।
+INFO - 2024-04-30 11:03:26,318 - db_logger - derivations - 1 - UPDATE - editor.read.write.modify@example.com - सु पूर्वक `अर्ज अर्जने  इत्यस्माद्धातोः `अकर्तरि च कारके संज्ञायाम्
+INFO - 2024-04-30 11:03:31,501 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:03:31,743 - db_logger - derivations - 1 - CREATE - admin@example.com - कृत्वे स्वर्गः इति रूपम् ।
+INFO - 2024-04-30 11:03:31,863 - db_logger - derivations - 1 - UPDATE - editor.all@example.com - सु पूर्वक `अर्ज अर्जने  इत्यस्माद्धातोः `अकर्तरि च कारके संज्ञायाम्
+INFO - 2024-04-30 11:03:37,154 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:03:37,333 - db_logger - derivations - 1 - CREATE - admin@example.com - कृत्वे स्वर्गः इति रूपम् ।
+INFO - 2024-04-30 11:03:37,424 - db_logger - derivations - 1 - DELETE - superuser@example.com - कृत्वे स्वर्गः इति रूपम् ।
+INFO - 2024-04-30 11:03:42,802 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:03:43,001 - db_logger - derivations - 1 - CREATE - admin@example.com - कृत्वे स्वर्गः इति रूपम् ।
+INFO - 2024-04-30 11:03:43,111 - db_logger - derivations - 1 - DELETE - admin@example.com - कृत्वे स्वर्गः इति रूपम् ।
+INFO - 2024-04-30 11:03:48,559 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:03:48,744 - db_logger - derivations - 1 - CREATE - admin@example.com - कृत्वे स्वर्गः इति रूपम् ।
+INFO - 2024-04-30 11:03:54,193 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:03:54,394 - db_logger - derivations - 1 - CREATE - admin@example.com - कृत्वे स्वर्गः इति रूपम् ।
+INFO - 2024-04-30 11:03:59,738 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:03:59,961 - db_logger - derivations - 1 - CREATE - admin@example.com - कृत्वे स्वर्गः इति रूपम् ।
+INFO - 2024-04-30 11:04:05,520 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:04:05,690 - db_logger - derivations - 1 - CREATE - admin@example.com - कृत्वे स्वर्गः इति रूपम् ।
+INFO - 2024-04-30 11:04:05,778 - db_logger - derivations - 1 - DELETE - editor.all@example.com - कृत्वे स्वर्गः इति रूपम् ।
+INFO - 2024-04-30 11:04:11,042 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:04:11,236 - db_logger - derivations - 1 - CREATE - admin@example.com - कृत्वे स्वर्गः इति रूपम् ।
+INFO - 2024-04-30 11:04:11,332 - db_logger - derivations - 1 - DELETE - superuser@example.com - ALL
+INFO - 2024-04-30 11:04:16,886 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:04:17,094 - db_logger - derivations - 1 - CREATE - admin@example.com - कृत्वे स्वर्गः इति रूपम् ।
+INFO - 2024-04-30 11:04:17,211 - db_logger - derivations - 1 - DELETE - admin@example.com - ALL
+INFO - 2024-04-30 11:04:22,425 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:04:22,682 - db_logger - derivations - 1 - CREATE - admin@example.com - कृत्वे स्वर्गः इति रूपम् ।
+INFO - 2024-04-30 11:04:28,068 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:04:28,258 - db_logger - derivations - 1 - CREATE - admin@example.com - कृत्वे स्वर्गः इति रूपम् ।
+INFO - 2024-04-30 11:04:33,989 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:04:34,152 - db_logger - derivations - 1 - CREATE - admin@example.com - कृत्वे स्वर्गः इति रूपम् ।
+INFO - 2024-04-30 11:04:39,541 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:04:39,712 - db_logger - derivations - 1 - CREATE - admin@example.com - कृत्वे स्वर्गः इति रूपम् ।
+INFO - 2024-04-30 11:04:39,787 - db_logger - derivations - 1 - DELETE - editor.all@example.com - ALL
+INFO - 2024-04-30 11:10:24,284 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:10:30,005 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:10:35,538 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:10:41,085 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:10:46,408 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:10:52,022 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:10:57,855 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:11:03,617 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:11:08,123 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:11:12,407 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:11:16,580 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:11:20,676 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:11:25,219 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:11:29,728 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:11:35,717 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:11:42,402 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:11:48,517 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:11:54,275 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:11:59,824 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:12:05,370 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:12:11,596 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:12:17,201 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:12:22,878 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:12:28,470 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:12:33,968 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:12:39,463 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:22:03,729 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:22:09,668 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:22:15,375 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:22:20,943 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:22:26,732 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:22:32,187 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:24:50,656 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:24:50,943 - db_logger - etymology - 1 - CREATE - superuser@example.com - सुष्ठु अर्ज्यते इति स्वर्गः ।
+INFO - 2024-04-30 11:24:56,519 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:24:56,685 - db_logger - etymology - 1 - CREATE - admin@example.com - सुष्ठु अर्ज्यते इति स्वर्गः ।
+INFO - 2024-04-30 11:25:01,940 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:25:07,363 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:25:07,531 - db_logger - etymology - 1 - CREATE - editor.read.write@example.com - सुष्ठु अर्ज्यते इति स्वर्गः ।
+INFO - 2024-04-30 11:25:13,564 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:25:13,718 - db_logger - etymology - 1 - CREATE - editor.read.write.modify@example.com - सुष्ठु अर्ज्यते इति स्वर्गः ।
+INFO - 2024-04-30 11:25:19,533 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:25:19,752 - db_logger - etymology - 1 - CREATE - editor.all@example.com - सुष्ठु अर्ज्यते इति स्वर्गः ।
+INFO - 2024-04-30 11:25:25,299 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:25:25,510 - db_logger - etymology - 1 - CREATE - admin@example.com - सुष्ठु अर्ज्यते इति स्वर्गः ।
+INFO - 2024-04-30 11:25:31,131 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:25:31,319 - db_logger - etymology - 1 - CREATE - admin@example.com - सुष्ठु अर्ज्यते इति स्वर्गः ।
+INFO - 2024-04-30 11:25:36,953 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:25:37,153 - db_logger - etymology - 1 - CREATE - admin@example.com - सुष्ठु अर्ज्यते इति स्वर्गः ।
+INFO - 2024-04-30 11:25:37,266 - db_logger - etymology - 1 - UPDATE - superuser@example.com - सुष्ठु ऋज्यते स्थीयते अस्मिन्निति स्वर्गः । सुख स्थानम् ।
+INFO - 2024-04-30 11:25:42,976 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:25:43,163 - db_logger - etymology - 1 - CREATE - admin@example.com - सुष्ठु अर्ज्यते इति स्वर्गः ।
+INFO - 2024-04-30 11:25:43,255 - db_logger - etymology - 1 - UPDATE - admin@example.com - सुष्ठु ऋज्यते स्थीयते अस्मिन्निति स्वर्गः । सुख स्थानम् ।
+INFO - 2024-04-30 11:25:49,232 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:25:49,408 - db_logger - etymology - 1 - CREATE - admin@example.com - सुष्ठु अर्ज्यते इति स्वर्गः ।
+INFO - 2024-04-30 11:25:55,275 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:25:55,466 - db_logger - etymology - 1 - CREATE - admin@example.com - सुष्ठु अर्ज्यते इति स्वर्गः ।
+INFO - 2024-04-30 11:26:00,907 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:26:01,064 - db_logger - etymology - 1 - CREATE - admin@example.com - सुष्ठु अर्ज्यते इति स्वर्गः ।
+INFO - 2024-04-30 11:26:01,153 - db_logger - etymology - 1 - UPDATE - editor.read.write.modify@example.com - सुष्ठु ऋज्यते स्थीयते अस्मिन्निति स्वर्गः । सुख स्थानम् ।
+INFO - 2024-04-30 11:26:06,673 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:26:06,878 - db_logger - etymology - 1 - CREATE - admin@example.com - सुष्ठु अर्ज्यते इति स्वर्गः ।
+INFO - 2024-04-30 11:26:06,986 - db_logger - etymology - 1 - UPDATE - editor.all@example.com - सुष्ठु ऋज्यते स्थीयते अस्मिन्निति स्वर्गः । सुख स्थानम् ।
+INFO - 2024-04-30 11:26:12,307 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:26:12,474 - db_logger - etymology - 1 - CREATE - admin@example.com - सुष्ठु अर्ज्यते इति स्वर्गः ।
+INFO - 2024-04-30 11:26:12,551 - db_logger - etymology - 1 - DELETE - superuser@example.com - सुष्ठु अर्ज्यते इति स्वर्गः ।
+INFO - 2024-04-30 11:26:17,807 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:26:17,963 - db_logger - etymology - 1 - CREATE - admin@example.com - सुष्ठु अर्ज्यते इति स्वर्गः ।
+INFO - 2024-04-30 11:26:18,074 - db_logger - etymology - 1 - DELETE - admin@example.com - सुष्ठु अर्ज्यते इति स्वर्गः ।
+INFO - 2024-04-30 11:26:23,617 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:26:23,797 - db_logger - etymology - 1 - CREATE - admin@example.com - सुष्ठु अर्ज्यते इति स्वर्गः ।
+INFO - 2024-04-30 11:26:29,073 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:26:29,228 - db_logger - etymology - 1 - CREATE - admin@example.com - सुष्ठु अर्ज्यते इति स्वर्गः ।
+INFO - 2024-04-30 11:26:34,596 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:26:34,787 - db_logger - etymology - 1 - CREATE - admin@example.com - सुष्ठु अर्ज्यते इति स्वर्गः ।
+INFO - 2024-04-30 11:26:39,941 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:26:40,107 - db_logger - etymology - 1 - CREATE - admin@example.com - सुष्ठु अर्ज्यते इति स्वर्गः ।
+INFO - 2024-04-30 11:26:40,265 - db_logger - etymology - 1 - DELETE - editor.all@example.com - सुष्ठु अर्ज्यते इति स्वर्गः ।
+INFO - 2024-04-30 11:26:46,328 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:26:46,537 - db_logger - etymology - 1 - CREATE - admin@example.com - सुष्ठु अर्ज्यते इति स्वर्गः ।
+INFO - 2024-04-30 11:26:46,629 - db_logger - etymology - 1 - DELETE - superuser@example.com - ALL
+INFO - 2024-04-30 11:26:52,156 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:26:52,332 - db_logger - etymology - 1 - CREATE - admin@example.com - सुष्ठु अर्ज्यते इति स्वर्गः ।
+INFO - 2024-04-30 11:26:52,418 - db_logger - etymology - 1 - DELETE - admin@example.com - ALL
+INFO - 2024-04-30 11:26:57,842 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:26:57,996 - db_logger - etymology - 1 - CREATE - admin@example.com - सुष्ठु अर्ज्यते इति स्वर्गः ।
+INFO - 2024-04-30 11:27:03,474 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:27:03,696 - db_logger - etymology - 1 - CREATE - admin@example.com - सुष्ठु अर्ज्यते इति स्वर्गः ।
+INFO - 2024-04-30 11:27:08,908 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:27:09,067 - db_logger - etymology - 1 - CREATE - admin@example.com - सुष्ठु अर्ज्यते इति स्वर्गः ।
+INFO - 2024-04-30 11:27:14,610 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:27:14,784 - db_logger - etymology - 1 - CREATE - admin@example.com - सुष्ठु अर्ज्यते इति स्वर्गः ।
+INFO - 2024-04-30 11:27:14,862 - db_logger - etymology - 1 - DELETE - editor.all@example.com - ALL
+INFO - 2024-04-30 11:29:46,553 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:29:46,753 - db_logger - examples - 1 - CREATE - superuser@example.com - Some example sentence - some context
+INFO - 2024-04-30 11:29:51,919 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:29:52,086 - db_logger - examples - 1 - CREATE - admin@example.com - Some example sentence - some context
+INFO - 2024-04-30 11:29:57,822 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:30:03,368 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:30:03,555 - db_logger - examples - 1 - CREATE - editor.read.write@example.com - Some example sentence - some context
+INFO - 2024-04-30 11:30:08,696 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:30:08,863 - db_logger - examples - 1 - CREATE - editor.read.write.modify@example.com - Some example sentence - some context
+INFO - 2024-04-30 11:30:14,373 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:30:14,577 - db_logger - examples - 1 - CREATE - editor.all@example.com - Some example sentence - some context
+INFO - 2024-04-30 11:30:20,033 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:30:20,199 - db_logger - examples - 1 - CREATE - admin@example.com - Some example sentence - some context
+INFO - 2024-04-30 11:30:20,286 - db_logger - examples - 2 - CREATE - admin@example.com - Some example sentence - some context
+INFO - 2024-04-30 11:30:20,377 - db_logger - examples - 3 - CREATE - admin@example.com - Some example sentence - some context
+INFO - 2024-04-30 11:30:20,477 - db_logger - examples - 4 - CREATE - admin@example.com - Some example sentence - some context
+INFO - 2024-04-30 11:30:20,584 - db_logger - examples - 5 - CREATE - admin@example.com - Some example sentence - some context
+INFO - 2024-04-30 11:30:25,787 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:30:26,010 - db_logger - examples - 1 - CREATE - admin@example.com - Some example sentence - some context
+INFO - 2024-04-30 11:30:31,320 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:30:31,496 - db_logger - examples - 1 - CREATE - admin@example.com - Some example sentence - some context
+INFO - 2024-04-30 11:30:31,577 - db_logger - examples - 1 - UPDATE - superuser@example.com - Updated example sentence - updated context
+INFO - 2024-04-30 11:30:36,728 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:30:36,920 - db_logger - examples - 1 - CREATE - admin@example.com - Some example sentence - some context
+INFO - 2024-04-30 11:30:36,996 - db_logger - examples - 1 - UPDATE - admin@example.com - Updated example sentence - updated context
+INFO - 2024-04-30 11:30:42,493 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:30:42,718 - db_logger - examples - 1 - CREATE - admin@example.com - Some example sentence - some context
+INFO - 2024-04-30 11:30:48,203 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:30:48,355 - db_logger - examples - 1 - CREATE - admin@example.com - Some example sentence - some context
+INFO - 2024-04-30 11:30:53,948 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:30:54,171 - db_logger - examples - 1 - CREATE - admin@example.com - Some example sentence - some context
+INFO - 2024-04-30 11:30:54,265 - db_logger - examples - 1 - UPDATE - editor.read.write.modify@example.com - Updated example sentence - updated context
+INFO - 2024-04-30 11:30:59,749 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:30:59,919 - db_logger - examples - 1 - CREATE - admin@example.com - Some example sentence - some context
+INFO - 2024-04-30 11:30:59,996 - db_logger - examples - 1 - UPDATE - editor.all@example.com - Updated example sentence - updated context
+INFO - 2024-04-30 11:31:05,375 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:31:05,585 - db_logger - examples - 1 - CREATE - admin@example.com - Some example sentence - some context
+INFO - 2024-04-30 11:31:05,662 - db_logger - examples - 1 - DELETE - superuser@example.com - Some example sentence
+INFO - 2024-04-30 11:31:11,029 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:31:11,195 - db_logger - examples - 1 - CREATE - admin@example.com - Some example sentence - some context
+INFO - 2024-04-30 11:31:11,273 - db_logger - examples - 1 - DELETE - admin@example.com - Some example sentence
+INFO - 2024-04-30 11:31:16,596 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:31:16,762 - db_logger - examples - 1 - CREATE - admin@example.com - Some example sentence - some context
+INFO - 2024-04-30 11:31:22,037 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:31:22,262 - db_logger - examples - 1 - CREATE - admin@example.com - Some example sentence - some context
+INFO - 2024-04-30 11:31:27,864 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:31:28,039 - db_logger - examples - 1 - CREATE - admin@example.com - Some example sentence - some context
+INFO - 2024-04-30 11:31:33,444 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:31:33,619 - db_logger - examples - 1 - CREATE - admin@example.com - Some example sentence - some context
+INFO - 2024-04-30 11:31:33,695 - db_logger - examples - 1 - DELETE - editor.all@example.com - Some example sentence
+INFO - 2024-04-30 11:31:38,849 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:31:38,987 - db_logger - examples - 1 - CREATE - admin@example.com - Some example sentence - some context
+INFO - 2024-04-30 11:31:39,128 - db_logger - examples - 1 - DELETE - superuser@example.com - ALL
+INFO - 2024-04-30 11:31:43,295 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:31:43,473 - db_logger - examples - 1 - CREATE - admin@example.com - Some example sentence - some context
+INFO - 2024-04-30 11:31:43,709 - db_logger - examples - 1 - DELETE - admin@example.com - ALL
+INFO - 2024-04-30 11:31:49,364 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:31:49,574 - db_logger - examples - 1 - CREATE - admin@example.com - Some example sentence - some context
+INFO - 2024-04-30 11:31:55,163 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:31:55,318 - db_logger - examples - 1 - CREATE - admin@example.com - Some example sentence - some context
+INFO - 2024-04-30 11:32:00,508 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:32:00,704 - db_logger - examples - 1 - CREATE - admin@example.com - Some example sentence - some context
+INFO - 2024-04-30 11:32:06,153 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:32:06,326 - db_logger - examples - 1 - CREATE - admin@example.com - Some example sentence - some context
+INFO - 2024-04-30 11:32:06,408 - db_logger - examples - 1 - DELETE - editor.all@example.com - ALL
+INFO - 2024-04-30 11:36:53,642 - db_logger - sanskrit_words - 1 - CREATE - superuser@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:36:53,731 - db_logger - meanings - 1 - CREATE - superuser@example.com - test
+INFO - 2024-04-30 11:36:59,620 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:36:59,747 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:37:10,630 - db_logger - sanskrit_words - 1 - CREATE - editor.read.write@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:37:10,706 - db_logger - meanings - 1 - CREATE - editor.read.write@example.com - test
+INFO - 2024-04-30 11:37:16,107 - db_logger - sanskrit_words - 1 - CREATE - editor.read.write.modify@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:37:16,186 - db_logger - meanings - 1 - CREATE - editor.read.write.modify@example.com - test
+INFO - 2024-04-30 11:37:21,487 - db_logger - sanskrit_words - 1 - CREATE - editor.all@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:37:21,572 - db_logger - meanings - 1 - CREATE - editor.all@example.com - test
+INFO - 2024-04-30 11:37:27,256 - db_logger - sanskrit_words - 1 - CREATE - editor.all@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:37:27,327 - db_logger - meanings - 1 - CREATE - editor.all@example.com - test
+INFO - 2024-04-30 11:37:27,424 - db_logger - meanings - 2 - CREATE - editor.all@example.com - test
+INFO - 2024-04-30 11:37:27,528 - db_logger - meanings - 3 - CREATE - editor.all@example.com - test
+INFO - 2024-04-30 11:37:27,620 - db_logger - meanings - 4 - CREATE - editor.all@example.com - test
+INFO - 2024-04-30 11:37:27,722 - db_logger - meanings - 5 - CREATE - editor.all@example.com - test
+INFO - 2024-04-30 11:37:33,065 - db_logger - sanskrit_words - 1 - CREATE - editor.all@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:37:33,158 - db_logger - meanings - 1 - CREATE - editor.all@example.com - test
+INFO - 2024-04-30 11:37:38,390 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:37:38,543 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:37:38,740 - db_logger - meanings - 1 - UPDATE - superuser@example.com - updated meaning
+INFO - 2024-04-30 11:37:44,248 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:37:44,345 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:37:44,444 - db_logger - meanings - 1 - UPDATE - admin@example.com - updated meaning
+INFO - 2024-04-30 11:37:49,688 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:37:49,794 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:37:55,051 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:37:55,141 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:38:00,636 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:38:00,762 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:38:00,882 - db_logger - meanings - 1 - UPDATE - editor.read.write.modify@example.com - updated meaning
+INFO - 2024-04-30 11:38:06,217 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:38:06,283 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:38:06,393 - db_logger - meanings - 1 - UPDATE - editor.all@example.com - updated meaning
+INFO - 2024-04-30 11:38:11,709 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:38:11,790 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:38:11,883 - db_logger - meanings - 1 - DELETE - superuser@example.com - test
+INFO - 2024-04-30 11:38:17,540 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:38:17,628 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:38:17,707 - db_logger - meanings - 1 - DELETE - admin@example.com - test
+INFO - 2024-04-30 11:38:22,920 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:38:22,992 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:38:29,076 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:38:29,183 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:38:35,109 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:38:35,219 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:38:40,723 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:38:40,810 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:38:40,929 - db_logger - meanings - 1 - DELETE - editor.all@example.com - test
+INFO - 2024-04-30 11:38:46,327 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:38:46,435 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:38:46,552 - db_logger - meanings - 2 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:38:46,644 - db_logger - meanings - 3 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:38:46,729 - db_logger - meanings - 4 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:38:46,830 - db_logger - meanings - 5 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:38:46,919 - db_logger - meanings - 1 - DELETE - superuser@example.com - ALL
+INFO - 2024-04-30 11:38:52,116 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:38:52,197 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:38:52,286 - db_logger - meanings - 2 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:38:52,365 - db_logger - meanings - 3 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:38:52,452 - db_logger - meanings - 4 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:38:52,528 - db_logger - meanings - 5 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:38:52,612 - db_logger - meanings - 1 - DELETE - admin@example.com - ALL
+INFO - 2024-04-30 11:38:57,953 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:38:58,063 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:38:58,152 - db_logger - meanings - 2 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:38:58,294 - db_logger - meanings - 3 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:38:58,484 - db_logger - meanings - 4 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:38:58,554 - db_logger - meanings - 5 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:39:03,801 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:39:03,885 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:39:03,974 - db_logger - meanings - 2 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:39:04,064 - db_logger - meanings - 3 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:39:04,152 - db_logger - meanings - 4 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:39:04,241 - db_logger - meanings - 5 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:39:09,783 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:39:09,928 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:39:10,032 - db_logger - meanings - 2 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:39:10,144 - db_logger - meanings - 3 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:39:10,250 - db_logger - meanings - 4 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:39:10,375 - db_logger - meanings - 5 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:39:15,651 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:39:15,727 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:39:15,806 - db_logger - meanings - 2 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:39:15,889 - db_logger - meanings - 3 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:39:16,049 - db_logger - meanings - 4 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:39:16,154 - db_logger - meanings - 5 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:39:16,244 - db_logger - meanings - 1 - DELETE - editor.all@example.com - ALL
+INFO - 2024-04-30 11:46:59,074 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:46:59,149 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:47:04,498 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:47:04,597 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:47:10,232 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:47:10,329 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:47:15,615 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:47:15,717 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:47:21,429 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:47:21,518 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:47:26,785 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:47:26,887 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:47:32,297 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:47:32,395 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:47:38,418 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:47:38,527 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:47:44,205 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:47:44,293 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:47:50,239 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:47:50,333 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:47:56,385 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:47:56,460 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:48:02,153 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:48:02,227 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:48:07,839 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:48:07,919 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:48:13,771 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:48:13,859 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:48:19,520 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:48:19,606 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:48:25,238 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:48:25,315 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:48:31,196 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:48:31,305 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:48:36,973 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:48:37,026 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:48:41,477 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:48:41,535 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:48:46,507 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:48:46,614 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:48:52,161 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:48:52,265 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:48:57,707 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:48:57,815 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:49:03,315 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:49:03,394 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:49:09,086 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:49:09,172 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:49:14,560 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:49:14,640 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:49:20,295 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:49:20,386 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:59:37,179 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:59:37,298 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:59:37,385 - db_logger - translations - 1 - CREATE - superuser@example.com - English - Paradise
+INFO - 2024-04-30 11:59:42,883 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:59:42,983 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:59:43,080 - db_logger - translations - 1 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 11:59:48,619 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:59:48,716 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:59:54,016 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:59:54,102 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:59:54,183 - db_logger - translations - 1 - CREATE - editor.read.write@example.com - English - Paradise
+INFO - 2024-04-30 11:59:59,572 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 11:59:59,755 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 11:59:59,840 - db_logger - translations - 1 - CREATE - editor.read.write.modify@example.com - English - Paradise
+INFO - 2024-04-30 12:00:05,336 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 12:00:05,450 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 12:00:05,538 - db_logger - translations - 1 - CREATE - editor.all@example.com - English - Paradise
+INFO - 2024-04-30 12:00:11,049 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 12:00:11,128 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 12:00:11,218 - db_logger - translations - 1 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:00:11,302 - db_logger - translations - 2 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:00:11,378 - db_logger - translations - 3 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:00:11,457 - db_logger - translations - 4 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:00:11,554 - db_logger - translations - 5 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:00:17,180 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 12:00:17,285 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 12:00:17,370 - db_logger - translations - 1 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:00:17,445 - db_logger - translations - 2 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:00:17,549 - db_logger - translations - 3 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:00:17,635 - db_logger - translations - 4 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:00:17,713 - db_logger - translations - 5 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:00:23,001 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 12:00:23,078 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 12:00:23,157 - db_logger - translations - 1 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:00:23,223 - db_logger - translations - 1 - UPDATE - superuser@example.com - English - Heaven
+INFO - 2024-04-30 12:00:28,785 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 12:00:28,895 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 12:00:28,991 - db_logger - translations - 1 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:00:29,076 - db_logger - translations - 1 - UPDATE - admin@example.com - English - Heaven
+INFO - 2024-04-30 12:00:34,492 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 12:00:34,573 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 12:00:34,712 - db_logger - translations - 1 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:00:39,958 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 12:00:40,057 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 12:00:40,148 - db_logger - translations - 1 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:00:45,629 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 12:00:45,707 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 12:00:45,764 - db_logger - translations - 1 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:00:45,844 - db_logger - translations - 1 - UPDATE - editor.read.write.modify@example.com - English - Heaven
+INFO - 2024-04-30 12:00:49,927 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 12:00:49,988 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 12:00:50,049 - db_logger - translations - 1 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:00:50,111 - db_logger - translations - 1 - UPDATE - editor.all@example.com - English - Heaven
+INFO - 2024-04-30 12:00:54,408 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 12:00:54,498 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 12:00:54,740 - db_logger - translations - 1 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:00:54,857 - db_logger - translations - 1 - DELETE - superuser@example.com - English - Paradise
+INFO - 2024-04-30 12:01:00,490 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 12:01:00,592 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 12:01:00,667 - db_logger - translations - 1 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:01:00,759 - db_logger - translations - 1 - DELETE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:01:06,087 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 12:01:06,191 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 12:01:06,278 - db_logger - translations - 1 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:01:11,612 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 12:01:11,706 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 12:01:11,816 - db_logger - translations - 1 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:01:17,035 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 12:01:17,163 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 12:01:17,278 - db_logger - translations - 1 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:01:22,834 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 12:01:22,912 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 12:01:22,990 - db_logger - translations - 1 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:01:23,062 - db_logger - translations - 1 - DELETE - editor.all@example.com - English - Paradise
+INFO - 2024-04-30 12:01:28,309 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 12:01:28,428 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 12:01:28,544 - db_logger - translations - 1 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:01:28,650 - db_logger - translations - 2 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:01:28,779 - db_logger - translations - 3 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:01:28,897 - db_logger - translations - 4 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:01:29,011 - db_logger - translations - 5 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:01:29,126 - db_logger - translations - 1 - DELETE_ALL - superuser@example.com - 
+INFO - 2024-04-30 12:01:35,267 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 12:01:35,360 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 12:01:35,445 - db_logger - translations - 1 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:01:35,524 - db_logger - translations - 2 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:01:35,600 - db_logger - translations - 3 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:01:35,679 - db_logger - translations - 4 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:01:35,757 - db_logger - translations - 5 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:01:35,833 - db_logger - translations - 1 - DELETE_ALL - admin@example.com - 
+INFO - 2024-04-30 12:01:41,134 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 12:01:41,210 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 12:01:41,314 - db_logger - translations - 1 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:01:41,417 - db_logger - translations - 2 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:01:41,524 - db_logger - translations - 3 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:01:41,623 - db_logger - translations - 4 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:01:41,729 - db_logger - translations - 5 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:01:47,266 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 12:01:47,354 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 12:01:47,448 - db_logger - translations - 1 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:01:47,534 - db_logger - translations - 2 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:01:47,611 - db_logger - translations - 3 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:01:47,691 - db_logger - translations - 4 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:01:47,778 - db_logger - translations - 5 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:01:53,090 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 12:01:53,178 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 12:01:53,308 - db_logger - translations - 1 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:01:53,463 - db_logger - translations - 2 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:01:53,701 - db_logger - translations - 3 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:01:53,790 - db_logger - translations - 4 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:01:53,889 - db_logger - translations - 5 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:01:59,356 - db_logger - sanskrit_words - 1 - CREATE - admin@example.com - स्वर्ग - svarga
+INFO - 2024-04-30 12:01:59,445 - db_logger - meanings - 1 - CREATE - admin@example.com - test
+INFO - 2024-04-30 12:01:59,524 - db_logger - translations - 1 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:01:59,624 - db_logger - translations - 2 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:01:59,717 - db_logger - translations - 3 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:01:59,824 - db_logger - translations - 4 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:01:59,912 - db_logger - translations - 5 - CREATE - admin@example.com - English - Paradise
+INFO - 2024-04-30 12:01:59,989 - db_logger - translations - 1 - DELETE_ALL - editor.all@example.com - 

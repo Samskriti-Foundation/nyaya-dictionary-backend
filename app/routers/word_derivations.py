@@ -73,6 +73,19 @@ def get_word_derivation(word: str, meaning_id: int, derivation_id: int, db: Sess
 
 @router.post("/{word}/{meaning_id}/derivations")
 async def create_word_derivation(word: str, meaning_id: int, derivation: schemas.Derivation, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+    """
+    A function to create a new derivation for a given word and meaning ID.
+    
+    Parameters:
+    - word: a string representing the word for which the derivation is being created
+    - meaning_id: an integer representing the meaning ID of the word
+    - derivation: an object of type schemas.Derivation containing the derivation information
+    - db: a SQLAlchemy Session dependency for the database operations
+    - current_user: an object of type schemas.DBManager representing the current user
+    
+    Returns:
+    - A JSONResponse with status code 201 if the derivation is successfully created
+    """
     if access_to_int(current_user.access) < access_to_int(schemas.Access.READ_WRITE):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
@@ -97,6 +110,20 @@ async def create_word_derivation(word: str, meaning_id: int, derivation: schemas
 
 @router.put("/{word}/{meaning_id}/derivations/{derivation_id}")
 async def update_word_derivation(word: str, meaning_id: int, derivation_id: int, derivation: schemas.Derivation, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+    """
+    A function to update a word derivation based on the provided word, meaning ID, and derivation ID.
+    
+    Parameters:
+    - word: a string representing the word for which the derivation is being updated
+    - meaning_id: an integer representing the meaning ID of the word
+    - derivation_id: an integer representing the ID of the derivation to be updated
+    - derivation: an object of type schemas.Derivation containing the updated derivation information
+    - db: a SQLAlchemy Session dependency for the database operations
+    - current_user: an object of type schemas.DBManager representing the current user
+    
+    Returns:
+    - A JSONResponse with status code 204 if the derivation is successfully updated
+    """
     if access_to_int(current_user.access) < access_to_int(schemas.Access.READ_WRITE_MODIFY):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
@@ -120,6 +147,15 @@ async def update_word_derivation(word: str, meaning_id: int, derivation_id: int,
 
 @router.delete("/{word}/{meaning_id}/derivations", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_word_derivations(word: str, meaning_id: int, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+    """
+    Deletes all derivations of a word based on the given word and meaning_id.
+    
+    Parameters:
+        word (str): The word to delete derivations for.
+        meaning_id (int): The meaning ID of the word.
+        db (Session): The database session.
+        current_user (schemas.DBManager): The current user accessing the database.
+    """
     if access_to_int(current_user.access) < access_to_int(schemas.Access.ALL):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
@@ -137,8 +173,25 @@ async def delete_word_derivations(word: str, meaning_id: int, db: Session = Depe
 
     await logger_middleware.log_database_operations("derivations", meaning_id, "DELETE_ALL", current_user.email)
 
+
 @router.delete("/{word}/{meaning_id}/derivations/{derivation_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_word_derivation(word: str, meaning_id: int, derivation_id: int, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+    """
+    A function to delete a specific word derivation based on the provided word, meaning ID, and derivation ID.
+    
+    Parameters:
+    - word: a string representing the word for which the derivation is being deleted
+    - meaning_id: an integer representing the meaning ID of the word
+    - derivation_id: an integer representing the ID of the derivation to be deleted
+    - db: a SQLAlchemy Session dependency for the database operations
+    - current_user: an object of type schemas.DBManager representing the current user
+    
+    Raises:
+    - HTTPException: If the user is not authorized or if the word or derivation is not found
+    
+    Returns:
+    - None
+    """
     if access_to_int(current_user.access) < access_to_int(schemas.Access.ALL):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     

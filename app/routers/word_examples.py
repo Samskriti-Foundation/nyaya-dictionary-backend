@@ -17,6 +17,17 @@ router = APIRouter(
 
 @router.get("/{word}/{meaning_id}/examples", response_model=List[schemas.ExampleOut])
 def get_word_examples(word: str, meaning_id: int, db: Session = Depends(get_db)):
+    """
+    Get examples of a word for a specific meaning ID.
+    
+    Parameters:
+    - word: a string representing the word
+    - meaning_id: an integer representing the meaning ID
+    - db: a Session instance for the database
+    
+    Returns:
+    - A list of ExampleOut objects representing the examples of the word for the given meaning ID
+    """
     if isDevanagariWord(word):
         db_word = db.query(models.SanskritWord).filter(models.SanskritWord.sanskrit_word == word).first()
     else:
@@ -32,6 +43,18 @@ def get_word_examples(word: str, meaning_id: int, db: Session = Depends(get_db))
 
 @router.get("/{word}/{meaning_id}/examples/{examples_id}", response_model=schemas.ExampleOut)
 def get_word_example(word: str, meaning_id: int, examples_id: int, db: Session = Depends(get_db)):
+    """
+    Get a specific example of a word for a given meaning ID.
+
+    Parameters:
+    - word: a string representing the word
+    - meaning_id: an integer representing the meaning ID
+    - examples_id: an integer representing the example ID
+    - db: a Session instance for the database
+
+    Returns:
+    - An ExampleOut object representing the example of the word for the given meaning ID
+    """
     if isDevanagariWord(word):
         db_word = db.query(models.SanskritWord).filter(models.SanskritWord.sanskrit_word == word).first()
     else:
@@ -50,6 +73,19 @@ def get_word_example(word: str, meaning_id: int, examples_id: int, db: Session =
 
 @router.post("/{word}/{meaning_id}/examples", status_code=status.HTTP_201_CREATED)
 async def create_word_example(word: str, meaning_id: int, example: schemas.Example, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+    """
+    A description of the function that creates a new example for a word with the provided meaning ID. 
+    
+    Parameters:
+    - word: a string representing the word
+    - meaning_id: an integer representing the meaning ID
+    - example: an object of type schemas.Example containing the example details
+    - db: a Session instance for the database
+    - current_user: an object of type schemas.DBManager representing the current user
+    
+    Returns:
+    - A JSONResponse with a status code of 201 indicating successful creation and a message
+    """
     if access_to_int(current_user.access) < access_to_int(schemas.Access.READ_WRITE):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     

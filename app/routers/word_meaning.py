@@ -17,6 +17,16 @@ router = APIRouter(
 
 @router.get("/{word}/meanings", response_model=List[schemas.MeaningOut])
 def get_word_meanings(word: str, db: Session = Depends(get_db)):
+    """
+    Retrieves the meanings of a given word. 
+    
+    Parameters:
+        - word (str): The word for which meanings are to be retrieved.
+        - db (Session): The database session dependency.
+    
+    Returns:
+        - List[schemas.MeaningOut]: A list of meanings associated with the input word.
+    """
     if isDevanagariWord(word):
         db_word = db.query(models.SanskritWord).filter(models.SanskritWord.sanskrit_word == word).first()
     else:
@@ -32,6 +42,17 @@ def get_word_meanings(word: str, db: Session = Depends(get_db)):
 
 @router.get("/{word}/meanings/{meaning_id}", response_model=schemas.MeaningOut)
 def get_word_meaning(word: str, meaning_id: int, db: Session = Depends(get_db)):
+    """
+    Retrieves the meaning of a given word with a specific meaning ID.
+
+    Parameters:
+        - word (str): The word for which the meaning is to be retrieved.
+        - meaning_id (int): The ID of the meaning to retrieve.
+        - db (Session): The database session dependency.
+
+    Returns:
+        - schemas.MeaningOut: The meaning associated with the input word and meaning ID.
+    """
     if isDevanagariWord(word):
         db_word = db.query(models.SanskritWord).filter(models.SanskritWord.sanskrit_word == word).first()
     else:
@@ -50,6 +71,18 @@ def get_word_meaning(word: str, meaning_id: int, db: Session = Depends(get_db)):
 
 @router.post("/{word}/meanings", status_code=status.HTTP_201_CREATED)
 async def create_word_meaning(word: str, meaning: schemas.MeaningCreate, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+    """
+    Creates a new meaning for a word in the database.
+
+    Parameters:
+        - word (str): The word for which the meaning is to be created.
+        - meaning (schemas.MeaningCreate): The meaning to be created for the word.
+        - db (Session): The database session dependency.
+        - current_user (schemas.DBManager): The current user accessing the API.
+
+    Returns:
+        - JSONResponse: A JSON response indicating the success of the meaning creation.
+    """
     if access_to_int(current_user.access) < access_to_int(schemas.Access.READ_WRITE):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
@@ -73,6 +106,19 @@ async def create_word_meaning(word: str, meaning: schemas.MeaningCreate, db: Ses
 
 @router.put("/{word}/meanings/{meaning_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def update_word_meaning(word: str, meaning_id: int, meaning: schemas.MeaningCreate, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+    """
+    Updates the meaning of a word in the database.
+
+    Parameters:
+        - word (str): The word for which the meaning is to be updated.
+        - meaning_id (int): The ID of the meaning to be updated.
+        - meaning (schemas.MeaningCreate): The updated meaning for the word.
+        - db (Session): The database session dependency.
+        - current_user (schemas.DBManager): The current user accessing the API.
+
+    Returns:
+        None
+    """
     if access_to_int(current_user.access) < access_to_int(schemas.Access.READ_WRITE_MODIFY):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
@@ -93,6 +139,18 @@ async def update_word_meaning(word: str, meaning_id: int, meaning: schemas.Meani
 
 @router.delete("/{word}/meanings/{meaning_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_word_meaning(word: str, meaning_id: int, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+    """
+    A function to delete a specific meaning associated with a word.
+    
+    Parameters:
+        - word (str): The word for which the meaning needs to be deleted.
+        - meaning_id (int): The ID of the meaning to be deleted.
+        - db (Session): The database session dependency.
+        - current_user (schemas.DBManager): The current user accessing the API.
+    
+    Returns:
+        None
+    """
     if access_to_int(current_user.access) < access_to_int(schemas.Access.ALL):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
@@ -117,6 +175,17 @@ async def delete_word_meaning(word: str, meaning_id: int, db: Session = Depends(
 
 @router.delete("/{word}/meanings", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_word_meanings(word: str, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+    """
+    A function to delete all meanings associated with a specific word.
+    
+    Parameters:
+        - word (str): The word for which the meanings need to be deleted.
+        - db (Session): The database session dependency.
+        - current_user (schemas.DBManager): The current user accessing the API.
+    
+    Returns:
+        None
+    """
     if access_to_int(current_user.access) < access_to_int(schemas.Access.ALL):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     

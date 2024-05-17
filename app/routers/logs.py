@@ -11,6 +11,16 @@ router = APIRouter(
 
 @router.get('/db-ops/{month}', status_code=status.HTTP_200_OK, response_model=List[DBLog])
 def get_database_operation_logs(month: str = f'{datetime.now().strftime("%m")}_{datetime.now().strftime("%h")}', current_db_manager = Depends(auth_middleware.get_current_db_manager_is_admin)):
+    """
+    Retrieves the database operation logs for a specified month.
+    
+    Parameters:
+        month (str): The month for which the logs are retrieved. Defaults to the current month and year.
+        current_db_manager: The current database manager with admin privileges.
+    
+    Returns:
+        List[DBLog]: A list of DBLog objects representing the database operation logs.
+    """
     output = []
     with open (f"logs/{month}.log", "r", encoding="utf8") as f:
         for line in f:
@@ -22,6 +32,15 @@ def get_database_operation_logs(month: str = f'{datetime.now().strftime("%m")}_{
 
 @router.get('/login-audits/', status_code=status.HTTP_200_OK, response_model=List[AuthLog])
 def get_login_audit_logs(current_db_manager = Depends(auth_middleware.get_current_db_manager_is_admin)):
+    """
+    Retrieves the login audit logs from the auth.log file.
+    
+    Parameters:
+        current_db_manager: The current database manager with admin privileges.
+    
+    Returns:
+        List[AuthLog]: A list of AuthLog objects representing the login audit logs.
+    """
     output = []
     with open ("logs/auth.log", "r") as f:
         for line in f:

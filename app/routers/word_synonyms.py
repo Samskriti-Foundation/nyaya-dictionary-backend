@@ -17,6 +17,17 @@ router = APIRouter(
 
 @router.get("/{word}/{meaning_id}/synonyms", response_model=List[schemas.SynonymOut])
 def get_word_synonyms(word: str, meaning_id: int, db: Session = Depends(get_db)):
+    """
+    Get synonyms of a word based on the word and meaning_id.
+    
+    Parameters:
+        word (str): The word for which synonyms are requested.
+        meaning_id (int): The meaning ID associated with the word.
+        db (Session): The SQLAlchemy database session.
+    
+    Returns:
+        List[schemas.SynonymOut]: A list of synonym objects for the given word and meaning_id.
+    """
     if isDevanagariWord(word):
         db_word = db.query(models.SanskritWord).filter(models.SanskritWord.sanskrit_word == word).first()
     else:
@@ -32,6 +43,18 @@ def get_word_synonyms(word: str, meaning_id: int, db: Session = Depends(get_db))
 
 @router.get("/{word}/{meaning_id}/synonyms/{synonym_id}", response_model=schemas.SynonymOut)
 def get_word_synonym(word: str, meaning_id: int, synonym_id: int, db: Session = Depends(get_db)):
+    """
+    Retrieve a specific synonym for a given word and meaning_id.
+
+    Parameters:
+        word (str): The word for which the synonym is requested.
+        meaning_id (int): The meaning ID associated with the word.
+        synonym_id (int): The ID of the specific synonym requested.
+        db (Session): The SQLAlchemy database session.
+
+    Returns:
+        schemas.SynonymOut: The synonym object for the given word, meaning_id, and synonym_id.
+    """
     if isDevanagariWord(word):
         db_word = db.query(models.SanskritWord).filter(models.SanskritWord.sanskrit_word == word).first()
     else:
@@ -50,6 +73,19 @@ def get_word_synonym(word: str, meaning_id: int, synonym_id: int, db: Session = 
 
 @router.post("/{word}/{meaning_id}/synonyms", status_code=status.HTTP_201_CREATED)
 async def create_word_synonym(word: str, meaning_id: int, synonym: schemas.Synonym, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+    """
+    A function to create a new synonym for a given word and meaning_id.
+    
+    Parameters:
+        word (str): The word for which the synonym is being created.
+        meaning_id (int): The meaning ID associated with the word.
+        synonym (schemas.Synonym): The synonym object containing the details of the new synonym.
+        db (Session): The SQLAlchemy database session.
+        current_user (schemas.DBManager): The current user requesting the synonym creation.
+    
+    Returns:
+        JSONResponse: A response with a message indicating the success of the synonym creation.
+    """
     if access_to_int(current_user.access) < access_to_int(schemas.Access.READ_WRITE):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
@@ -74,6 +110,20 @@ async def create_word_synonym(word: str, meaning_id: int, synonym: schemas.Synon
 
 @router.put("/{word}/{meaning_id}/synonyms/{synonym_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def update_word_synonym(word: str, meaning_id: int, synonym_id: int, synonym: schemas.Synonym, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+    """
+    Updates a synonym for a specific word and meaning in the database.
+
+    Parameters:
+        word (str): The word for which the synonym is being updated.
+        meaning_id (int): The ID of the meaning associated with the synonym.
+        synonym_id (int): The ID of the synonym being updated.
+        synonym (schemas.Synonym): The updated synonym object.
+        db (Session): The SQLAlchemy database session.
+        current_user (schemas.DBManager): The current user performing the update.
+
+    Returns:
+        JSONResponse: A response indicating the success of the synonym update.
+    """
     if access_to_int(current_user.access) < access_to_int(schemas.Access.READ_WRITE_MODIFY):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
@@ -99,6 +149,16 @@ async def update_word_synonym(word: str, meaning_id: int, synonym_id: int, synon
 
 @router.delete("/{word}/{meaning_id}/synonyms/{synonym_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_word_synonym(word: str, meaning_id: int, synonym_id: int, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+    """
+    Deletes a synonym for a specific word and meaning in the database.
+
+    Parameters:
+        word (str): The word for which the synonym is being deleted.
+        meaning_id (int): The ID of the meaning associated with the synonym.
+        synonym_id (int): The ID of the synonym being deleted.
+        db (Session): The SQLAlchemy database session.
+        current_user (schemas.DBManager): The current user performing the deletion.
+    """
     if access_to_int(current_user.access) < access_to_int(schemas.Access.ALL):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
@@ -123,6 +183,15 @@ async def delete_word_synonym(word: str, meaning_id: int, synonym_id: int, db: S
 
 @router.delete("/{word}/{meaning_id}/synonyms", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_word_synonyms(word: str, meaning_id: int, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+    """
+    Deletes all synonyms associated with a specific word and meaning from the database.
+
+    Parameters:
+        word (str): The word for which synonyms are being deleted.
+        meaning_id (int): The ID of the meaning associated with the synonyms.
+        db (Session): The SQLAlchemy database session.
+        current_user (schemas.DBManager): The current user performing the deletion.
+    """
     if access_to_int(current_user.access) < access_to_int(schemas.Access.ALL):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     

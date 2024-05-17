@@ -2,7 +2,7 @@ from fastapi import APIRouter, status, Depends, HTTPException
 from fastapi.responses import JSONResponse
 from app.database import get_db
 from app import models, schemas
-from app.middleware import auth_middleware, logger_middleware
+from app.middleware import auth_middleware
 from sqlalchemy.orm import Session
 from typing import List
 
@@ -14,6 +14,17 @@ router = APIRouter(
 
 @router.get("/", response_model=List[schemas.DBManagerOut])
 def get_db_managers(role: schemas.Role = None, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(auth_middleware.get_current_db_manager_is_admin)):
+    """
+    Get a list of database managers based on the role and current user's permissions.
+    
+    Parameters:
+        - role: Role enum, optional (default: None)
+        - db: Session dependency
+        - current_db_manager: DBManager dependency
+        
+    Returns:
+        - List of DBManagerOut schemas
+    """
     if current_db_manager.role == schemas.Role.SUPERUSER:
         if role is None:
             db_managers = db.query(models.DBManager).all()
@@ -38,6 +49,17 @@ def get_db_managers(role: schemas.Role = None, db: Session = Depends(get_db), cu
 
 @router.get("/{email}", response_model=schemas.DBManagerOut)
 def get_db_manager(email: str, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(auth_middleware.get_current_db_manager_is_admin)):
+    """
+    Get a database manager based on the email provided.
+    
+    Parameters:
+        - email: str
+        - db: Session dependency
+        - current_db_manager: DBManager dependency
+        
+    Returns:
+        - DBManagerOut schema
+    """
     db_manager_in_db = db.query(models.DBManager).filter(models.DBManager.email == email).first()
 
     if not db_manager_in_db:
@@ -50,6 +72,18 @@ def get_db_manager(email: str, db: Session = Depends(get_db), current_db_manager
 
 @router.put("/{email}", status_code=status.HTTP_200_OK)
 def update_db_manager(email: str, db_manager: schemas.DBManagerUpdate, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(auth_middleware.get_current_db_manager_is_admin)):
+    """
+    Updates a database manager's information based on the provided email.
+    
+    Parameters:
+        - email: str
+        - db_manager: schemas.DBManagerUpdate
+        - db: Session = Depends(get_db)
+        - current_db_manager: schemas.DBManager = Depends(auth_middleware.get_current_db_manager_is_admin)
+        
+    Returns:
+        - JSONResponse: A response indicating the success of the update operation.
+    """
     db_manager_in_db = db.query(models.DBManager).filter(models.DBManager.email == email).first()
 
     if not db_manager_in_db:
@@ -71,6 +105,14 @@ def update_db_manager(email: str, db_manager: schemas.DBManagerUpdate, db: Sessi
 
 @router.delete("/{email}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_db_manager(email: str, db: Session = Depends(get_db), current_db_manager: int = Depends(auth_middleware.get_current_db_manager)):
+    """
+    A function to delete a database manager based on the provided email.
+    
+    Parameters:
+        - email: str
+        - db: Session = Depends(get_db)
+        - current_db_manager: int = Depends(auth_middleware.get_current_db_manager)
+    """
     db_manager = db.query(models.DBManager).filter(models.DBManager.email == email).first()
 
     if not db_manager:

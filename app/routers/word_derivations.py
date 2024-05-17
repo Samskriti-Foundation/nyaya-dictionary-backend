@@ -17,6 +17,17 @@ router = APIRouter(
 
 @router.get("/{word}/{meaning_id}/derivations", response_model=List[schemas.DerivationOut])
 def get_word_derivations(word: str, meaning_id: int, db: Session = Depends(get_db)):
+    """
+    Retrieves the derivations of a word based on the provided word and meaning ID.
+    
+    Parameters:
+    - word: a string representing the word to get derivations for
+    - meaning_id: an integer representing the meaning ID
+    - db: a SQLAlchemy Session dependency
+    
+    Returns:
+    - List of DerivationOut objects representing the derivations of the word
+    """
     if isDevanagariWord(word):
         db_word = db.query(models.SanskritWord).filter(models.SanskritWord.sanskrit_word == word).first()
     else:
@@ -32,6 +43,18 @@ def get_word_derivations(word: str, meaning_id: int, db: Session = Depends(get_d
 
 @router.get("/{word}/{meaning_id}/derivations/{derivation_id}", response_model=schemas.DerivationOut)
 def get_word_derivation(word: str, meaning_id: int, derivation_id: int, db: Session = Depends(get_db)):
+    """
+    Retrieves a specific derivation of a word based on the provided word, meaning ID, and derivation ID.
+
+    Parameters:
+    - word: a string representing the word to get the derivation for
+    - meaning_id: an integer representing the meaning ID
+    - derivation_id: an integer representing the derivation ID
+    - db: a SQLAlchemy Session dependency
+
+    Returns:
+    - DerivationOut object representing the specific derivation of the word
+    """
     if isDevanagariWord(word):
         db_word = db.query(models.SanskritWord).filter(models.SanskritWord.sanskrit_word == word).first()
     else:

@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import JSONResponse
 from app.database import get_db
 from sqlalchemy.orm import Session
-from app import models, schemas, oauth2
+from app import models, schemas
 from typing import List
 from indic_transliteration import sanscript
 from indic_transliteration.sanscript import transliterate
@@ -78,6 +78,20 @@ def get_word(word: str, db: Session = Depends(get_db)):
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def create_word(word: schemas.WordCreate, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+    """
+    Creates a new word entry in the database based on the provided WordCreate schema.
+    
+    Parameters:
+        word (schemas.WordCreate): The word information to be added.
+        db (Session): The database session.
+        current_db_manager (schemas.DBManager): The current database manager.
+    
+    Returns:
+        JSONResponse: A JSON response indicating the success of adding the word.
+    
+    Raises:
+        HTTPException: Depending on the authorization level, if the word already exists, or if there are validation errors.
+    """
     if access_to_int(current_db_manager.access) < access_to_int(schemas.Access.READ_WRITE):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
@@ -110,6 +124,21 @@ async def create_word(word: schemas.WordCreate, db: Session = Depends(get_db), c
 
 @router.put("/{word}", status_code=status.HTTP_204_NO_CONTENT)
 async def update_word(word: str, wordIn: schemas.WordUpdate, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+    """
+    Updates a word entry in the database based on the provided word information.
+    
+    Parameters:
+    - word: str - The word to be updated.
+    - wordIn: schemas.WordUpdate - The updated word information.
+    - db: Session - The database session.
+    - current_db_manager: schemas.DBManager - The current database manager.
+
+    Raises:
+    - HTTPException: 403 FORBIDDEN if not authorized, 404 NOT FOUND if the word is not found, 409 CONFLICT if word already exists or English transliteration already exists.
+
+    Returns:
+    - No explicit return, updates the database entry.
+    """
     if access_to_int(current_db_manager.access) < access_to_int(schemas.Access.READ_WRITE_MODIFY):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
 
@@ -140,6 +169,15 @@ async def update_word(word: str, wordIn: schemas.WordUpdate, db: Session = Depen
 
 @router.delete("/{word}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_word(word: str, db: Session = Depends(get_db), current_db_manager: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+    """
+    Delete a word from the database along with its associated meanings, etymologies, derivations, translations, reference Nyaya texts, examples, synonyms, antonyms. 
+    Parameters:
+        - word: str
+        - db: Session = Depends(get_db)
+        - current_db_manager: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)
+    Returns:
+        - None
+    """
     if access_to_int(current_db_manager.access) < access_to_int(schemas.Access.ALL):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
 

@@ -17,6 +17,17 @@ router = APIRouter(
 
 @router.get("/{word}/{meaning_id}/translations", response_model=List[schemas.TranslationOut])
 def get_word_translations(word: str, meaning_id: int, db: Session = Depends(get_db)):
+    """
+    Retrieves translations for a given word and meaning ID.
+    
+    Parameters:
+    - word: str - The word for which translations are requested.
+    - meaning_id: int - The ID of the meaning for which translations are requested.
+    - db: Session - The database session to use (provided by Depends(get_db)).
+    
+    Returns:
+    - List[schemas.TranslationOut]: A list of translation objects for the given word and meaning ID.
+    """
     if isDevanagariWord(word):
         db_word = db.query(models.SanskritWord).filter(models.SanskritWord.sanskrit_word == word).first()
     else:
@@ -32,6 +43,18 @@ def get_word_translations(word: str, meaning_id: int, db: Session = Depends(get_
 
 @router.get("/{word}/{meaning_id}/translations/{translation_id}", response_model=schemas.TranslationOut)
 def get_word_translation(word: str, meaning_id: int, translation_id: int, db: Session = Depends(get_db)):
+    """
+    Retrieves a specific translation for a given word, meaning ID, and translation ID.
+
+    Parameters:
+    - word: str - The word for which the translation is being retrieved.
+    - meaning_id: int - The ID of the meaning associated with the translation.
+    - translation_id: int - The ID of the translation being retrieved.
+    - db: Session - The database session to use (provided by Depends(get_db)).
+
+    Returns:
+    - schemas.TranslationOut: The translation object for the specified word, meaning ID, and translation ID.
+    """
     if isDevanagariWord(word):
         db_word = db.query(models.SanskritWord).filter(models.SanskritWord.sanskrit_word == word).first()
     else:
@@ -50,6 +73,19 @@ def get_word_translation(word: str, meaning_id: int, translation_id: int, db: Se
 
 @router.post("/{word}/{meaning_id}/translations", status_code=status.HTTP_201_CREATED)
 async def create_word_translation(word: str, meaning_id: int, translation: schemas.Translation, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+    """
+    Creates a new word translation in the database.
+
+    Parameters:
+    - word: str
+    - meaning_id: int
+    - translation: schemas.Translation
+    - db: Session = Depends(get_db)
+    - current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)
+
+    Returns:
+    - JSONResponse with status code 201 if successful, containing a success message.
+    """
     if access_to_int(current_user.access) < access_to_int(schemas.Access.READ_WRITE):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
@@ -73,6 +109,20 @@ async def create_word_translation(word: str, meaning_id: int, translation: schem
 
 @router.put("/{word}/{meaning_id}/translations/{translation_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def update_word_translation(word: str, meaning_id: int, translation_id: int, translation: schemas.Translation, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+    """
+    Updates a specific word translation identified by the word, meaning id, and translation id.
+    
+    Parameters:
+    - word: a string representing the word
+    - meaning_id: an integer representing the meaning id
+    - translation_id: an integer representing the translation id
+    - translation: a schemas.Translation object containing the new translation data
+    - db: a Session object for the database connection
+    - current_user: a schemas.DBManager object representing the current user
+    
+    Returns:
+    No direct return value. Updates the translation in the database.
+    """
     if access_to_int(current_user.access) < access_to_int(schemas.Access.READ_WRITE_MODIFY):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
@@ -98,6 +148,19 @@ async def update_word_translation(word: str, meaning_id: int, translation_id: in
 
 @router.delete("/{word}/{meaning_id}/translations/{translation_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_word_translation(word: str, meaning_id: int, translation_id: int, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+    """
+    Deletes a specific translation for a word and meaning based on the provided IDs.
+
+    Parameters:
+    - word: str
+    - meaning_id: int
+    - translation_id: int
+    - db: Session = Depends(get_db)
+    - current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)
+
+    Returns:
+    - None
+    """
     if access_to_int(current_user.access) < access_to_int(schemas.Access.ALL):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
@@ -119,6 +182,18 @@ async def delete_word_translation(word: str, meaning_id: int, translation_id: in
 
 @router.delete("/{word}/{meaning_id}/translations", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_word_translations(word: str, meaning_id: int, db: Session = Depends(get_db), current_user: schemas.DBManager = Depends(auth_middleware.get_current_db_manager)):
+    """
+    Deletes all translations for a specific word and meaning based on the provided IDs.
+
+    Parameters:
+    - word: str - The word for which translations are to be deleted.
+    - meaning_id: int - The ID of the meaning for which translations are to be deleted.
+    - db: Session - The database session to use (provided by Depends(get_db)).
+    - current_user: schemas.DBManager - The current user performing the action.
+
+    Returns:
+    - None
+    """
     if access_to_int(current_user.access) < access_to_int(schemas.Access.ALL):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     

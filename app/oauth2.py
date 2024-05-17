@@ -11,7 +11,16 @@ REFRESH_TOKEN_EXPIRE_MINUTES = settings.refresh_token_expire_minutes
 
 
 def create_access_token(data: dict):
-    to_encode = data.copy() # Data to be encoded in JWT token (email, role, access in this case).
+    """
+    Creates an access token by encoding the input data in a JWT token.
+    
+    Parameters:
+        - data (dict): The data to be encoded in the token (email, role, access in this case).
+    
+    Returns:
+        - str: The encoded JWT access token.
+    """
+    to_encode = data.copy() # Data to be encoded in JWT token (email, role and access in this case).
 
     expire = datetime.now(UTC) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     to_encode.update({"exp": expire})
@@ -21,7 +30,16 @@ def create_access_token(data: dict):
     return encoded_jwt
 
 def create_refresh_token(data: dict):
-    to_encode = data.copy() # Data to be encoded in JWT token (email, role, access in this case).
+    """
+    Creates a refresh token by encoding the input data in a JWT token.
+    
+    Parameters:
+        - data (dict): The data to be encoded in the token (email, role, access).
+    
+    Returns:
+        - str: The encoded JWT refresh token.
+    """
+    to_encode = data.copy() # Data to be encoded in JWT token (email, role and access in this case).
     
     expire = datetime.now(UTC) + timedelta(minutes=REFRESH_TOKEN_EXPIRE_MINUTES)
     to_encode.update({"exp": expire})

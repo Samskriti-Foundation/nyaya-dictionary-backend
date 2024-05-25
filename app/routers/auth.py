@@ -46,7 +46,7 @@ async def login(request: Request, user_credentials: OAuth2PasswordRequestForm = 
     if not db_manager:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,detail='Invalid Credentials')
     
-    if not encrypt.verify(user_credentials.password, db_manager.password[2:-1].encode('utf-8')):
+    if not encrypt.verify(user_credentials.password, db_manager.password.encode('utf-8')):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,detail='Invalid Credentials')
     
     access_token = oauth2.create_access_token(data={'email': db_manager.email, 'role': db_manager.role, 'access': db_manager.access})
@@ -139,10 +139,9 @@ def register_superuser(superuser: schemas.DBManagerIn, db: Session = Depends(get
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=f"Superuser with email: {superuser.email} already exists")
     
 
-    hashed_password = str(encrypt.hash(superuser.password))
-    print(hashed_password)
+    hashed_password = encrypt.hash(superuser.password)
 
-    superuser.password = hashed_password
+    superuser.password = hashed_password.decode('utf-8')
     superuser.role = schemas.Role.SUPERUSER
     superuser.access = schemas.Access.ALL
 

@@ -93,8 +93,8 @@ class DBManager(Base):
     password = Column(String)
     first_name = Column(String)
     last_name = Column(String)
-    role = Column(Enum("SUPERUSER", "ADMIN", "EDITOR"), default="EDITOR")
-    access = Column(Enum("READ_ONLY", "READ_WRITE", "READ_WRITE_MODIFY", "ALL"), default="READ_ONLY")
+    role = Column(Enum("SUPERUSER", "ADMIN", "EDITOR", name="role"), default="EDITOR")
+    access = Column(Enum("READ_ONLY", "READ_WRITE", "READ_WRITE_MODIFY", "ALL", name="access"), default="READ_ONLY")
     created_at = Column(DateTime, default=datetime.now(UTC))
 
 

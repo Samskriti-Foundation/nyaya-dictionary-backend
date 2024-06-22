@@ -77,7 +77,7 @@ def verify_access_token(token: str, credentials_exception):
 
         token_data = schemas.TokenData(email=email, role=role, access=access)
     
-    except jwt.ExpiredSignatureError:
+    except Exception:
         raise credentials_exception
     
     return token_data

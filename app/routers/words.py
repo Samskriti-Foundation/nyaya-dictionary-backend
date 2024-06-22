@@ -191,7 +191,6 @@ async def delete_word(word: str, db: Session = Depends(get_db), current_db_manag
     
     word_id = db_word.id
 
-    db.query(models.Meaning).filter(models.Meaning.sanskrit_word_id == db_word.id).delete(synchronize_session=False)
     db.query(models.Etymology).filter(models.Etymology.sanskrit_word_id == db_word.id).delete(synchronize_session=False)
     db.query(models.Derivation).filter(models.Derivation.sanskrit_word_id == db_word.id).delete(synchronize_session=False)
     db.query(models.Translation).filter(models.Translation.sanskrit_word_id == db_word.id).delete(synchronize_session=False)
@@ -199,6 +198,7 @@ async def delete_word(word: str, db: Session = Depends(get_db), current_db_manag
     db.query(models.Example).filter(models.Example.sanskrit_word_id == db_word.id).delete(synchronize_session=False)
     db.query(models.Synonym).filter(models.Synonym.sanskrit_word_id == db_word.id).delete(synchronize_session=False)
     db.query(models.Antonym).filter(models.Antonym.sanskrit_word_id == db_word.id).delete(synchronize_session=False)
+    db.query(models.Meaning).filter(models.Meaning.sanskrit_word_id == db_word.id).delete(synchronize_session=False)
     db.query(models.SanskritWord).filter(models.SanskritWord.id == db_word.id).delete(synchronize_session=False)
 
     db.commit()

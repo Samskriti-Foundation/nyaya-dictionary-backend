@@ -17,6 +17,20 @@ router = APIRouter(
 )
 
 
+@router.get("/total-count", response_model=int)
+def get_word_count(db: Session = Depends(get_db)):
+    """
+    Retrieves the total count of words in the database.
+
+    Parameters:
+        db (Session): The database session object.
+
+    Returns:
+        int: The total count of words in the database.
+    """
+    return db.query(models.SanskritWord).count()
+
+
 @router.get("/", response_model=List[schemas.WordOut])
 def get_words(db: Session = Depends(get_db)):
     """
@@ -28,7 +42,7 @@ def get_words(db: Session = Depends(get_db)):
     Returns:
         List[schemas.WordOut]: A list of `schemas.WordOut` objects representing the retrieved words.
     """
-    db_words = db.query(models.SanskritWord).all()
+    db_words = db.query(models.SanskritWord).order_by(models.SanskritWord.sanskrit_word).all()
 
     words = []
 

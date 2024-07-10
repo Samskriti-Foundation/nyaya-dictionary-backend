@@ -23,5 +23,4 @@ def verify(plain_password: str, hashed_password: bytes) -> bool:
     Returns:
         bool: True if the password matches the hash, False otherwise.
     """
-    print(plain_password, hashed_password)
     return bcrypt.checkpw(plain_password.encode('utf-8'), hashed_password)

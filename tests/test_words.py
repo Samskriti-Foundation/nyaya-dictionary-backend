@@ -38,6 +38,16 @@ def test_get_words(client):
     assert response.status_code == 200
 
 
+def test_get_words_total_count(authorized_client, test_users, client, sample_input_data, sample_output_data):
+    authorized_editor = authorized_client(test_users["editor_all"])
+    response: Response = authorized_editor.post("/words", json=sample_input_data)
+    assert response.status_code == 201
+
+    response: Response = client.get("/words/total-count")
+    assert response.status_code == 200
+    assert response.json() == 1
+
+
 def test_get_word(authorized_client, test_users, client, sample_input_data, sample_output_data):
     authorized_editor = authorized_client(test_users["editor_all"])
     response: Response = authorized_editor.post("/words", json=sample_input_data)

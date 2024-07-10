@@ -51,3 +51,6 @@ INFO - 2024-05-06 15:06:24,431 - auth_logger - ('127.0.0.1', 59253) - user@examp
 INFO - 2024-05-17 16:19:53,812 - auth_logger - ('127.0.0.1', 63504) - user@example.com
 INFO - 2024-05-25 16:06:01,461 - auth_logger - ('127.0.0.1', 63924) - test4@test.com
 INFO - 2024-05-25 16:31:58,617 - auth_logger - ('127.0.0.1', 51166) - pranavkbhaskar02@gmail.com
+INFO - 2024-07-10 11:21:51,906 - auth_logger - ('127.0.0.1', 54691) - pranavkbhaskar02@gmail.com
+INFO - 2024-07-10 11:24:22,589 - auth_logger - ('127.0.0.1', 58501) - pranavkbhaskar02@gmail.com
+INFO - 2024-07-10 11:24:49,416 - auth_logger - ('127.0.0.1', 59124) - pranavkbhaskar02@gmail.com

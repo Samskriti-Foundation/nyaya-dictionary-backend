@@ -24,7 +24,12 @@ Nyaya Khosha is a Sanskrit-English dictionary developed by Samskriti Foundation,
    cd nyaya-dictionary-backend
    ```
 
-3. **Install dependencies using a Virtual Environment:**
+3. Copy the environment variables file:
+   ```bash
+   cp .env.example .env
+   ```
+
+4. **Install dependencies using a Virtual Environment:**
 
    a. Create a virtual environment:
 

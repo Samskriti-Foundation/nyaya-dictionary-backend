@@ -56,7 +56,31 @@ Nyaya Khosha is a Sanskrit-English dictionary developed by Samskriti Foundation,
 
 ## Run the backend server
 
-1. Start the server using Uvicorn:
+1. Create logs directory and required log files:
+
+```bash
+mkdir -p logs
+touch logs/auth.log
+for i in {01..12}; do
+  month=$(case $i in
+    01) echo "Jan";;
+    02) echo "Feb";;
+    03) echo "Mar";;
+    04) echo "Apr";;
+    05) echo "May";;
+    06) echo "Jun";;
+    07) echo "Jul";;
+    08) echo "Aug";;
+    09) echo "Sep";;
+    10) echo "Oct";;
+    11) echo "Nov";;
+    12) echo "Dec";;
+  esac)
+  touch logs/"${i}_${month}.log"
+done
+```
+
+2. Start the server using Uvicorn:
 
 ```bash
 uvicorn app.main:app --reload
